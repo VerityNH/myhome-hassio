@@ -6,6 +6,10 @@
 !*.yaml
 !.gitignore
 !*.md
+!custom_components
+!www
+!lovelace
+
 
 # Ignore folders.
 .storage
