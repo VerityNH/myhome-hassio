@@ -1,0 +1,63 @@
+homeassistant: !include homeassistant.yaml
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+#homeassistant: !include homeassistant.yaml
+
+lovelace:
+  mode: yaml        
+
+# Text to speech
+tts:
+  - platform: google_translate
+    service_name: google_say
+
+group: !include groups.yaml
+
+zone: !include zones.yaml
+
+automation: !include automations.yaml
+
+script: !include scripts.yaml
+
+scene: !include scenes.yaml
+
+frontend: !include frontend.yaml
+
+http: !include http.yaml
+
+tuya: !include tuya.yaml
+
+ecovacs: !include ecovacs.yaml
+
+stream:
+
+ffmpeg:
+  ffmpeg_bin: /usr/bin/ffmpeg
+
+camera: !include camera.yaml
+
+light: !include light.yaml
+
+# Garage door
+cover: !include garage.yaml
+
+# Person tracker
+person: !include persons.yaml
+
+device_tracker: !include device_tracker.yaml
+
+# Nest integration ???
+badnest: !include nest.yaml
+
+climate: !include thermostat.yaml
+
+sensor: !include sensors.yaml
+
+#Dummy sensors
+binary_sensor: !include binary_sensors.yaml
+
+weather: !include weather.yaml
+
+mqtt: !include mqtt.yaml

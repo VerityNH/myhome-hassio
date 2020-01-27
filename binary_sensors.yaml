@@ -1,0 +1,35 @@
+- platform: template
+  sensors:
+    athome:
+      friendly_name: "Someone at home"
+      device_class: occupancy
+      value_template: >-
+        {{ is_state('person.nata', 'home')
+           or is_state('person.nick', 'home')}}
+
+- platform: template
+  sensors:
+    nick_home:
+      friendly_name: "Nick at home"
+      device_class: occupancy
+      value_template: >-
+        {{ is_state('person.nick', 'home')}}
+
+- platform: template
+  sensors:
+    nata_home:
+      friendly_name: "Nata at home"
+      device_class: occupancy
+      value_template: >-
+        {{ is_state('person.nata', 'home')}}
+
+- platform: template
+  sensors:
+    garage_closed:
+      friendly_name: "Garage door closed"
+      device_class: garage_door
+      value_template: >-
+        {{ is_state('cover.garage_door', 'open') }}
+
+- platform: car_wash
+  weather: weather.openweathermap           

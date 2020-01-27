@@ -1,0 +1,520 @@
+- platform: group
+  name: Living Room Lights
+  entities:
+    - light.livingroom_left_lamp
+    - light.livingroom_right_lamp
+
+- platform: group
+  name: Kids Bedroom Lights
+  entities:
+    - light.kids_left_lamp
+    - light.kids_right_lamp
+
+- platform: group
+  name: Master Bedroom Lights
+  entities:
+    - light.master_fan_1
+    - light.master_fan_2
+    - light.master_fan_3
+    - light.master_fan_4
+
+- platform: group
+  name: Corridor Lights
+  entities:
+    - light.corridor_light
+
+- platform: group
+  name: Kitchen Lights
+  entities:
+    - light.66514121500291c7eb5c
+    - light.66514121500291c7eb85
+    - light.66514121500291c7eb7a
+    - light.66514121500291c7eb68
+    - light.66514121500291c7f036
+
+- platform: mqtt
+  name: "Livingroom left lamp"
+  schema: template
+  command_topic: "wizlight/10.0.0.4/set"
+  state_topic: "wizlight/10.0.0.4/status"
+  command_on_template: >
+    {"state": true
+    {%- if brightness is defined -%}
+    ,"dimming": {{ (brightness/254*100)| int }}
+    {%- endif -%}
+    {%- if red is defined and green is defined and blue is defined -%}
+    ,"r":{{ red }},"g":{{ green }},"b":{{ blue }}
+    {%- endif -%}
+    {%- if color_temp is defined -%}
+    ,"temp":{{ (1000000/color_temp)| int}}
+    {%- endif -%}
+    {%- if white_value is defined -%}
+    ,"w":{{ white_value }}
+    {%- endif -%}
+    }
+  command_off_template: '{"state":false}'
+  state_template: '{{ value_json.state}}'
+  brightness_template: '{{ (value_json.dimming/100*254)| int }}'
+  red_template: >
+    {%- if value_json.r is defined -%}
+    {{ value_json.r }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  green_template: >
+    {%- if value_json.g is defined -%}
+    {{ value_json.g }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  blue_template: >
+    {%- if value_json.b is defined -%}
+    {{ value_json.b }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  color_temp_template: >
+    {%- if value_json.temp is defined -%}
+    {{ (1000000/value_json.temp)| int }}
+    {%- else -%}
+    370
+    {%- endif -%}
+  white_value_template: >
+    {%- if value_json.w is defined -%}
+    {{ value_json.w }}
+    {%- else -%}
+    {{ (value_json.dimming/100*254)| int }}
+    {%- endif -%}
+
+- platform: mqtt
+  name: "Livingroom right lamp"
+  schema: template
+  command_topic: "wizlight/10.0.0.181/set"
+  state_topic: "wizlight/10.0.0.181/status"
+  command_on_template: >
+    {"state": true
+    {%- if brightness is defined -%}
+    ,"dimming": {{ (brightness/254*100)| int }}
+    {%- endif -%}
+    {%- if red is defined and green is defined and blue is defined -%}
+    ,"r":{{ red }},"g":{{ green }},"b":{{ blue }}
+    {%- endif -%}
+    {%- if color_temp is defined -%}
+    ,"temp":{{ (1000000/color_temp)| int}}
+    {%- endif -%}
+    {%- if white_value is defined -%}
+    ,"w":{{ white_value }}
+    {%- endif -%}
+    }
+  command_off_template: '{"state":false}'
+  state_template: '{{ value_json.state}}'
+  brightness_template: '{{ (value_json.dimming/100*254)| int }}'
+  red_template: >
+    {%- if value_json.r is defined -%}
+    {{ value_json.r }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  green_template: >
+    {%- if value_json.g is defined -%}
+    {{ value_json.g }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  blue_template: >
+    {%- if value_json.b is defined -%}
+    {{ value_json.b }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  color_temp_template: >
+    {%- if value_json.temp is defined -%}
+    {{ (1000000/value_json.temp)| int }}
+    {%- else -%}
+    370
+    {%- endif -%}
+  white_value_template: >
+    {%- if value_json.w is defined -%}
+    {{ value_json.w }}
+    {%- else -%}
+    {{ (value_json.dimming/100*254)| int }}
+    {%- endif -%}
+
+- platform: mqtt
+  name: "Master fan 1"
+  schema: template
+  command_topic: "wizlight/10.0.0.190/set"
+  state_topic: "wizlight/10.0.0.190/status"
+  command_on_template: >
+    {"state": true
+    {%- if brightness is defined -%}
+    ,"dimming": {{ (brightness/254*100)| int }}
+    {%- endif -%}
+    {%- if red is defined and green is defined and blue is defined -%}
+    ,"r":{{ red }},"g":{{ green }},"b":{{ blue }}
+    {%- endif -%}
+    {%- if color_temp is defined -%}
+    ,"temp":{{ (1000000/color_temp)| int}}
+    {%- endif -%}
+    {%- if white_value is defined -%}
+    ,"w":{{ white_value }}
+    {%- endif -%}
+    }
+  command_off_template: '{"state":false}'
+  state_template: '{{ value_json.state}}'
+  brightness_template: '{{ (value_json.dimming/100*254)| int }}'
+  red_template: >
+    {%- if value_json.r is defined -%}
+    {{ value_json.r }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  green_template: >
+    {%- if value_json.g is defined -%}
+    {{ value_json.g }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  blue_template: >
+    {%- if value_json.b is defined -%}
+    {{ value_json.b }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  color_temp_template: >
+    {%- if value_json.temp is defined -%}
+    {{ (1000000/value_json.temp)| int }}
+    {%- else -%}
+    370
+    {%- endif -%}
+  white_value_template: >
+    {%- if value_json.w is defined -%}
+    {{ value_json.w }}
+    {%- else -%}
+    {{ (value_json.dimming/100*254)| int }}
+    {%- endif -%}
+
+- platform: mqtt
+  name: "Master fan 2"
+  schema: template
+  command_topic: "wizlight/10.0.0.82/set"
+  state_topic: "wizlight/10.0.0.82/status"
+  command_on_template: >
+    {"state": true
+    {%- if brightness is defined -%}
+    ,"dimming": {{ (brightness/254*100)| int }}
+    {%- endif -%}
+    {%- if red is defined and green is defined and blue is defined -%}
+    ,"r":{{ red }},"g":{{ green }},"b":{{ blue }}
+    {%- endif -%}
+    {%- if color_temp is defined -%}
+    ,"temp":{{ (1000000/color_temp)| int}}
+    {%- endif -%}
+    {%- if white_value is defined -%}
+    ,"w":{{ white_value }}
+    {%- endif -%}
+    }
+  command_off_template: '{"state":false}'
+  state_template: '{{ value_json.state}}'
+  brightness_template: '{{ (value_json.dimming/100*254)| int }}'
+  red_template: >
+    {%- if value_json.r is defined -%}
+    {{ value_json.r }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  green_template: >
+    {%- if value_json.g is defined -%}
+    {{ value_json.g }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  blue_template: >
+    {%- if value_json.b is defined -%}
+    {{ value_json.b }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  color_temp_template: >
+    {%- if value_json.temp is defined -%}
+    {{ (1000000/value_json.temp)| int }}
+    {%- else -%}
+    370
+    {%- endif -%}
+  white_value_template: >
+    {%- if value_json.w is defined -%}
+    {{ value_json.w }}
+    {%- else -%}
+    {{ (value_json.dimming/100*254)| int }}
+    {%- endif -%}
+
+- platform: mqtt
+  name: "Master fan 3"
+  schema: template
+  command_topic: "wizlight/10.0.0.249/set"
+  state_topic: "wizlight/10.0.0.249/status"
+  command_on_template: >
+    {"state": true
+    {%- if brightness is defined -%}
+    ,"dimming": {{ (brightness/254*100)| int }}
+    {%- endif -%}
+    {%- if red is defined and green is defined and blue is defined -%}
+    ,"r":{{ red }},"g":{{ green }},"b":{{ blue }}
+    {%- endif -%}
+    {%- if color_temp is defined -%}
+    ,"temp":{{ (1000000/color_temp)| int}}
+    {%- endif -%}
+    {%- if white_value is defined -%}
+    ,"w":{{ white_value }}
+    {%- endif -%}
+    }
+  command_off_template: '{"state":false}'
+  state_template: '{{ value_json.state}}'
+  brightness_template: '{{ (value_json.dimming/100*254)| int }}'
+  red_template: >
+    {%- if value_json.r is defined -%}
+    {{ value_json.r }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  green_template: >
+    {%- if value_json.g is defined -%}
+    {{ value_json.g }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  blue_template: >
+    {%- if value_json.b is defined -%}
+    {{ value_json.b }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  color_temp_template: >
+    {%- if value_json.temp is defined -%}
+    {{ (1000000/value_json.temp)| int }}
+    {%- else -%}
+    370
+    {%- endif -%}
+  white_value_template: >
+    {%- if value_json.w is defined -%}
+    {{ value_json.w }}
+    {%- else -%}
+    {{ (value_json.dimming/100*254)| int }}
+    {%- endif -%}
+
+- platform: mqtt
+  name: "Master fan 4"
+  schema: template
+  command_topic: "wizlight/10.0.0.206/set"
+  state_topic: "wizlight/10.0.0.206/status"
+  command_on_template: >
+    {"state": true
+    {%- if brightness is defined -%}
+    ,"dimming": {{ (brightness/254*100)| int }}
+    {%- endif -%}
+    {%- if red is defined and green is defined and blue is defined -%}
+    ,"r":{{ red }},"g":{{ green }},"b":{{ blue }}
+    {%- endif -%}
+    {%- if color_temp is defined -%}
+    ,"temp":{{ (1000000/color_temp)| int}}
+    {%- endif -%}
+    {%- if white_value is defined -%}
+    ,"w":{{ white_value }}
+    {%- endif -%}
+    }
+  command_off_template: '{"state":false}'
+  state_template: '{{ value_json.state}}'
+  brightness_template: '{{ (value_json.dimming/100*254)| int }}'
+  red_template: >
+    {%- if value_json.r is defined -%}
+    {{ value_json.r }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  green_template: >
+    {%- if value_json.g is defined -%}
+    {{ value_json.g }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  blue_template: >
+    {%- if value_json.b is defined -%}
+    {{ value_json.b }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  color_temp_template: >
+    {%- if value_json.temp is defined -%}
+    {{ (1000000/value_json.temp)| int }}
+    {%- else -%}
+    370
+    {%- endif -%}
+  white_value_template: >
+    {%- if value_json.w is defined -%}
+    {{ value_json.w }}
+    {%- else -%}
+    {{ (value_json.dimming/100*254)| int }}
+    {%- endif -%}    
+
+- platform: mqtt
+  name: "Kids left lamp"
+  schema: template
+  command_topic: "wizlight/10.0.0.48/set"
+  state_topic: "wizlight/10.0.0.48/status"
+  command_on_template: >
+    {"state": true
+    {%- if brightness is defined -%}
+    ,"dimming": {{ (brightness/254*100)| int }}
+    {%- endif -%}
+    {%- if red is defined and green is defined and blue is defined -%}
+    ,"r":{{ red }},"g":{{ green }},"b":{{ blue }}
+    {%- endif -%}
+    {%- if color_temp is defined -%}
+    ,"temp":{{ (1000000/color_temp)| int}}
+    {%- endif -%}
+    {%- if white_value is defined -%}
+    ,"w":{{ white_value }}
+    {%- endif -%}
+    }
+  command_off_template: '{"state":false}'
+  state_template: '{{ value_json.state}}'
+  brightness_template: '{{ (value_json.dimming/100*254)| int }}'
+  red_template: >
+    {%- if value_json.r is defined -%}
+    {{ value_json.r }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  green_template: >
+    {%- if value_json.g is defined -%}
+    {{ value_json.g }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  blue_template: >
+    {%- if value_json.b is defined -%}
+    {{ value_json.b }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  color_temp_template: >
+    {%- if value_json.temp is defined -%}
+    {{ (1000000/value_json.temp)| int }}
+    {%- else -%}
+    370
+    {%- endif -%}
+  white_value_template: >
+    {%- if value_json.w is defined -%}
+    {{ value_json.w }}
+    {%- else -%}
+    {{ (value_json.dimming/100*254)| int }}
+    {%- endif -%}
+
+- platform: mqtt
+  name: "Kids right lamp"
+  schema: template
+  command_topic: "wizlight/10.0.0.187/set"
+  state_topic: "wizlight/10.0.0.187/status"
+  command_on_template: >
+    {"state": true
+    {%- if brightness is defined -%}
+    ,"dimming": {{ (brightness/254*100)| int }}
+    {%- endif -%}
+    {%- if red is defined and green is defined and blue is defined -%}
+    ,"r":{{ red }},"g":{{ green }},"b":{{ blue }}
+    {%- endif -%}
+    {%- if color_temp is defined -%}
+    ,"temp":{{ (1000000/color_temp)| int}}
+    {%- endif -%}
+    {%- if white_value is defined -%}
+    ,"w":{{ white_value }}
+    {%- endif -%}
+    }
+  command_off_template: '{"state":false}'
+  state_template: '{{ value_json.state}}'
+  brightness_template: '{{ (value_json.dimming/100*254)| int }}'
+  red_template: >
+    {%- if value_json.r is defined -%}
+    {{ value_json.r }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  green_template: >
+    {%- if value_json.g is defined -%}
+    {{ value_json.g }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  blue_template: >
+    {%- if value_json.b is defined -%}
+    {{ value_json.b }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  color_temp_template: >
+    {%- if value_json.temp is defined -%}
+    {{ (1000000/value_json.temp)| int }}
+    {%- else -%}
+    370
+    {%- endif -%}
+  white_value_template: >
+    {%- if value_json.w is defined -%}
+    {{ value_json.w }}
+    {%- else -%}
+    {{ (value_json.dimming/100*254)| int }}
+    {%- endif -%}
+
+- platform: mqtt
+  name: "Corridor light"
+  schema: template
+  command_topic: "wizlight/10.0.0.155/set"
+  state_topic: "wizlight/10.0.0.155/status"
+  command_on_template: >
+    {"state": true
+    {%- if brightness is defined -%}
+    ,"dimming": {{ (brightness/254*100)| int }}
+    {%- endif -%}
+    {%- if red is defined and green is defined and blue is defined -%}
+    ,"r":{{ red }},"g":{{ green }},"b":{{ blue }}
+    {%- endif -%}
+    {%- if color_temp is defined -%}
+    ,"temp":{{ (1000000/color_temp)| int}}
+    {%- endif -%}
+    {%- if white_value is defined -%}
+    ,"w":{{ white_value }}
+    {%- endif -%}
+    }
+  command_off_template: '{"state":false}'
+  state_template: '{{ value_json.state}}'
+  brightness_template: '{{ (value_json.dimming/100*254)| int }}'
+  red_template: >
+    {%- if value_json.r is defined -%}
+    {{ value_json.r }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  green_template: >
+    {%- if value_json.g is defined -%}
+    {{ value_json.g }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  blue_template: >
+    {%- if value_json.b is defined -%}
+    {{ value_json.b }}
+    {%- else -%}
+    255
+    {%- endif -%}
+  color_temp_template: >
+    {%- if value_json.temp is defined -%}
+    {{ (1000000/value_json.temp)| int }}
+    {%- else -%}
+    370
+    {%- endif -%}
+  white_value_template: >
+    {%- if value_json.w is defined -%}
+    {{ value_json.w }}
+    {%- else -%}
+    {{ (value_json.dimming/100*254)| int }}
+    {%- endif -%}
+

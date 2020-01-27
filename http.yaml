@@ -1,0 +1,7 @@
+base_url: https://10.0.0.2:8123
+use_x_forwarded_for: true
+trusted_proxies: !secret trusted_proxies
+ip_ban_enabled: true
+login_attempts_threshold: 5
+#ssl_certificate: /ssl/fullchain.pem
+#ssl_key: /ssl/privkey.pem

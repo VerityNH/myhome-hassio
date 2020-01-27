@@ -1,0 +1,3 @@
+- platform: openweathermap
+  api_key: !secret owm_api_key
+  mode: freedaily

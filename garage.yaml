@@ -1,0 +1,4 @@
+- platform: myq
+  username: !secret garage_username
+  password: !secret garage_password
+

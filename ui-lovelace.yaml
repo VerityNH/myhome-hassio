@@ -1,0 +1,6 @@
+title: Our Home
+resources: !include lovelace/resources.yaml
+cch: !include lovelace/cch.yaml
+views:
+  - !include lovelace/view-overview.yaml
+  - !include lovelace/view-floorplan.yaml

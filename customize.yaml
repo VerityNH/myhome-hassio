@@ -1,0 +1,5 @@
+binary_sensor.car_wash:
+  templates:
+    icon: >-
+      if (state == 'on') return 'mdi:weather-sunny';
+      return 'mdi:weather-pouring';  

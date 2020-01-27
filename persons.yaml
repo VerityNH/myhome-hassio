@@ -1,0 +1,12 @@
+#- name: Nick
+#  id: nick
+#  user_id: 25fb98b74f74479b9f89a96e8a93418f
+#  device_trackers:
+#    - device_tracker.nick_tracker
+#    - device_tracker.sm_g975u  
+#- name: Nata
+#  id: nata
+#  user_id: f71029d43bed4f458283eb68266b3bab
+#  device_trackers:
+#    - device_tracker.nata_tracker
+

@@ -1,0 +1,52 @@
+- platform: badnest
+
+- platform: openweathermap
+  api_key: a14bf928a80d2c212159d9d5c601e66f
+  monitored_conditions:
+    - weather
+    - temperature
+    - wind_speed
+    - wind_bearing
+    - humidity
+    - pressure
+    - clouds
+    - rain
+    - snow
+    - weather_code
+
+- platform: waze_travel_time
+  name: "Nick to Work"
+  origin: device_tracker.sm_g975u
+  destination: zone.nick_work
+  region: 'US'     
+
+- platform: waze_travel_time
+  name: "Nata to Work"
+  origin: device_tracker.sm_n970u
+  destination: zone.nata_work
+  region: 'US'
+
+- platform: waze_travel_time
+  name: "Nick to Home"
+  origin: device_tracker.sm_g975u
+  destination: zone.home
+  region: 'US'
+
+- platform: waze_travel_time
+  name: "Nata to Home"
+  origin: device_tracker.sm_n970u
+  destination: zone.home
+  region: 'US'
+
+- platform: template
+  sensors:
+    nest_temperature:
+      friendly_name: "Nest temperature"
+      value_template: "{{ state_attr('climate.kitchen_thermostat', 'current_temperature') }}"
+      device_class: temperature
+      unit_of_measurement: °C
+
+    nest_humidity:
+      friendly_name: "Nest humidity"
+      value_template: "{{ state_attr('climate.kitchen_thermostat', 'current_humidity') }}"
+      device_class: humidity

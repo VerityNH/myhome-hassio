@@ -1,0 +1,13 @@
+turn_off_all_lights:
+  alias: Turn off all lights
+  sequence:
+  - entity_id: light.kitchen_lights
+    service: light.turn_off
+  - entity_id: light.kids_bedroom_lights
+    service: light.turn_off
+  - entity_id: light.master_bedroom_lights
+    service: light.turn_off
+  - entity_id: light.corridor_lights
+    service: light.turn_off
+  - entity_id: light.living_room_lights
+    service: light.turn_off
