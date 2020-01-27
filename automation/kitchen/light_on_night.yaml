@@ -19,5 +19,3 @@ condition:
 action:
   - entity_id: light.66514121500291c7eb68
     service: light.turn_on
-  - entity_id: light.66514121500291c7eb85
-    service: light.turn_on
