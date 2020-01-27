@@ -1,0 +1,15 @@
+initial_state: 'on'
+alias: LIGHT OFF Corridor
+description: ''
+trigger:
+  - device_id: 3bcc912ae2e347d3b1605d7a71e3042e
+    domain: binary_sensor
+    entity_id: binary_sensor.corridor_motion_sensor_motion
+    platform: device
+    type: no_motion
+condition: []
+action:
+  - data:
+      entity_id: light.corridor_lights
+    entity_id: light.corridor_lights
+    service: light.turn_off

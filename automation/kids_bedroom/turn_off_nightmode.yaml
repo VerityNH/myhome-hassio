@@ -1,0 +1,27 @@
+initial_state: 'on'
+alias: Turn off kids night mode
+description: ''
+trigger:
+  - event: sunrise
+    platform: sun
+condition:
+  - condition: or
+    conditions:
+      - condition: zone
+        entity_id: person.nata
+        zone: zone.home
+      - condition: zone
+        entity_id: person.nick
+        zone: zone.home
+action:
+  - scene: scene.kids_day_mode
+  - device_id: 51c6fc8f7e444df8bf04ed2dddbf3f59
+    domain: light
+    entity_id: light.kids_left
+    type: turn_off
+  - device_id: c2deee9d64be4b608f077e17360c211d
+    domain: light
+    entity_id: light.kids_right
+    type: turn_off
+  - entity_id: automation.lights_on_kids_bedroom
+    service: automation.turn_on

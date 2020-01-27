@@ -1,0 +1,25 @@
+initial_state: 'on'
+alias: LIGHTS OFF kids bedroom
+description: ''
+trigger:
+  - device_id: 6bf1ac9817054053af1b191975cfb007
+    domain: binary_sensor
+    entity_id: binary_sensor.kids_multy_motion
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    platform: device
+    type: no_motion
+condition:
+  - condition: and
+    conditions:
+      - after: sunrise
+        condition: sun
+      - before: '21:30:00'
+        condition: time
+action:
+  - data:
+      entity_id: light.kids_bedroom_lights
+    entity_id: light.kids_bedroom_lights
+    service: light.turn_off

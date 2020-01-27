@@ -1,0 +1,15 @@
+initial_state: 'on'
+alias: LIGHT ON Corridor day
+description: ''
+trigger:
+  - device_id: 3bcc912ae2e347d3b1605d7a71e3042e
+    domain: binary_sensor
+    entity_id: binary_sensor.corridor_motion_sensor_motion
+    platform: device
+    type: motion
+condition:
+  - after: '6:00:00'
+    before: '23:00:00'
+    condition: time
+action:
+  - scene: scene.corridor_day
