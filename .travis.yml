@@ -4,6 +4,30 @@ python:
 before_install:
   - mv travis_secrets.yaml secrets.yaml
   - sudo apt-get install -y libudev-dev
+  - sudo apt-get install \
+    autoconf \
+    automake \
+    build-essential \
+    cmake \
+    libass-dev \
+    libfreetype6-dev \
+    libjpeg-dev \
+    libtheora-dev \
+    libtool \
+    libvorbis-dev \
+    libx264-dev \
+    pkg-config \
+    wget \
+    yasm \
+    zlib1g-dev
+
+  - wget http://ffmpeg.org/releases/ffmpeg-3.2.tar.bz2
+  - tar -xjf ffmpeg-3.2.tar.bz2
+  - cd ffmpeg-3.2
+
+  - ./configure --enable-gpl --enable-nonfree --enable-mmal --enable-omx --enable-omx-rpi --disable-static --enable-shared --disable-doc
+  - make -j4
+  - sudo make install
   - sudo apt-get install libavformat-dev libavfilter-dev libavdevice-dev ffmpeg
   - sudo apt-get install -y python-dev pkg-config libavformat-dev libavcodec-dev libavdevice-dev libavutil-dev libswscale-dev libavresample-dev libavfilter-dev
   - pip3 install av==6.1.2
