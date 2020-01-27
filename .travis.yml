@@ -2,6 +2,7 @@ language: python
 python:
   - "3.7"
 before_install:
+  - pwd
   - mv travis_secrets.yaml secrets.yaml
   - sudo apt-get install -y libudev-dev
   - sudo apt-get install -y autoconf automake build-essential cmake libass-dev libfreetype6-dev libjpeg-dev libtheora-dev libtool libvorbis-dev libx264-dev pkg-config wget yasm zlib1g-dev
@@ -11,6 +12,7 @@ before_install:
   - ./configure --disable-static --enable-shared --disable-doc
   - make
   - sudo make install
+  - cd -
   - sudo apt-get install libavformat-dev libavfilter-dev libavdevice-dev ffmpeg
   - sudo apt-get install -y python-dev pkg-config libavformat-dev libavcodec-dev libavdevice-dev libavutil-dev libswscale-dev libavresample-dev libavfilter-dev
   - pip3 install av==6.1.2
