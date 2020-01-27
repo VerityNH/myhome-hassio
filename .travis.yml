@@ -8,8 +8,7 @@ before_install:
   - wget http://ffmpeg.org/releases/ffmpeg-3.2.tar.bz2
   - tar -xjf ffmpeg-3.2.tar.bz2
   - cd ffmpeg-3.2
-
-  - ./configure --enable-gpl --enable-nonfree --enable-mmal --enable-omx --enable-omx-rpi --disable-static --enable-shared --disable-doc
+  - ./configure --enable-gpl --enable-nonfree --enable-omx --enable-omx-rpi --disable-static --enable-shared --disable-doc
   - make -j4
   - sudo make install
   - sudo apt-get install libavformat-dev libavfilter-dev libavdevice-dev ffmpeg
