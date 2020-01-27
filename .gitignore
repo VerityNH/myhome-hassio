@@ -1,6 +1,5 @@
 # Example .gitignore file for your config dir.
 # An * ensures that everything will be ignored.
-*
 
 # You can whitelist files/folders with !, these will not be ignored.
 #!*.yaml
@@ -18,6 +17,9 @@
 .idea
 node-red
 deps
+.HA_VERSION
+tts
+themes
 
 # Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
 ip_bans.yaml
