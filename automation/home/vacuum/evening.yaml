@@ -1,0 +1,12 @@
+initial_state: 'on'
+alias: Start vacuum at 8-10pm
+description: ''
+trigger:
+  - at: '20:10'
+    platform: time
+condition: []
+action:
+  - data:
+      entity_id: vacuum.e200p8u2391901643866
+    entity_id: vacuum.e200p8u2391901643866
+    service: vacuum.turn_on

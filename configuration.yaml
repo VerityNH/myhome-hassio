@@ -17,7 +17,7 @@ group: !include groups.yaml
 
 zone: !include zones.yaml
 
-automation: !include automations.yaml
+automation: !include_dir_list automation/
 
 script: !include scripts.yaml
 

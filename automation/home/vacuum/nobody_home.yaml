@@ -1,0 +1,14 @@
+initial_state: 'on'
+alias: Start vacuum when nobody home
+description: ''
+trigger:
+  - entity_id: binary_sensor.athome
+    from: 'on'
+    platform: state
+    to: 'off'
+condition: []
+action:
+  - data:
+      entity_id: vacuum.e200p8u2391901643866
+    entity_id: vacuum.e200p8u2391901643866
+    service: vacuum.turn_on

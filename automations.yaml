@@ -1,383 +1,383 @@
-- id: '1579487437411'
-  alias: Turn on kids night mode
-  description: ''
-  trigger:
-  - at: '21:35'
-    platform: time
-  condition:
-  - condition: or
-    conditions:
-    - condition: zone
-      entity_id: person.nata
-      zone: zone.home
-    - condition: zone
-      entity_id: person.nick
-      zone: zone.home
-  action:
-  - scene: scene.kids_night_mode
-  - entity_id: automation.lights_on_kids_bedroom
-    service: automation.turn_off
-- id: '1579487741367'
-  alias: Turn off kids night mode
-  description: ''
-  trigger:
-  - event: sunrise
-    platform: sun
-  condition:
-  - condition: or
-    conditions:
-    - condition: zone
-      entity_id: person.nata
-      zone: zone.home
-    - condition: zone
-      entity_id: person.nick
-      zone: zone.home
-  action:
-  - scene: scene.kids_day_mode
-  - device_id: 51c6fc8f7e444df8bf04ed2dddbf3f59
-    domain: light
-    entity_id: light.kids_left
-    type: turn_off
-  - device_id: c2deee9d64be4b608f077e17360c211d
-    domain: light
-    entity_id: light.kids_right
-    type: turn_off
-  - entity_id: automation.lights_on_kids_bedroom
-    service: automation.turn_on
-- id: '1579489002756'
-  alias: Start vacuum when nobody home
-  description: ''
-  trigger:
-  - entity_id: binary_sensor.athome
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - data:
-      entity_id: vacuum.e200p8u2391901643866
-    entity_id: vacuum.e200p8u2391901643866
-    service: vacuum.turn_on
-- id: '1579489335494'
-  alias: Start vacuum at 8-10pm
-  description: ''
-  trigger:
-  - at: '20:10'
-    platform: time
-  condition: []
-  action:
-  - data:
-      entity_id: vacuum.e200p8u2391901643866
-    entity_id: vacuum.e200p8u2391901643866
-    service: vacuum.turn_on
-- id: '1579490194635'
-  alias: Turn on kitchen lights on return when its dark
-  description: ''
-  trigger:
-  - entity_id: person.nata
-    event: enter
-    platform: zone
-    zone: zone.home
-  - entity_id: person.nick
-    event: enter
-    platform: zone
-    zone: zone.home
-  condition:
-  - condition: and
-    conditions:
-    - after: sunset
-      condition: sun
-  action:
-  - data:
-      entity_id: light.kitchen_lights
-    entity_id: light.kitchen_lights
-    service: light.turn_on
-- id: '1579528159298'
-  alias: Start ecomode when nobody home
-  description: ''
-  trigger:
-  - entity_id: binary_sensor.athome
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - data:
-      entity_id: climate.kitchen
-      preset_mode: eco
-    entity_id: climate.kitchen_thermostat
-    service: climate.set_preset_mode
-- id: '1579541204621'
-  alias: Turn lights off when nobody home
-  description: ''
-  trigger:
-  - entity_id: binary_sensor.athome
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - service: script.turn_off_all_lights
-- id: '1579559395286'
-  alias: Stop ecomode when someone home
-  description: ''
-  trigger:
-  - entity_id: binary_sensor.athome
-    from: 'off'
-    platform: state
-    to: 'on'
-  condition: []
-  action:
-  - data:
-      entity_id: climate.kitchen
-      preset_mode: none
-    entity_id: climate.kitchen_thermostat
-    service: climate.set_preset_mode
-- id: '1579562123168'
-  alias: 'Nata back Home '
-  description: ''
-  trigger:
-  - entity_id: person.nata
-    event: enter
-    platform: zone
-    zone: zone.home
-  condition: []
-  action:
-  - data:
-      language: ru
-      message: Мама вернулась домой! Встречаем нашу мамочку!
-    entity_id: group.home_media
-    service: tts.google_say
-  - delay: 00:00:15
-  - entity_id: group.home_media
-    service: media_player.turn_off
-- id: '1579562908336'
-  alias: Nick back Home
-  description: ''
-  trigger:
-  - entity_id: person.nick
-    event: enter
-    platform: zone
-    zone: zone.home
-  condition: []
-  action:
-  - data:
-      language: ru
-      message: Папа вернулся домой! Встречаем нашего папочку!
-    entity_id: group.home_media
-    service: tts.google_say
-  - delay: 00:00:15
-  - entity_id: group.home_media
-    service: media_player.turn_off
-- id: '1579647844336'
-  alias: Nata leaves Work
-  description: ''
-  trigger:
-  - entity_id: person.nata
-    event: leave
-    platform: zone
-    zone: zone.nata_work
-  condition: []
-  action:
-  - data_template:
-      cache: false
-      language: ru
-      message: Наташа выехала с работы, приедет через {{states('sensor.nata_to_home')}}
-        минут
-    entity_id: media_player.living_room_speaker
-    service: tts.google_say
-  - delay: 00:00:10
-  - entity_id: media_player.living_room_speaker
-    service: media_player.turn_off
-- id: '1579971788274'
-  alias: LIGHT ON Corridor night
-  description: ''
-  trigger:
-  - device_id: 3bcc912ae2e347d3b1605d7a71e3042e
-    domain: binary_sensor
-    entity_id: binary_sensor.corridor_motion_sensor_motion
-    platform: device
-    type: motion
-  condition:
-  - after: '23:00:00'
-    before: '6:00:00'
-    condition: time
-  action:
-  - scene: scene.corridor_night
-- id: '1579971910791'
-  alias: LIGHT OFF Corridor
-  description: ''
-  trigger:
-  - device_id: 3bcc912ae2e347d3b1605d7a71e3042e
-    domain: binary_sensor
-    entity_id: binary_sensor.corridor_motion_sensor_motion
-    platform: device
-    type: no_motion
-  condition: []
-  action:
-  - data:
-      entity_id: light.corridor_lights
-    entity_id: light.corridor_lights
-    service: light.turn_off
-- id: '1580001180978'
-  alias: LIGHT ON Corridor day
-  description: ''
-  trigger:
-  - device_id: 3bcc912ae2e347d3b1605d7a71e3042e
-    domain: binary_sensor
-    entity_id: binary_sensor.corridor_motion_sensor_motion
-    platform: device
-    type: motion
-  condition:
-  - after: '6:00:00'
-    before: '23:00:00'
-    condition: time
-  action:
-  - scene: scene.corridor_day
-- id: '1580060215665'
-  alias: LIGHT ON Kitchen day
-  description: ''
-  trigger:
-  - device_id: 84994766ffa24856ba202da1b2c6fb55
-    domain: binary_sensor
-    entity_id: binary_sensor.kitchen_multi_motion
-    platform: device
-    type: motion
-  condition:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: binary_sensor.athome
-      state: 'on'
-  - condition: or
-    conditions:
-    - condition: and
-      conditions:
-      - after: sunset
-        after_offset: -00:30:00
-        condition: sun
-      - after: '6:00:00'
-        before: 00:00:00
-        condition: time
-    - condition: and
-      conditions:
-      - below: 30
-        condition: device
-        device_id: 84994766ffa24856ba202da1b2c6fb55
-        domain: sensor
-        entity_id: sensor.kitchen_multi_illuminance
-        type: is_illuminance
-      - after: '6:00:00'
-        before: 00:00:00
-        condition: time
-  action:
-  - data:
-      entity_id: light.kitchen_lights
-    entity_id: light.kitchen_lights
-    service: light.turn_on
-- id: '1580060366493'
-  alias: LIGHT ON kitchen night
-  description: ''
-  trigger:
-  - device_id: 84994766ffa24856ba202da1b2c6fb55
-    domain: binary_sensor
-    entity_id: binary_sensor.kitchen_multi_motion
-    platform: device
-    type: motion
-  condition:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: binary_sensor.athome
-      state: 'on'
-    - after: 00:00:00
-      before: '6:00:00'
-      condition: time
-  action:
-  - entity_id: light.66514121500291c7eb68
-    service: light.turn_on
-  - entity_id: light.66514121500291c7eb85
-    service: light.turn_on
-- id: '1580060460007'
-  alias: LIGHT OFF kitchen
-  description: ''
-  trigger:
-  - device_id: 84994766ffa24856ba202da1b2c6fb55
-    domain: binary_sensor
-    entity_id: binary_sensor.kitchen_multi_motion
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-    platform: device
-    type: no_motion
-  condition: []
-  action:
-  - data:
-      entity_id: light.kitchen_lights
-    entity_id: light.kitchen_lights
-    service: light.turn_off
-- id: '1580062006456'
-  alias: LIGHTS ON kids bedroom
-  description: ''
-  trigger:
-  - device_id: 6bf1ac9817054053af1b191975cfb007
-    domain: binary_sensor
-    entity_id: binary_sensor.kids_multy_motion
-    platform: device
-    type: motion
-  condition:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: binary_sensor.athome
-      state: 'on'
-  - condition: or
-    conditions:
-    - condition: and
-      conditions:
-      - after: sunset
-        after_offset: -00:30:00
-        condition: sun
-      - after: 07:00:00
-        before: '21:30:00'
-        condition: time
-    - condition: and
-      conditions:
-      - below: 5
-        condition: device
-        device_id: 6bf1ac9817054053af1b191975cfb007
-        domain: sensor
-        entity_id: sensor.kids_multy_illuminance
-        type: is_illuminance
-      - after: 07:00:00
-        before: '21:30:00'
-        condition: time
-  action:
-  - entity_id: light.kids_bedroom_lights
-    service: light.turn_on
-- id: '1580062145771'
-  alias: LIGHTS OFF kids bedroom
-  description: ''
-  trigger:
-  - device_id: 6bf1ac9817054053af1b191975cfb007
-    domain: binary_sensor
-    entity_id: binary_sensor.kids_multy_motion
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-    platform: device
-    type: no_motion
-  condition:
-  - condition: and
-    conditions:
-    - after: sunrise
-      condition: sun
-    - before: '21:30:00'
-      condition: time
-  action:
-  - data:
-      entity_id: light.kids_bedroom_lights
-    entity_id: light.kids_bedroom_lights
-    service: light.turn_off
+#- id: '1579487437411'
+#  alias: Turn on kids night mode
+#  description: ''
+#  trigger:
+#  - at: '21:35'
+#    platform: time
+#  condition:
+#  - condition: or
+#    conditions:
+#    - condition: zone
+#      entity_id: person.nata
+#      zone: zone.home
+#    - condition: zone
+#      entity_id: person.nick
+#      zone: zone.home
+#  action:
+#  - scene: scene.kids_night_mode
+#  - entity_id: automation.lights_on_kids_bedroom
+#    service: automation.turn_off
+#- id: '1579487741367'
+#  alias: Turn off kids night mode
+#  description: ''
+#  trigger:
+#  - event: sunrise
+#    platform: sun
+#  condition:
+#  - condition: or
+#    conditions:
+#    - condition: zone
+#      entity_id: person.nata
+#      zone: zone.home
+#    - condition: zone
+#      entity_id: person.nick
+#      zone: zone.home
+#  action:
+#  - scene: scene.kids_day_mode
+#  - device_id: 51c6fc8f7e444df8bf04ed2dddbf3f59
+#    domain: light
+#    entity_id: light.kids_left
+#    type: turn_off
+#  - device_id: c2deee9d64be4b608f077e17360c211d
+#    domain: light
+#    entity_id: light.kids_right
+#    type: turn_off
+#  - entity_id: automation.lights_on_kids_bedroom
+#    service: automation.turn_on
+#- id: '1579489002756'
+#  alias: Start vacuum when nobody home
+#  description: ''
+#  trigger:
+#  - entity_id: binary_sensor.athome
+#    from: 'on'
+#    platform: state
+#    to: 'off'
+#  condition: []
+#  action:
+#  - data:
+#      entity_id: vacuum.e200p8u2391901643866
+#    entity_id: vacuum.e200p8u2391901643866
+#    service: vacuum.turn_on
+#- id: '1579489335494'
+#  alias: Start vacuum at 8-10pm
+#  description: ''
+#  trigger:
+#  - at: '20:10'
+#    platform: time
+#  condition: []
+#  action:
+#  - data:
+#      entity_id: vacuum.e200p8u2391901643866
+#    entity_id: vacuum.e200p8u2391901643866
+#    service: vacuum.turn_on
+#- id: '1579490194635'
+#  alias: Turn on kitchen lights on return when its dark
+#  description: ''
+#  trigger:
+#  - entity_id: person.nata
+#    event: enter
+#    platform: zone
+#    zone: zone.home
+#  - entity_id: person.nick
+#    event: enter
+#    platform: zone
+#    zone: zone.home
+#  condition:
+#  - condition: and
+#    conditions:
+#    - after: sunset
+#      condition: sun
+#  action:
+#  - data:
+#      entity_id: light.kitchen_lights
+#    entity_id: light.kitchen_lights
+#    service: light.turn_on
+#- id: '1579528159298'
+#  alias: Start ecomode when nobody home
+#  description: ''
+#  trigger:
+#  - entity_id: binary_sensor.athome
+#    from: 'on'
+#    platform: state
+#    to: 'off'
+#  condition: []
+#  action:
+#  - data:
+#      entity_id: climate.kitchen
+#      preset_mode: eco
+#    entity_id: climate.kitchen_thermostat
+#    service: climate.set_preset_mode
+#- id: '1579541204621'
+#  alias: Turn lights off when nobody home
+#  description: ''
+#  trigger:
+#  - entity_id: binary_sensor.athome
+#    from: 'on'
+#    platform: state
+#    to: 'off'
+#  condition: []
+#  action:
+#  - service: script.turn_off_all_lights
+#- id: '1579559395286'
+#  alias: Stop ecomode when someone home
+#  description: ''
+#  trigger:
+#  - entity_id: binary_sensor.athome
+#    from: 'off'
+#    platform: state
+#    to: 'on'
+#  condition: []
+#  action:
+#  - data:
+#      entity_id: climate.kitchen
+#      preset_mode: none
+#    entity_id: climate.kitchen_thermostat
+#    service: climate.set_preset_mode
+#- id: '1579562123168'
+#  alias: 'Nata back Home '
+#  description: ''
+#  trigger:
+#  - entity_id: person.nata
+#    event: enter
+#    platform: zone
+#    zone: zone.home
+#  condition: []
+#  action:
+#  - data:
+#      language: ru
+#      message: Мама вернулась домой! Встречаем нашу мамочку!
+#    entity_id: group.home_media
+#    service: tts.google_say
+#  - delay: 00:00:15
+#  - entity_id: group.home_media
+#    service: media_player.turn_off
+#- id: '1579562908336'
+#  alias: Nick back Home
+#  description: ''
+#  trigger:
+#  - entity_id: person.nick
+#    event: enter
+#    platform: zone
+#    zone: zone.home
+#  condition: []
+#  action:
+#  - data:
+#      language: ru
+#      message: Папа вернулся домой! Встречаем нашего папочку!
+#    entity_id: group.home_media
+#    service: tts.google_say
+#  - delay: 00:00:15
+#  - entity_id: group.home_media
+#    service: media_player.turn_off
+#- id: '1579647844336'
+#  alias: Nata leaves Work
+#  description: ''
+#  trigger:
+#  - entity_id: person.nata
+#    event: leave
+#    platform: zone
+#    zone: zone.nata_work
+#  condition: []
+#  action:
+#  - data_template:
+#      cache: false
+#      language: ru
+#      message: Наташа выехала с работы, приедет через {{states('sensor.nata_to_home')}}
+#        минут
+#    entity_id: media_player.living_room_speaker
+#    service: tts.google_say
+#  - delay: 00:00:10
+#  - entity_id: media_player.living_room_speaker
+#    service: media_player.turn_off
+#- id: '1579971788274'
+#  alias: LIGHT ON Corridor night
+#  description: ''
+#  trigger:
+#  - device_id: 3bcc912ae2e347d3b1605d7a71e3042e
+#    domain: binary_sensor
+#    entity_id: binary_sensor.corridor_motion_sensor_motion
+#    platform: device
+#    type: motion
+#  condition:
+#  - after: '23:00:00'
+#    before: '6:00:00'
+#    condition: time
+#  action:
+#  - scene: scene.corridor_night
+#- id: '1579971910791'
+#  alias: LIGHT OFF Corridor
+#  description: ''
+#  trigger:
+#  - device_id: 3bcc912ae2e347d3b1605d7a71e3042e
+#    domain: binary_sensor
+#    entity_id: binary_sensor.corridor_motion_sensor_motion
+#    platform: device
+#    type: no_motion
+#  condition: []
+#  action:
+#  - data:
+#      entity_id: light.corridor_lights
+#    entity_id: light.corridor_lights
+#    service: light.turn_off
+#- id: '1580001180978'
+#  alias: LIGHT ON Corridor day
+#  description: ''
+#  trigger:
+#  - device_id: 3bcc912ae2e347d3b1605d7a71e3042e
+#    domain: binary_sensor
+#    entity_id: binary_sensor.corridor_motion_sensor_motion
+#    platform: device
+#    type: motion
+#  condition:
+#  - after: '6:00:00'
+#    before: '23:00:00'
+#    condition: time
+#  action:
+#  - scene: scene.corridor_day
+#- id: '1580060215665'
+#  alias: LIGHT ON Kitchen day
+#  description: ''
+#  trigger:
+#  - device_id: 84994766ffa24856ba202da1b2c6fb55
+#    domain: binary_sensor
+#    entity_id: binary_sensor.kitchen_multi_motion
+#    platform: device
+#    type: motion
+#  condition:
+#  - condition: and
+#    conditions:
+#    - condition: state
+#      entity_id: binary_sensor.athome
+#      state: 'on'
+#  - condition: or
+#    conditions:
+#    - condition: and
+#      conditions:
+#      - after: sunset
+#        after_offset: -00:30:00
+#        condition: sun
+#      - after: '6:00:00'
+#        before: 00:00:00
+#        condition: time
+#    - condition: and
+#      conditions:
+#      - below: 30
+#        condition: device
+#        device_id: 84994766ffa24856ba202da1b2c6fb55
+#        domain: sensor
+#        entity_id: sensor.kitchen_multi_illuminance
+#        type: is_illuminance
+#      - after: '6:00:00'
+#        before: 00:00:00
+#        condition: time
+#  action:
+#  - data:
+#      entity_id: light.kitchen_lights
+#    entity_id: light.kitchen_lights
+#    service: light.turn_on
+#- id: '1580060366493'
+#  alias: LIGHT ON kitchen night
+#  description: ''
+#  trigger:
+#  - device_id: 84994766ffa24856ba202da1b2c6fb55
+#    domain: binary_sensor
+#    entity_id: binary_sensor.kitchen_multi_motion
+#    platform: device
+#    type: motion
+#  condition:
+#  - condition: and
+#    conditions:
+#    - condition: state
+#      entity_id: binary_sensor.athome
+#      state: 'on'
+#    - after: 00:00:00
+#      before: '6:00:00'
+#      condition: time
+#  action:
+#  - entity_id: light.66514121500291c7eb68
+#    service: light.turn_on
+#  - entity_id: light.66514121500291c7eb85
+#    service: light.turn_on
+#- id: '1580060460007'
+#  alias: LIGHT OFF kitchen
+#  description: ''
+#  trigger:
+#  - device_id: 84994766ffa24856ba202da1b2c6fb55
+#    domain: binary_sensor
+#    entity_id: binary_sensor.kitchen_multi_motion
+#    for:
+#      hours: 0
+#      minutes: 1
+#      seconds: 0
+#    platform: device
+#    type: no_motion
+#  condition: []
+#  action:
+#  - data:
+#      entity_id: light.kitchen_lights
+#    entity_id: light.kitchen_lights
+#    service: light.turn_off
+#- id: '1580062006456'
+#  alias: LIGHTS ON kids bedroom
+#  description: ''
+#  trigger:
+#  - device_id: 6bf1ac9817054053af1b191975cfb007
+#    domain: binary_sensor
+#    entity_id: binary_sensor.kids_multy_motion
+#    platform: device
+#    type: motion
+#  condition:
+#  - condition: and
+#    conditions:
+#    - condition: state
+#      entity_id: binary_sensor.athome
+#      state: 'on'
+#  - condition: or
+#    conditions:
+#    - condition: and
+#      conditions:
+#      - after: sunset
+#        after_offset: -00:30:00
+#        condition: sun
+#      - after: 07:00:00
+#        before: '21:30:00'
+#        condition: time
+#    - condition: and
+#      conditions:
+#      - below: 5
+#        condition: device
+#        device_id: 6bf1ac9817054053af1b191975cfb007
+#        domain: sensor
+#        entity_id: sensor.kids_multy_illuminance
+#        type: is_illuminance
+#      - after: 07:00:00
+#        before: '21:30:00'
+#        condition: time
+#  action:
+#  - entity_id: light.kids_bedroom_lights
+#    service: light.turn_on
+#- id: '1580062145771'
+#  alias: LIGHTS OFF kids bedroom
+#  description: ''
+#  trigger:
+#  - device_id: 6bf1ac9817054053af1b191975cfb007
+#    domain: binary_sensor
+#    entity_id: binary_sensor.kids_multy_motion
+#    for:
+#      hours: 0
+#      minutes: 1
+#      seconds: 0
+#    platform: device
+#    type: no_motion
+#  condition:
+#  - condition: and
+#    conditions:
+#    - after: sunrise
+#      condition: sun
+#    - before: '21:30:00'
+#      condition: time
+#  action:
+#  - data:
+#      entity_id: light.kids_bedroom_lights
+#    entity_id: light.kids_bedroom_lights
+#    service: light.turn_off

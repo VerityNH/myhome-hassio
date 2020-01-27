@@ -1,0 +1,11 @@
+initial_state: 'on'
+alias: Turn lights off when nobody home
+description: ''
+trigger:
+  - entity_id: binary_sensor.athome
+    from: 'on'
+    platform: state
+    to: 'off'
+condition: []
+action:
+  - service: script.turn_off_all_lights

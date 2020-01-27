@@ -1,0 +1,41 @@
+initial_state: 'on'
+alias: LIGHT ON Kitchen day
+description: ''
+trigger:
+  - device_id: 84994766ffa24856ba202da1b2c6fb55
+    domain: binary_sensor
+    entity_id: binary_sensor.kitchen_multi_motion
+    platform: device
+    type: motion
+condition:
+  - condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.athome
+        state: 'on'
+  - condition: or
+    conditions:
+      - condition: and
+        conditions:
+          - after: sunset
+            after_offset: -00:30:00
+            condition: sun
+          - after: '6:00:00'
+            before: 00:00:00
+            condition: time
+      - condition: and
+        conditions:
+          - below: 30
+            condition: device
+            device_id: 84994766ffa24856ba202da1b2c6fb55
+            domain: sensor
+            entity_id: sensor.kitchen_multi_illuminance
+            type: is_illuminance
+          - after: '6:00:00'
+            before: 00:00:00
+            condition: time
+action:
+  - data:
+      entity_id: light.kitchen_lights
+    entity_id: light.kitchen_lights
+    service: light.turn_on
