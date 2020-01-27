@@ -3,12 +3,12 @@
 *
 
 # You can whitelist files/folders with !, these will not be ignored.
-!*.yaml
-!.gitignore
-!*.md
-!custom_components
-!www
-!lovelace
+#!*.yaml
+#!.gitignore
+#!*.md
+#!custom_components
+#!www
+#!lovelace
 
 
 # Ignore folders.
@@ -16,6 +16,8 @@
 .cloud
 .google.token
 .idea
+node-red
+deps
 
 # Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
 ip_bans.yaml
