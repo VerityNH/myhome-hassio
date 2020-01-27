@@ -339,17 +339,19 @@
       - after: sunset
         after_offset: -00:30:00
         condition: sun
-      - before: '21:30:00'
+      - after: 07:00:00
+        before: '21:30:00'
         condition: time
     - condition: and
       conditions:
-      - below: 30
+      - below: 5
         condition: device
         device_id: 6bf1ac9817054053af1b191975cfb007
         domain: sensor
         entity_id: sensor.kids_multy_illuminance
         type: is_illuminance
-      - before: '21:30:00'
+      - after: 07:00:00
+        before: '21:30:00'
         condition: time
   action:
   - entity_id: light.kids_bedroom_lights
