@@ -4,10 +4,10 @@ description: ''
 trigger:
   - platform: sun
     event: sunset
-    before: '-00:30:00'
+    offset: '-00:30:00'
   - platform: sun
     event: sunrise
-    before: '01:00:00'
+    offset: '01:00:00'
   - platform: numeric_state
     entity_id: sensor.kids_multy_illuminance
     above: 5
