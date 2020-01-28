@@ -1,0 +1,19 @@
+initial_state: 'on'
+alias: Turn off kids night mode
+description: ''
+trigger:
+  - platform: state
+    entity_id: input_boolean.kids_nightmode
+    to: 'off'
+condition:
+  - condition: state
+    entity_id: binary_sensor.athome
+    state: 'on'
+action:
+  - scene: scene.kids_day_mode
+  - service: light.turn_off
+    entity_id: light.kids_bedroom_lights
+    data:
+      entity_id: light.kids_bedroom_lights
+  - entity_id: automation.lights_on_kids_bedroom
+    service: automation.turn_on
