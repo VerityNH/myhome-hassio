@@ -13,27 +13,12 @@ condition:
       - condition: state
         entity_id: binary_sensor.athome
         state: 'on'
-  - condition: or
-    conditions:
-      - condition: and
-        conditions:
-          - after: sunset
-            after_offset: -00:30:00
-            condition: sun
-          - after: '6:00:00'
-            before: 00:00:00
-            condition: time
-      - condition: and
-        conditions:
-          - below: 30
-            condition: device
-            device_id: 84994766ffa24856ba202da1b2c6fb55
-            domain: sensor
-            entity_id: sensor.kitchen_multi_illuminance
-            type: is_illuminance
-          - after: '6:00:00'
-            before: 00:00:00
-            condition: time
+      - condition: state
+        entity_id: input_boolean.kitchen_nightmode
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.kitchen_lights_auto
+        state: 'on'
 action:
   - data:
       entity_id: light.kitchen_lights
