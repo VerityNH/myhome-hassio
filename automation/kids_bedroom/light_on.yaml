@@ -13,27 +13,12 @@ condition:
       - condition: state
         entity_id: binary_sensor.athome
         state: 'on'
-  - condition: or
-    conditions:
-      - condition: and
-        conditions:
-          - after: sunset
-            after_offset: -00:30:00
-            condition: sun
-          - after: 07:00:00
-            before: '21:30:00'
-            condition: time
-      - condition: and
-        conditions:
-          - below: 5
-            condition: device
-            device_id: 6bf1ac9817054053af1b191975cfb007
-            domain: sensor
-            entity_id: sensor.kids_multy_illuminance
-            type: is_illuminance
-          - after: 07:00:00
-            before: '21:30:00'
-            condition: time
+      - condition: state
+        entity_id: input_boolean.kids_nightmode
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.kids_lights_auto
+        state: 'on'
 action:
   - entity_id: light.kids_bedroom_lights
     service: light.turn_on

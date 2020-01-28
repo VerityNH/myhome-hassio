@@ -12,12 +12,9 @@ trigger:
     platform: device
     type: no_motion
 condition:
-  - condition: and
-    conditions:
-      - after: sunrise
-        condition: sun
-      - before: '21:30:00'
-        condition: time
+  - condition: state
+    entity_id: input_boolean.kids_nightmode
+    state: 'off'
 action:
   - data:
       entity_id: light.kids_bedroom_lights

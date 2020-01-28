@@ -1,0 +1,22 @@
+initial_state: 'on'
+alias: Kids light auto turn off
+description: ''
+trigger:
+  - platform: sun
+    event: sunrise
+    offset: '01:00:00'
+  - platform: numeric_state
+    entity_id: sensor.kids_multy_illuminance
+    above: 5
+    for:
+      hours: 0
+      minutes: 4
+      seconds: 0
+condition:
+  - condition: state
+    entity_id: light.kids_bedroom_lights
+    state: 'off'
+action:
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.kids_lights_auto
