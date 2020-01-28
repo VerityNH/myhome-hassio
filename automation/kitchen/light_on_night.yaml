@@ -13,9 +13,12 @@ condition:
       - condition: state
         entity_id: binary_sensor.athome
         state: 'on'
-      - after: 00:00:00
-        before: '6:00:00'
-        condition: time
+      - condition: state
+        entity_id: input_boolean.kitchen_nightmode
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.kitchen_lights_auto
+        state: 'on'
 action:
   - entity_id: light.66514121500291c7eb68
     service: light.turn_on
