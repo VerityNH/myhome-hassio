@@ -75,8 +75,13 @@ cards:
           propagate: true
 
         - entities:
-            - camera.garage_cam
             - climate.kitchen_thermostat
+
+        - entities:
+            - camera.garage_cam
+          states:
+            - state: 'idle'
+              class: 'camera-idle'
 
         - entities:
             - sensor.kids_multy_illuminance
