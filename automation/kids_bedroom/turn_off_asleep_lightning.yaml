@@ -15,5 +15,5 @@ action:
     entity_id: light.kids_bedroom_lights
     data:
       entity_id: light.kids_bedroom_lights
-  - entity_id: automation.lights_on_kids_bedroom
-    service: automation.turn_on
+#  - entity_id: automation.lights_on_kids_bedroom
+#    service: automation.turn_on
