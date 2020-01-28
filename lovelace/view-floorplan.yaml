@@ -20,7 +20,7 @@ cards:
           states:
             - state: 'on'
               class: light-on
-              style_template: '--fill-color: rgb(${entity.attributes.rgb_color})'
+              style_template: '--fill-color: rgb(${entity.attributes.rgb_color});'
             - state: 'off'
               class: light-off
 

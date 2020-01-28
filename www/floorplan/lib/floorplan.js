@@ -1292,7 +1292,7 @@
         // Add custom Styling based by style_template
         if (stateConfig.style_template) {
           let targetStyle = this.evaluate(stateConfig.style_template, entityId, svgElement)
-          $(svgElement).attr('style', targetStyle)
+          $(svgElement).attr('style', $(svgElement).attr('style') + targetStyle)
         }
       }
       else {
