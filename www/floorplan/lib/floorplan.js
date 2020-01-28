@@ -1288,6 +1288,12 @@
             }
           }
         }
+
+        // Add custom Styling based by style_template
+        if (stateConfig.style_template) {
+          let targetStyle = this.evaluate(stateConfig.style_template, entityId, svgElement)
+          $(svgElement).attr('style', targetStyle)
+        }
       }
       else {
         if (svgElement.classList) {
@@ -1305,12 +1311,6 @@
 
       // Add the target classes to the entity
       this.addClasses(entityId, svgElement, targetClasses, ruleInfo.rule.propagate);
-
-      // Add custom Styling based by style_template
-      if (stateConfig.style_template) {
-        let targetStyle = this.evaluate(stateConfig.style_template, entityId, svgElement)
-        $(svgElement).attr('style', targetStyle)
-      }
     }
 
     handleUpdateElementCss(svgElementInfo, ruleInfo) {
