@@ -86,6 +86,8 @@ cards:
         - entities:
             - sensor.kids_multy_illuminance
             - sensor.kitchen_multi_illuminance
+            - sensor.master_multi_illuminance
+            - sensor.livingroom_multi_illuminance
           text_template: '${entity.state ? entity.state : "unknown"} %'
           class_template: '
                   var light = parseFloat(entity.state.replace("°", ""));
@@ -106,6 +108,8 @@ cards:
             - binary_sensor.kitchen_multi_motion
             - binary_sensor.kids_multy_motion
             - vacuum.e200p8u2391901643866
+            - binary_sensor.master_multi_motion
+            - binary_sensor.livingroom_multi_motion
           states:
             - state: 'off'
               class: 'door-closed'
@@ -118,6 +122,8 @@ cards:
             - sensor.corridor_motion_sensor_temperature
             - sensor.nest_temperature
             - sensor.kids_multy_temperature
+            - sensor.master_multi_temperature
+            - sensor.livingroom_multi_temperature
           type: state-label
           text_template: '${entity.state ? Math.round(entity.state) : "unknown"} C'
           # An example of rounding up a number, i.e. a temperature of 90.1 becomes 91
