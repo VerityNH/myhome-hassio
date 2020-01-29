@@ -1,89 +1,115 @@
-from tuyaha.devices.base import TuyaDevice
+"""Support for the Tuya lights."""
+import logging
+
+from homeassistant.components.light import (
+    ATTR_BRIGHTNESS,
+    ATTR_COLOR_TEMP,
+    ATTR_HS_COLOR,
+    ENTITY_ID_FORMAT,
+    SUPPORT_BRIGHTNESS,
+    SUPPORT_COLOR,
+    SUPPORT_COLOR_TEMP,
+    Light,
+)
+from homeassistant.util import color as colorutil
+
+from . import DATA_TUYA, TuyaDevice, DOMAIN
+
+_LOGGER = logging.getLogger(__name__)
+
+def setup_platform(hass, config, add_entities, discovery_info=None):
+    """Set up Tuya light platform."""
+    if discovery_info is None:
+        return
+    tuya = hass.data[DATA_TUYA]
+    dev_ids = discovery_info.get("dev_ids")
+    devices = []
+    for dev_id in dev_ids:
+        device = tuya.get_device_by_id(dev_id)
+        if device is None:
+            continue
+        devices.append(TuyaLight(device))
+    add_entities(devices)
 
 
-class TuyaLight(TuyaDevice):
+class TuyaLight(TuyaDevice, Light):
+    """Tuya light device."""
 
-    def state(self):
-        state = self.data.get('state')
-        if state == 'true':
-            return True
-        else:
-            return False
+    def __init__(self, tuya):
+        """Init Tuya light device."""
+        super().__init__(tuya)
+        self.entity_id = ENTITY_ID_FORMAT.format(tuya.object_id())
 
+    @property
     def brightness(self):
-        work_mode = self.data.get('color_mode')
-        if work_mode == 'colour' and 'color' in self.data:
-            brightness = int(self.data.get('color').get('brightness') * 255 / 100)
-        else:
-            brightness = self.data.get('brightness')
+        """Return the brightness of the light."""
+        if self.tuya.brightness() is None:
+            return None
+        brightness = self.tuya.brightness()
         return brightness
 
-    def _set_brightness(self, brightness):
-        work_mode = self.data.get('color_mode')
-        if work_mode == 'colour' and 'color' in self.data:
-            self.data['color']['brightness'] = brightness
-        else:
-            self.data['brightness'] = brightness
-
-    def support_color(self):
-        # Override color support
-        return True
-
-    def support_color_temp(self):
-        if self.data.get('color_temp') is None:
-            return False
-        else:
-            return True
-
+    @property
     def hs_color(self):
-        # Override color support
-        #if self.data.get('color') is None:
-        #    return None
-        #else:
-            work_mode = self.data.get('color_mode')
-            if work_mode == 'colour' and 'color' in self.data:
-                color = self.data.get('color')
-                return color.get('hue'), color.get('saturation')
-            else:
-                return 0.0, 0.0
+        """Return the hs_color of the light."""
+        if "entity_data" in self.hass.data[DOMAIN] and self.tuya.object_id() in self.hass.data[DOMAIN]["entity_data"]:
+          return self.hass.data[DOMAIN]["entity_data"][self.tuya.object_id()]["color"]
+        else:
+          return tuple(map(int, self.tuya.hs_color()))
 
+    @property
     def color_temp(self):
-        if self.data.get('color_temp') is None:
+        """Return the color_temp of the light."""
+        color_temp = int(self.tuya.color_temp())
+        if color_temp is None:
             return None
-        else:
-            return self.data.get('color_temp')
+        return colorutil.color_temperature_kelvin_to_mired(color_temp)
 
-    def min_color_temp(self):
-        return 10000
+    @property
+    def is_on(self):
+        """Return true if light is on."""
+        return self.tuya.state()
 
-    def max_color_temp(self):
-        return 1000
+    @property
+    def min_mireds(self):
+        """Return color temperature min mireds."""
+        return colorutil.color_temperature_kelvin_to_mired(self.tuya.min_color_temp())
 
-    def turn_on(self):
-        self.api.device_control(self.obj_id, 'turnOnOff', {'value': '1'})
+    @property
+    def max_mireds(self):
+        """Return color temperature max mireds."""
+        return colorutil.color_temperature_kelvin_to_mired(self.tuya.max_color_temp())
 
-    def turn_off(self):
-        self.api.device_control(self.obj_id, 'turnOnOff', {'value': '0'})
+    def turn_on(self, **kwargs):
+        """Turn on or control the light."""
+        if (
+            ATTR_BRIGHTNESS not in kwargs
+            and ATTR_HS_COLOR not in kwargs
+            and ATTR_COLOR_TEMP not in kwargs
+        ):
+            self.tuya.turn_on()
+        if ATTR_BRIGHTNESS in kwargs:
+            self.tuya.set_brightness(kwargs[ATTR_BRIGHTNESS])
+        if ATTR_HS_COLOR in kwargs:
+            self.tuya.set_color(kwargs[ATTR_HS_COLOR])
+            if not "entity_data" in self.hass.data[DOMAIN]:
+              self.hass.data[DOMAIN] = {"entity_data": {}}
+            self.hass.data[DOMAIN]["entity_data"][self.tuya.object_id()] = {"color": kwargs[ATTR_HS_COLOR]}
+        if ATTR_COLOR_TEMP in kwargs:
+            color_temp = colorutil.color_temperature_mired_to_kelvin(
+                kwargs[ATTR_COLOR_TEMP]
+            )
+            self.tuya.set_color_temp(color_temp)
 
-    def set_brightness(self, brightness):
-        """Set the brightness(0-255) of light."""
-        value = int(brightness * 100 / 255)
-        self.api.device_control(self.obj_id, 'brightnessSet', {'value': value})
+    def turn_off(self, **kwargs):
+        """Instruct the light to turn off."""
+        self.tuya.turn_off()
 
-    def set_color(self, color):
-        """Set the color of light."""
-        hsv_color = {}
-        hsv_color['hue'] = color[0]
-        hsv_color['saturation'] = color[1]/100
-        if (len(color) < 3):
-            hsv_color['brightness'] = int(self.brightness()) / 255.0
-        else:
-            hsv_color['brightness'] = color[2]
-        # color white
-        if hsv_color['saturation'] == 0:
-            hsv_color['hue'] = 0
-        self.api.device_control(self.obj_id, 'colorSet', {'color': hsv_color})
-
-    def set_color_temp(self, color_temp):
-        self.api.device_control(self.obj_id, 'colorTemperatureSet', 
-            {'value': color_temp})
+    @property
+    def supported_features(self):
+        """Flag supported features."""
+        supports = SUPPORT_BRIGHTNESS
+        if self.tuya.support_color():
+            supports = supports | SUPPORT_COLOR
+        if self.tuya.support_color_temp():
+            supports = supports | SUPPORT_COLOR_TEMP
+        return supports
