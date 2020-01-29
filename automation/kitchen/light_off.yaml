@@ -7,7 +7,7 @@ trigger:
     entity_id: binary_sensor.kitchen_multi_motion
     for:
       hours: 0
-      minutes: 1
+      minutes: 5
       seconds: 0
     platform: device
     type: no_motion

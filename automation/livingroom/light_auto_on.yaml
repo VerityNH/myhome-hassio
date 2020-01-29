@@ -7,7 +7,7 @@ trigger:
     offset: '-00:30:00'
   - platform: numeric_state
     entity_id: sensor.livingroom_multi_illuminance
-    below: 20
+    below: 5
     for:
       hours: 0
       minutes: 4
