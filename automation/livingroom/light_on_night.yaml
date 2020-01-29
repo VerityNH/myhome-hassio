@@ -20,5 +20,4 @@ condition:
         entity_id: input_boolean.living_lights_auto
         state: 'on'
 action:
-  - entity_id: light.livingroom_left_lamp
-    service: light.turn_on
+  - scene: scene.livingroom_night_mode
