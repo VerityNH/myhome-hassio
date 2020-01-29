@@ -54,3 +54,25 @@
       friendly_name: Corridor Lights
       state: 'on'
       white_value: 254
+- id: '1580325745298'
+  name: Livingroom night mode
+  entities:
+    light.livingroom_left_lamp:
+      brightness: 86
+      color_temp: 370
+      friendly_name: Livingroom left lamp
+      hs_color:
+      - 240
+      - 100
+      max_mireds: 500
+      min_mireds: 153
+      rgb_color:
+      - 0
+      - 0
+      - 255
+      state: 'on'
+      supported_features: 187
+      white_value: 0
+      xy_color:
+      - 0.136
+      - 0.04
