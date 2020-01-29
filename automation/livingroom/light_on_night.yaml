@@ -1,0 +1,24 @@
+initial_state: 'on'
+alias: LIGHT ON Livingroom night
+description: ''
+trigger:
+  - device_id: 46e15b23d3894d08ab32b572d3ba1517
+    domain: binary_sensor
+    entity_id: binary_sensor.livingroom_multi_motion
+    platform: device
+    type: motion
+condition:
+  - condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.athome
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.living_nightmode
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.living_lights_auto
+        state: 'on'
+action:
+  - entity_id: light.livingroom_left_lamp
+    service: light.turn_on
