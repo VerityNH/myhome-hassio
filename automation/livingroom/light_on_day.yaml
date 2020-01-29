@@ -20,7 +20,4 @@ condition:
         entity_id: input_boolean.living_lights_auto
         state: 'on'
 action:
-  - data:
-      entity_id: light.living_room_lights
-    entity_id: light.living_room_lights
-    service: light.turn_on
+  - scene: scene.livingroom_day_mode
