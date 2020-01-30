@@ -52,9 +52,6 @@ cards:
   - type: media-control
     entity: media_player.kitchen_display
 
-  - type: media-control
-    entity: media_player.spotify
-
   - type: 'custom:spotify-card'
     client_id: !secret spotify_client_id
     limit: 10
