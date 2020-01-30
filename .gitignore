@@ -15,6 +15,7 @@
 .cloud
 .google.token
 .idea
+.spotify-token-cache
 node-red
 deps
 .HA_VERSION
