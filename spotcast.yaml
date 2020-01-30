@@ -1,0 +1,6 @@
+username: !secret spotify_username_default
+password: !secret spotify_password_default
+accounts:
+  nick:
+    username: !secret spotify_nick_username
+    password: !secret spotify_nick_password
