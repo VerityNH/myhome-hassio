@@ -55,7 +55,7 @@ cards:
   - type: 'custom:spotify-card'
     client_id: !secret spotify_client_id
     limit: 10
-    height: 150
+    height: 250
 
   - type: entities
     entities:
@@ -71,21 +71,20 @@ cards:
     entities:
       - vacuum.e200p8u2391901643866
     title: Vacuum
-  - type: entities
-    entities:
-      - automation.light_on_corridor_day
-      - automation.light_on_corridor_night
-      - automation.light_off_corridor
-      - type: divider
-      - automation.turn_on_kitchen_lights_on_return_when_its_dark
-      - automation.start_ecomode_when_nobody_home
-      - automation.turn_lights_off_when_nobody_home
-      - automation.stop_ecomode_when_someone_home
-      - automation.turn_on_kids_night_mode
-      - automation.turn_off_kids_night_mode
-      - automation.start_vacuum_when_nobody_home
-      - automation.start_vacuum_at_8_10pm
-    title: Automation
+#  - type: entities
+#    entities:
+#      - automation.light_on_corridor_day
+#      - automation.light_on_corridor_night
+#      - automation.light_off_corridor
+#      - type: divider
+#      - automation.start_ecomode_when_nobody_home
+#      - automation.turn_lights_off_when_nobody_home
+#      - automation.stop_ecomode_when_someone_home
+#      - automation.turn_on_kids_night_mode
+#      - automation.turn_off_kids_night_mode
+#      - automation.start_vacuum_when_nobody_home
+#      - automation.start_vacuum_at_8_10pm
+#    title: Automation
   - type: weather-forecast
     entity: weather.openweathermap
   - type: entities
