@@ -51,6 +51,12 @@ cards:
     entity: media_player.living_room_speaker
   - type: media-control
     entity: media_player.kitchen_display
+
+  - type: 'custom:spotify-card'
+    client_id: !secret spotify_client_id
+    limit: 10
+    height: 150
+
   - type: entities
     entities:
       - cover.garage_door
@@ -71,15 +77,12 @@ cards:
       - automation.light_on_corridor_night
       - automation.light_off_corridor
       - type: divider
-      - automation.nata_leaves_work
       - automation.turn_on_kitchen_lights_on_return_when_its_dark
       - automation.start_ecomode_when_nobody_home
       - automation.turn_lights_off_when_nobody_home
       - automation.stop_ecomode_when_someone_home
       - automation.turn_on_kids_night_mode
       - automation.turn_off_kids_night_mode
-      - automation.nata_back_home
-      - automation.nick_back_home
       - automation.start_vacuum_when_nobody_home
       - automation.start_vacuum_at_8_10pm
     title: Automation
