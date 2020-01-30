@@ -7,7 +7,7 @@ trigger:
     offset: '01:00:00'
   - platform: numeric_state
     entity_id: sensor.kids_multy_illuminance
-    above: 5
+    above: 7
     for:
       hours: 0
       minutes: 4
