@@ -65,4 +65,4 @@ mqtt: !include mqtt.yaml
 input_boolean: !include_dir_named input_boolean/
 
 media_player: !include spotify.yaml
-spotcast: !include spotcast.yaml
+#spotcast: !include spotcast.yaml
