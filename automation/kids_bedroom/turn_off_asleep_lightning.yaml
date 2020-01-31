@@ -1,5 +1,5 @@
 initial_state: 'on'
-alias: Turn off kids night mode
+alias: Turn off kids asleep lightning
 description: ''
 trigger:
   - platform: state
