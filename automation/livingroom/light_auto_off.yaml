@@ -1,5 +1,5 @@
 initial_state: 'on'
-alias: Livingroom auto turn off
+alias: Livingroom light auto turn off
 description: ''
 trigger:
   - platform: sun
