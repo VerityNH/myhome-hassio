@@ -1,0 +1,35 @@
+title: Kids bedroom
+id: kidsbedroom
+path: kidsbedroom
+icon: mdi:folder-home-outline
+
+badges:
+  - sensor.kids_multy_illuminance
+  - sensor.kids_multy_relative_humidity
+  - sensor.kids_multy_temperature
+
+cards:
+  - type: light
+    entity: light.kids_bedroom_lights
+
+  - type: media-control
+    entity: media_player.kids_bedroom_speaker
+
+  - type: thermostat
+    entity: climate.kitchen_thermostat
+
+  - type: entities
+    entities:
+      - input_boolean.kids_lights_auto
+      - input_boolean.kids_nightmode
+
+  - type: entities
+    entities:
+      - automation.kids_light_auto_turn_off
+      - automation.kids_light_auto_turn_on
+      - automation.kids_night_mode_turn_off
+      - automation.kids_night_mode_turn_on
+      - automation.lights_off_kids_bedroom
+      - automation.lights_on_kids_bedroom
+      - automation.turn_on_kids_asleep_lightning
+      - automation.turn_off_kids_asleep_lightning

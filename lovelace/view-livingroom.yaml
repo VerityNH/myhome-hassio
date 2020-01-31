@@ -1,0 +1,39 @@
+title: Livingroom
+id: livingroom
+path: livingroom
+icon: mdi:folder-home-outline
+
+badges:
+  - sensor.livingroom_multi_illuminance
+  - sensor.livingroom_multi_relative_humidity
+  - sensor.livingroom_multi_temperature
+
+cards:
+  - type: light
+    entity: light.living_room_lights
+
+  - type: media-control
+    entity: media_player.living_room_speaker
+
+  - type: entities
+    entities:
+      - vacuum.e200p8u2391901643866
+    title: Vacuum
+
+  - type: thermostat
+    entity: climate.kitchen_thermostat
+
+  - type: entities
+    entities:
+      - input_boolean.living_lights_auto
+      - input_boolean.living_nightmode
+
+  - type: entities
+    entities:
+      - automation.livingroom_light_auto_turn_off
+      - automation.livingroom_light_auto_turn_on
+      - automation.livingroom_night_mode_turn_off
+      - automation.living_night_mode_turn_on
+      - automation.light_off_livingroom
+      - automation.light_on_livingroom_day
+      - automation.light_on_livingroom_night

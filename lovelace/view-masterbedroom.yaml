@@ -1,0 +1,34 @@
+title: Master bedroom
+id: masterbedroom
+path: masterbedroom
+icon: mdi:folder-home-outline
+
+badges:
+  - sensor.master_multi_illuminance
+  - sensor.master_multi_relative_humidity
+  - sensor.master_multi_temperature
+
+cards:
+  - type: light
+    entity: light.master_bedroom_lights
+
+  - type: media-control
+    entity: media_player.master_bedroom_speaker
+
+  - type: thermostat
+    entity: climate.kitchen_thermostat
+
+  - type: entities
+    entities:
+      - input_boolean.master_lights_auto
+      - input_boolean.master_nightmode
+
+  - type: entities
+    entities:
+      - automation.master_bedroom_light_auto_turn_on
+      - automation.master_bedroom_light_auto_turn_on
+      - automation.master_bedroom_night_mode_turn_off
+      - automation.master_bedroom_night_mode_turn_on
+      - automation.light_off_master_bedroom
+      - automation.light_on_master_bedroom_day
+      - automation.light_on_master_bedroom_night
