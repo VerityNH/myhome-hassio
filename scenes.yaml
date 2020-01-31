@@ -58,7 +58,7 @@
   name: Livingroom night mode
   entities:
     light.livingroom_left_lamp:
-      brightness: 86
+      brightness: 25
       color_temp: 370
       friendly_name: Livingroom left lamp
       hs_color:
