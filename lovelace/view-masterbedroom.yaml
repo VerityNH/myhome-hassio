@@ -25,7 +25,7 @@ cards:
 
   - type: entities
     entities:
-      - automation.master_bedroom_light_auto_turn_off
+      - automation.master_bedroom_auto_turn_off
       - automation.master_bedroom_light_auto_turn_on
       - automation.master_bedroom_night_mode_turn_off
       - automation.master_bedroom_night_mode_turn_on
