@@ -1,0 +1,31 @@
+title: Kitchen
+id: kitchen
+path: kitchen
+icon: mdi:folder-home-outline
+
+badges:
+  - sensor.kitchen_multi_illuminance
+  - sensor.kitchen_multi_relative_humidity
+  - sensor.kitchen_multi_temperature
+
+cards:
+  - type: light
+    entity: light.kitchen_lights
+  - type: media-control
+    entity: media_player.kitchen_display
+  - type: thermostat
+    entity: climate.kitchen_thermostat
+  - type: entities
+    entities:
+      - input_boolean.kitchen_lights_auto
+      - input_boolean.kitchen_nightmode
+
+  - type: entities
+    entities:
+      - automation.kitchen_light_auto_turn_off
+      - automation.kitchen_light_auto_turn_on
+      - automation.kitchen_night_mode_turn_off
+      - automation.kitchen_night_mode_turn_on
+      - automation.light_off_kitchen
+      - automation.light_on_kitchen_day
+      - automation.light_on_kitchen_night

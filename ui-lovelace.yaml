@@ -2,5 +2,9 @@ title: Our Home
 resources: !include lovelace/resources.yaml
 cch: !include lovelace/cch.yaml
 views:
-  - !include lovelace/view-overview.yaml
   - !include lovelace/view-floorplan.yaml
+  - !include lovelace/view-overview.yaml
+  - !include lovelace/view-kitchen.yaml
+  - !include lovelace/view-livingroom.yaml
+  - !include lovelace/view-kidsbedroom.yaml
+  - !include lovelace/view-masterbedroom.yaml
