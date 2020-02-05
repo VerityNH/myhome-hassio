@@ -1,5 +1,5 @@
 initial_state: 'on'
-alias: Master bedroom light auto turn on
+alias: Kids light auto turn on
 description: ''
 trigger:
   - platform: sun
@@ -10,19 +10,18 @@ trigger:
     minutes: "/5"
 
 #  - platform: numeric_state
-#    entity_id: sensor.master_multi_illuminance
-#    below: 30
+#    entity_id: sensor.kids_multy_illuminance
+#    below: 7
 #    for:
 #      hours: 0
 #      minutes: 4
 #      seconds: 0
-
 condition:
   condition: numeric_state
-  entity_id: sensor.master_multi_illuminance
-  below: 30
+  entity_id: sensor.kids_multy_illuminance
+  below: 7
 
 action:
   - service: input_boolean.turn_on
     data:
-      entity_id: input_boolean.master_lights_auto
+      entity_id: input_boolean.kids_lights_auto

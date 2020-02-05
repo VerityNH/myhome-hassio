@@ -1,5 +1,5 @@
 initial_state: 'on'
-alias: Livingroom light auto turn off
+alias: Kids light auto turn off
 description: ''
 trigger:
   - platform: sun
@@ -10,25 +10,23 @@ trigger:
     minutes: "/5"
 
 #  - platform: numeric_state
-#    entity_id: sensor.livingroom_multi_illuminance
-#    above: 5
+#    entity_id: sensor.kids_multy_illuminance
+#    above: 7
 #    for:
 #      hours: 0
 #      minutes: 4
 #      seconds: 0
-
 condition:
   condition: and
   conditions:
     - condition: state
-      entity_id: light.living_room_lights
+      entity_id: light.kids_bedroom_lights
       state: 'off'
 
     - condition: numeric_state
-      entity_id: sensor.livingroom_multi_illuminance
-      above: 5
-
+      entity_id: sensor.kids_multy_illuminance
+      above: 7
 action:
   - service: input_boolean.turn_off
     data:
-      entity_id: input_boolean.living_lights_auto
+      entity_id: input_boolean.kids_lights_auto

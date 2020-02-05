@@ -1,5 +1,5 @@
 initial_state: 'on'
-alias: Master bedroom light auto turn on
+alias: Kitchen light auto turn on
 description: ''
 trigger:
   - platform: sun
@@ -10,7 +10,7 @@ trigger:
     minutes: "/5"
 
 #  - platform: numeric_state
-#    entity_id: sensor.master_multi_illuminance
+#    entity_id: sensor.kitchen_multi_illuminance
 #    below: 30
 #    for:
 #      hours: 0
@@ -19,10 +19,10 @@ trigger:
 
 condition:
   condition: numeric_state
-  entity_id: sensor.master_multi_illuminance
+  entity_id: sensor.kitchen_multi_illuminance
   below: 30
 
 action:
   - service: input_boolean.turn_on
     data:
-      entity_id: input_boolean.master_lights_auto
+      entity_id: input_boolean.kitchen_lights_auto
