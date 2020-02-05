@@ -18,14 +18,14 @@ trigger:
 #      seconds: 0
 condition:
   condition: and
-    conditions:
-      - condition: state
-        entity_id: light.kids_bedroom_lights
-        state: 'off'
+  conditions:
+    - condition: state
+      entity_id: light.kids_bedroom_lights
+      state: 'off'
 
-      - condition: numeric_state
-        entity_id: sensor.kids_multy_illuminance
-        above: 7
+    - condition: numeric_state
+      entity_id: sensor.kids_multy_illuminance
+      above: 7
 action:
   - service: input_boolean.turn_off
     data:

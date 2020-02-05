@@ -19,14 +19,14 @@ trigger:
 
 condition:
   condition: and
-    conditions:
-      - condition: state
-        entity_id: light.kitchen_lights
-        state: 'off'
+  conditions:
+    - condition: state
+      entity_id: light.kitchen_lights
+      state: 'off'
 
-      - condition: numeric_state
-        entity_id: sensor.kitchen_multi_illuminance
-        above: 30
+    - condition: numeric_state
+      entity_id: sensor.kitchen_multi_illuminance
+      above: 30
 
 action:
   - service: input_boolean.turn_off
