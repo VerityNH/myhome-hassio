@@ -5,13 +5,23 @@ trigger:
   - platform: sun
     event: sunset
     offset: '-00:30:00'
-  - platform: numeric_state
-    entity_id: sensor.kitchen_multi_illuminance
-    below: 30
-    for:
-      hours: 0
-      minutes: 4
-      seconds: 0
+
+  - platform: time_pattern
+    minutes: "/5"
+
+#  - platform: numeric_state
+#    entity_id: sensor.kitchen_multi_illuminance
+#    below: 30
+#    for:
+#      hours: 0
+#      minutes: 4
+#      seconds: 0
+
+condition:
+  condition: numeric_state
+  entity_id: sensor.kitchen_multi_illuminance
+  below: 30
+
 action:
   - service: input_boolean.turn_on
     data:
