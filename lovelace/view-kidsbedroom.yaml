@@ -1,7 +1,7 @@
 title: Kids bedroom
 id: kidsbedroom
 path: kidsbedroom
-icon: mdi:folder-home-outline
+#icon: mdi:folder-home-outline
 
 badges:
   - sensor.kids_multy_illuminance

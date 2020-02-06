@@ -7,66 +7,66 @@
 #    - light.66514121500291c7eb68
 #    - light.66514121500291c7f036
 
-master_bedroom:
-  name: Master bedroom
-  view: true
-  #icon: mdi:home
-  entities:
-    - light.master_bedroom_lights
-    - media_player.master_bedroom_speaker
-
-kids_bedroom:
-  name: Kids bedroom
-  view: true
-  #icon: mdi:home
-  entities:
-    - light.kids_bedroom_lights
-    - media_player.kids_bedroom_speaker
-
-livingroom:
-  name: Living room
-  view: true
-  #icon: mdi:home
-  entities:
-    - light.living_room_lights
-    - media_player.living_room_speaker
-    - vacuum.e200p8u2391901643866
-
-kitchen:
-  name: Kitchen
-  view: true
-  #icon: mdi:home
-  entities:
-   - light.kitchen_lights
-   - media_player.kitchen_display
-   - climate.kitchen_thermostat
-
-cameras:
-  name: Cameras
-  view: true
-  icon: mdi:camcorder
-  entities:
-    - camera.garage_cam
-
-climate:
-  name: Climate
-  view: true
-  icon: mdi:weather-sunny
-  entities:
-    - weather.home
-    - climate.kitchen_thermostat
-
-home_media:
-  name: Home media
-  control: hidden
-  entities:
-    - media_player.kids_bedroom_speaker
-    - media_player.kitchen_display
-    - media_player.master_bedroom_speaker
-    - media_player.living_room_speaker  
-
-
-zones:
-  name: Zones
-  entities:
-    - binary_sensor.floorplan      
+#master_bedroom:
+#  name: Master bedroom
+#  view: true
+#  #icon: mdi:home
+#  entities:
+#    - light.master_bedroom_lights
+#    - media_player.master_bedroom_speaker
+#
+#kids_bedroom:
+#  name: Kids bedroom
+#  view: true
+#  #icon: mdi:home
+#  entities:
+#    - light.kids_bedroom_lights
+#    - media_player.kids_bedroom_speaker
+#
+#livingroom:
+#  name: Living room
+#  view: true
+#  #icon: mdi:home
+#  entities:
+#    - light.living_room_lights
+#    - media_player.living_room_speaker
+#    - vacuum.e200p8u2391901643866
+#
+#kitchen:
+#  name: Kitchen
+#  view: true
+#  #icon: mdi:home
+#  entities:
+#   - light.kitchen_lights
+#   - media_player.kitchen_display
+#   - climate.kitchen_thermostat
+#
+#cameras:
+#  name: Cameras
+#  view: true
+#  icon: mdi:camcorder
+#  entities:
+#    - camera.garage_cam
+#
+#climate:
+#  name: Climate
+#  view: true
+#  icon: mdi:weather-sunny
+#  entities:
+#    - weather.home
+#    - climate.kitchen_thermostat
+#
+#home_media:
+#  name: Home media
+#  control: hidden
+#  entities:
+#    - media_player.kids_bedroom_speaker
+#    - media_player.kitchen_display
+#    - media_player.master_bedroom_speaker
+#    - media_player.living_room_speaker
+#
+#
+#zones:
+#  name: Zones
+#  entities:
+#    - binary_sensor.floorplan

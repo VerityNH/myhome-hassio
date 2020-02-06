@@ -1,7 +1,7 @@
 title: Kitchen
 id: kitchen
 path: kitchen
-icon: mdi:folder-home-outline
+#icon: mdi:folder-home-outline
 
 badges:
   - sensor.kitchen_multi_illuminance
