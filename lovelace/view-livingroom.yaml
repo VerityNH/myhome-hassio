@@ -27,6 +27,7 @@ cards:
     entities:
       - input_boolean.living_lights_auto
       - input_boolean.living_nightmode
+      - input_number.living_light_timeout
 
   - type: entities
     entities:
