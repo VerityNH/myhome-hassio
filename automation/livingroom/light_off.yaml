@@ -7,7 +7,7 @@ trigger:
     entity_id: binary_sensor.livingroom_multi_motion
     for:
       hours: 0
-      minutes: 5
+      minutes: "{{ states('input_number.living_light_timeout') | int }}"
       seconds: 0
     platform: device
     type: no_motion
