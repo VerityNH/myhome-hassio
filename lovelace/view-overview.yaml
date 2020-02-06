@@ -24,7 +24,7 @@ badges:
   - entity: sensor.owm_cloud_coverage
   - entity: sensor.owm_condition
   - entity: sensor.owm_rain
-  - entity: sensor.owm_snow
+#  - entity: sensor.owm_snow
   - entity: sensor.owm_temperature
   - entity: sensor.owm_wind_speed
   - entity: sensor.owm_weather_code
