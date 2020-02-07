@@ -2,43 +2,39 @@
   name: Kids day mode
   entities:
     light.kids_left_lamp:
-      brightness: 254
-      color_temp: 370
-      friendly_name: Kids left lamp
-      hs_color:
-      - 0
-      - 0
-      max_mireds: 500
-      min_mireds: 153
-      rgb_color:
-      - 255
-      - 255
-      - 255
       state: 'on'
-      supported_features: 187
-      white_value: 254
+      min_mireds: 153
+      max_mireds: 500
+      brightness: 500
+      color_temp: 200
+      hs_color:
+        - 0
+        - 0
+      rgb_color:
+        - 255
+        - 255
+        - 255
       xy_color:
-      - 0.323
-      - 0.329
+        - 0.323
+        - 0.329
+      white_value: 254
     light.kids_right_lamp:
-      brightness: 254
-      color_temp: 370
-      friendly_name: Kids right lamp
-      hs_color:
-      - 0
-      - 0
-      max_mireds: 500
-      min_mireds: 153
-      rgb_color:
-      - 255
-      - 255
-      - 255
       state: 'on'
-      supported_features: 187
-      white_value: 254
+      min_mireds: 153
+      max_mireds: 500
+      brightness: 500
+      color_temp: 200
+      hs_color:
+        - 0
+        - 0
+      rgb_color:
+        - 255
+        - 255
+        - 255
       xy_color:
-      - 0.323
-      - 0.329
+        - 0.323
+        - 0.329
+      white_value: 254
 - id: '1579657503734'
   name: Livingroom day mode
   entities:
