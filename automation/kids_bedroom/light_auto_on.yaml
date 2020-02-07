@@ -17,9 +17,15 @@ trigger:
 #      minutes: 4
 #      seconds: 0
 condition:
-  condition: numeric_state
-  entity_id: sensor.kids_multy_illuminance
-  below: 7
+  condition: and
+  conditions:
+    - condition: numeric_state
+      entity_id: sensor.kids_multy_illuminance
+      below: 7
+
+    - condition: state
+      entity_id: input_boolean.kids_lights_auto
+      state: 'off'
 
 action:
   - service: input_boolean.turn_on

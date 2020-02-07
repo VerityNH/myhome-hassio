@@ -26,6 +26,11 @@ condition:
     - condition: numeric_state
       entity_id: sensor.kids_multy_illuminance
       above: 7
+
+    - condition: state
+      entity_id: input_boolean.kids_lights_auto
+      state: 'on'
+
 action:
   - service: input_boolean.turn_off
     data:

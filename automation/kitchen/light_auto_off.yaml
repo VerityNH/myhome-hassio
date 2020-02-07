@@ -28,6 +28,10 @@ condition:
       entity_id: sensor.kitchen_multi_illuminance
       above: 30
 
+    - condition: state
+      entity_id: input_boolean.kitchen_lights_auto
+      state: 'on'
+
 action:
   - service: input_boolean.turn_off
     data:

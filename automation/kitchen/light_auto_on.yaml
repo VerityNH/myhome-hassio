@@ -18,9 +18,15 @@ trigger:
 #      seconds: 0
 
 condition:
-  condition: numeric_state
-  entity_id: sensor.kitchen_multi_illuminance
-  below: 30
+  condition: and
+  conditions:
+    - condition: numeric_state
+      entity_id: sensor.kitchen_multi_illuminance
+      below: 30
+
+    - condition: state
+      entity_id: input_boolean.kitchen_lights_auto
+      state: 'off'
 
 action:
   - service: input_boolean.turn_on

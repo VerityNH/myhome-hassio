@@ -18,9 +18,15 @@ trigger:
 #      seconds: 0
 
 condition:
-  condition: numeric_state
-  entity_id: sensor.livingroom_multi_illuminance
-  below: 5
+  condition: and
+  conditions:
+    - condition: numeric_state
+      entity_id: sensor.livingroom_multi_illuminance
+      below: 5
+
+    - condition: state
+      entity_id: input_boolean.living_lights_auto
+      state: 'off'
 
 action:
   - service: input_boolean.turn_on
