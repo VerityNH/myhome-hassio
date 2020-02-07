@@ -1,39 +1,41 @@
 - id: '1579656887082'
   name: Kids day mode
   entities:
-    light.kids_left:
-      brightness: 255
-      color_temp: 170
-      friendly_name: kids left
+    light.kids_left_lamp:
+      brightness: 254
+      color_temp: 370
+      friendly_name: Kids left lamp
       hs_color:
       - 0
       - 0
       max_mireds: 500
-      min_mireds: 111
+      min_mireds: 153
       rgb_color:
       - 255
       - 255
       - 255
       state: 'on'
-      supported_features: 51
+      supported_features: 187
+      white_value: 254
       xy_color:
       - 0.323
       - 0.329
-    light.kids_right:
-      brightness: 255
-      color_temp: 170
-      friendly_name: kids right
+    light.kids_right_lamp:
+      brightness: 254
+      color_temp: 370
+      friendly_name: Kids right lamp
       hs_color:
       - 0
       - 0
       max_mireds: 500
-      min_mireds: 111
+      min_mireds: 153
       rgb_color:
       - 255
       - 255
       - 255
       state: 'on'
-      supported_features: 51
+      supported_features: 187
+      white_value: 254
       xy_color:
       - 0.323
       - 0.329
