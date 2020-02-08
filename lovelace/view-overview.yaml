@@ -9,7 +9,6 @@ badges:
   - entity: binary_sensor.updater
   - entity: binary_sensor.natalia_yankovskaya_s_galaxy_note10_presence
   - entity: binary_sensor.mykola_iankovskyi_s_galaxy_s10_presence
-  - entity: binary_sensor.remote_ui
   - entity: person.nick
   - entity: person.nata
   - entity: device_tracker.nick_tracker
