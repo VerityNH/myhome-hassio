@@ -13,6 +13,9 @@
 # Ignore folders.
 .storage
 .cloud
+.cloud_back
+.storage_back
+.uuid
 .google.token
 .idea
 .spotify-token-cache
