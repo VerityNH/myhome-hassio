@@ -15,6 +15,7 @@ sun:
 system_health:
 updater:
 zeroconf:
+cloud:
 
 lovelace:
   mode: yaml        
