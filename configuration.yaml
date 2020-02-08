@@ -83,7 +83,7 @@ uilogs:
 #media_player: !include spotify.yaml
 #spotcast: !include spotcast.yaml
 
-logger:
-  default: info
-  logs:
-    homeassistant.components.smartthings: debug
+#logger:
+#  default: info
+#  logs:
+#    homeassistant.components.smartthings: debug
