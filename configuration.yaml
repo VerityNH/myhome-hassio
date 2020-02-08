@@ -1,9 +1,20 @@
 homeassistant: !include homeassistant.yaml
 
 # Configure a default setup of Home Assistant (frontend, api, etc)
-default_config:
+#default_config:
 
 #homeassistant: !include homeassistant.yaml
+
+config:
+history:
+logbook:
+map:
+mobile_app:
+ssdp:
+sun:
+system_health:
+updater:
+zeroconf:
 
 lovelace:
   mode: yaml        
@@ -44,7 +55,8 @@ light: !include light.yaml
 cover: !include garage.yaml
 
 # Person tracker
-person: !include persons.yaml
+#person: !include persons.yaml
+person:
 
 device_tracker: !include device_tracker.yaml
 
