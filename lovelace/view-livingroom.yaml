@@ -36,5 +36,6 @@ cards:
       - automation.livingroom_night_mode_turn_off
       - automation.living_night_mode_turn_on
       - automation.light_off_livingroom
+      - automation.light_off_livingroom_at_night
       - automation.light_on_livingroom_day
       - automation.light_on_livingroom_night

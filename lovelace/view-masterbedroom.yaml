@@ -30,5 +30,6 @@ cards:
       - automation.master_bedroom_night_mode_turn_off
       - automation.master_bedroom_night_mode_turn_on
       - automation.light_off_master_bedroom
+      - automation.light_off_master_bedroom_at_night
       - automation.light_on_master_bedroom_day
       - automation.light_on_master_bedroom_night

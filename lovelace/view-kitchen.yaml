@@ -27,5 +27,6 @@ cards:
       - automation.kitchen_night_mode_turn_off
       - automation.kitchen_night_mode_turn_on
       - automation.light_off_kitchen
+      - automation.light_off_kitchen_at_night
       - automation.light_on_kitchen_day
       - automation.light_on_kitchen_night
