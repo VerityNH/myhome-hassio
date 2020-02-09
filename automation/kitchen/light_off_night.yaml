@@ -1,5 +1,5 @@
 initial_state: 'on'
-alias: LIGHT OFF kitchen
+alias: LIGHT OFF kitchen at night
 description: ''
 trigger:
   - device_id: 84994766ffa24856ba202da1b2c6fb55
@@ -7,14 +7,14 @@ trigger:
     entity_id: binary_sensor.kitchen_multi_motion
     for:
       hours: 0
-      minutes: 5
+      minutes: 1
       seconds: 0
     platform: device
     type: no_motion
 
 condition: state
   entity_id: input_boolean.kitchen_nightmode
-  state: 'off'
+  state: 'on'
 
 action:
   - data:

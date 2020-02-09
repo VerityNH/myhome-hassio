@@ -1,5 +1,5 @@
 initial_state: 'off'
-alias: LIGHT OFF Master bedroom
+alias: LIGHT OFF Master bedroom at night
 description: ''
 trigger:
   - device_id: 957373b88c574e40bed5cbaa6d42df69
@@ -7,14 +7,14 @@ trigger:
     entity_id: binary_sensor.master_multi_motion
     for:
       hours: 0
-      minutes: 5
+      minutes: 1
       seconds: 0
     platform: device
     type: no_motion
 
 condition: state
   entity_id: input_boolean.master_nightmode
-  state: 'off'
+  state: 'on'
 
 action:
   - data:

@@ -1,5 +1,5 @@
 initial_state: 'on'
-alias: LIGHT OFF Livingroom
+alias: LIGHT OFF Livingroom at night
 description: ''
 trigger:
   - device_id: 46e15b23d3894d08ab32b572d3ba1517
@@ -7,14 +7,14 @@ trigger:
     entity_id: binary_sensor.livingroom_multi_motion
     for:
       hours: 0
-      minutes: 5
+      minutes: 1
       seconds: 0
     platform: device
     type: no_motion
 
 condition: state
   entity_id: input_boolean.living_nightmode
-  state: 'off'
+  state: 'on'
 
 action:
   - data:
