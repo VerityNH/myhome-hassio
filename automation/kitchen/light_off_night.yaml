@@ -12,7 +12,8 @@ trigger:
     platform: device
     type: no_motion
 
-condition: state
+condition:
+  condition: state
   entity_id: input_boolean.kitchen_nightmode
   state: 'on'
 
