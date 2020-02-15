@@ -20,5 +20,5 @@ condition:
         entity_id: input_boolean.kitchen_lights_auto
         state: 'on'
 action:
-  - entity_id: light.66514121500291c7eb68
+  - entity_id: light.66514121500291c7f072
     service: light.turn_on
