@@ -21,7 +21,7 @@ condition:
   conditions:
     - condition: numeric_state
       entity_id: sensor.kids_multy_illuminance
-      below: 7
+      below: 10
 
     - condition: state
       entity_id: input_boolean.kids_lights_auto
