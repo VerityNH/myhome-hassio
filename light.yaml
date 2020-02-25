@@ -487,34 +487,34 @@
   command_off_template: '{"state":false}'
   state_template: '{{ value_json.state}}'
   brightness_template: '{{ (value_json.dimming/100*254)| int }}'
-  red_template: >
-    {%- if value_json.r is defined -%}
-    {{ value_json.r }}
-    {%- else -%}
-    255
-    {%- endif -%}
-  green_template: >
-    {%- if value_json.g is defined -%}
-    {{ value_json.g }}
-    {%- else -%}
-    255
-    {%- endif -%}
-  blue_template: >
-    {%- if value_json.b is defined -%}
-    {{ value_json.b }}
-    {%- else -%}
-    255
-    {%- endif -%}
-  color_temp_template: >
-    {%- if value_json.temp is defined -%}
-    {{ (1000000/value_json.temp)| int }}
-    {%- else -%}
-    370
-    {%- endif -%}
-  white_value_template: >
-    {%- if value_json.w is defined -%}
-    {{ value_json.w }}
-    {%- else -%}
-    {{ (value_json.dimming/100*254)| int }}
-    {%- endif -%}
+#  red_template: >
+#    {%- if value_json.r is defined -%}
+#    {{ value_json.r }}
+#    {%- else -%}
+#    255
+#    {%- endif -%}
+#  green_template: >
+#    {%- if value_json.g is defined -%}
+#    {{ value_json.g }}
+#    {%- else -%}
+#    255
+#    {%- endif -%}
+#  blue_template: >
+#    {%- if value_json.b is defined -%}
+#    {{ value_json.b }}
+#    {%- else -%}
+#    255
+#    {%- endif -%}
+#  color_temp_template: >
+#    {%- if value_json.temp is defined -%}
+#    {{ (1000000/value_json.temp)| int }}
+#    {%- else -%}
+#    370
+#    {%- endif -%}
+#  white_value_template: >
+#    {%- if value_json.w is defined -%}
+#    {{ value_json.w }}
+#    {%- else -%}
+#    {{ (value_json.dimming/100*254)| int }}
+#    {%- endif -%}
 
