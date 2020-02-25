@@ -467,8 +467,8 @@
 - platform: mqtt
   name: "Corridor light"
   schema: template
-  command_topic: "wizlight/10.0.0.155/set"
-  state_topic: "wizlight/10.0.0.155/status"
+  command_topic: "wizlight/10.0.0.153/set"
+  state_topic: "wizlight/10.0.0.153/status"
   command_on_template: >
     {"state": true
     {%- if brightness is defined -%}
