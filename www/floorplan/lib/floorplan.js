@@ -87,7 +87,7 @@
       const imageUrl = this.getBestImage(this.config);
       return this.loadFloorplanSvg(imageUrl)
         .then((svg) => {
-          this.config[svg] = svg;
+          this.config['svg'] = svg;
           return this.loadStyleSheet(this.config.stylesheet)
             .then(() => {
               return this.initFloorplan(svg, this.config)
