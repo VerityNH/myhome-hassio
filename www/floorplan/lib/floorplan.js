@@ -3,7 +3,7 @@
 
   class Floorplan {
     constructor() {
-      this.version = '1.1.14';
+      this.version = '1.1.15';
       this.root = {};
       this.hass = {};
       this.openMoreInfo = () => { };

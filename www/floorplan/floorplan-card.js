@@ -2,7 +2,7 @@ class FloorplanCard extends HTMLElement {
   constructor() {
     super();
 
-    this.version = "1.1.8";
+    this.version = "1.1.15";
 
     this.isScriptsLoading = false;
     this.isFloorplanLoading = false;
