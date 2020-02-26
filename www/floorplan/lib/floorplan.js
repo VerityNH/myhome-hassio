@@ -58,7 +58,7 @@
             return Promise.resolve();
           }
 
-          this.config = (function() {return config})();
+          this.config = config;
 
           return this.loadLibraries()
             .then(() => {
@@ -87,7 +87,7 @@
       const imageUrl = this.getBestImage(this.config);
       return this.loadFloorplanSvg(imageUrl)
         .then((svg) => {
-          this.config.svg = svg;
+          this.svg = svg;
           return this.loadStyleSheet(this.config.stylesheet)
             .then(() => {
               return this.initFloorplan(svg, this.config)
@@ -455,8 +455,8 @@
       }
       else {
         // Show the SVG
-        $(this.config.svg).css('opacity', 1);
-        $(this.config.svg).css('display', 'initial');
+        $(this.svg).css('opacity', 1);
+        $(this.svg).css('display', 'initial');
       }
     }
 
