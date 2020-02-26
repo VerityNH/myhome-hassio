@@ -8,6 +8,7 @@ cards:
     config:
       image: /local/floorplan/config/home/floorplan.svg
       stylesheet: /local/floorplan/config/home/floorplan.css
+      svg:
       rules:
         - entities:
             - light.kitchen_lights
