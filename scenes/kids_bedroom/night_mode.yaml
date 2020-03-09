@@ -1,0 +1,11 @@
+- name: Kids night mode
+  entities:
+    light.kids_left_lamp:
+      state: 'off'
+    light.kids_right_lamp:
+      brightness: 115
+      rgb_color:
+        - 0
+        - 0
+        - 153
+      state: 'on'

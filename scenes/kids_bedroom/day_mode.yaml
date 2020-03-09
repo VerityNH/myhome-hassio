@@ -1,0 +1,12 @@
+- name: Kids day mode
+  entities:
+    light.kids_left_lamp:
+      brightness: 255
+      color_temp: 153
+      effect: 'Cool white'
+      state: 'on'
+    light.kids_right_lamp:
+      brightness: 255
+      color_temp: 153
+      effect: 'Cool white'
+      state: 'on'

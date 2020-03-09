@@ -1,76 +1,76 @@
-- id: '1579656887082'
-  name: Kids day mode
-  entities:
-    light.kids_left:
-      brightness: 500
-      color_temp: 200
-      state: 'on'
-    light.kids_right:
-      brightness: 500
-      color_temp: 200
-      state: 'on'
-- id: '1579657503734'
-  name: Livingroom day mode
-  entities:
-    light.living_left:
-      brightness: 500
-      color_temp: 200
-      friendly_name: living left
-      state: 'on'
-    light.living_right:
-      brightness: 500
-      color_temp: 200
-      friendly_name: living right
-      state: 'on'
-- id: '1579659234537'
-  name: Kids night mode
-  entities:
-    light.kids_left:
-      friendly_name: kids left
-      state: 'off'
-    light.kids_right:
-      brightness: 115
-      friendly_name: kids right
-      rgb_color:
-      - 0
-      - 0
-      - 153
-      state: 'on'
-- id: '1580000851816'
-  name: Corridor Night
-  entities:
-    light.corridor_lights:
-      brightness: 153
-      friendly_name: Corridor Lights
-      state: 'on'
-      white_value: 254
-- id: '1580000929864'
-  name: Corridor Day
-  entities:
-    light.corridor_lights:
-      brightness: 254
-      friendly_name: Corridor Lights
-      state: 'on'
-      white_value: 254
-- id: '1580325745298'
-  name: Livingroom night mode
-  entities:
-    light.livingroom_left_lamp:
-      brightness: 38
-      color_temp: 370
-      friendly_name: Livingroom left lamp
-      hs_color:
-      - 240
-      - 100
-      max_mireds: 500
-      min_mireds: 153
-      rgb_color:
-      - 0
-      - 0
-      - 255
-      state: 'on'
-      supported_features: 187
-      white_value: 0
-      xy_color:
-      - 0.136
-      - 0.04
+#- id: '1579656887082'
+#  name: Kids day mode
+#  entities:
+#    light.kids_left:
+#      brightness: 500
+#      color_temp: 200
+#      state: 'on'
+#    light.kids_right:
+#      brightness: 500
+#      color_temp: 200
+#      state: 'on'
+#- id: '1579657503734'
+#  name: Livingroom day mode
+#  entities:
+#    light.living_left:
+#      brightness: 500
+#      color_temp: 200
+#      friendly_name: living left
+#      state: 'on'
+#    light.living_right:
+#      brightness: 500
+#      color_temp: 200
+#      friendly_name: living right
+#      state: 'on'
+#- id: '1579659234537'
+#  name: Kids night mode
+#  entities:
+#    light.kids_left:
+#      friendly_name: kids left
+#      state: 'off'
+#    light.kids_right:
+#      brightness: 115
+#      friendly_name: kids right
+#      rgb_color:
+#      - 0
+#      - 0
+#      - 153
+#      state: 'on'
+#- id: '1580000851816'
+#  name: Corridor Night
+#  entities:
+#    light.corridor_lights:
+#      brightness: 153
+#      friendly_name: Corridor Lights
+#      state: 'on'
+#      white_value: 254
+#- id: '1580000929864'
+#  name: Corridor Day
+#  entities:
+#    light.corridor_lights:
+#      brightness: 254
+#      friendly_name: Corridor Lights
+#      state: 'on'
+#      white_value: 254
+#- id: '1580325745298'
+#  name: Livingroom night mode
+#  entities:
+#    light.livingroom_left_lamp:
+#      brightness: 38
+#      color_temp: 370
+#      friendly_name: Livingroom left lamp
+#      hs_color:
+#      - 240
+#      - 100
+#      max_mireds: 500
+#      min_mireds: 153
+#      rgb_color:
+#      - 0
+#      - 0
+#      - 255
+#      state: 'on'
+#      supported_features: 187
+#      white_value: 0
+#      xy_color:
+#      - 0.136
+#      - 0.04
