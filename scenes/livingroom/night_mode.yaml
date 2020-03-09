@@ -1,4 +1,4 @@
-- name: Livingroom day mode
+- name: Livingroom night mode
   entities:
     light.livingroom_left_lamp:
       state: 'off'
