@@ -32,6 +32,10 @@
     - light.66514121500291c7f072
     - light.66514121500291c7f036
 
+- platform: wiz_light
+  name: "Test living room"
+  host: "10.0.0.4"
+
 - platform: mqtt
   name: "Livingroom left lamp"
   schema: template
