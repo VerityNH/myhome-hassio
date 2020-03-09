@@ -1,8 +1,8 @@
 - name: Livingroom night mode
   entities:
-    light.livingroom_left_lamp:
-      state: 'off'
     light.livingroom_right_lamp:
+      state: 'off'
+    light.livingroom_left_lamp:
       brightness: 255
       color_temp: 153
       effect: 'TV time'
