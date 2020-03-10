@@ -96,7 +96,7 @@ cards:
         # Indoors should be moderate
         - entities:
             - sensor.corridor_motion_sensor_temperature
-            - sensor.nest_temperature
+            - sensor.kitchen_multi_temperature
             - sensor.kids_multy_temperature
             - sensor.master_multi_temperature
             - sensor.livingroom_multi_temperature

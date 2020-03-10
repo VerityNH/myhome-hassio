@@ -493,7 +493,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2"
-     inkscape:cx="188.44"
+     inkscape:cx="130.69"
      inkscape:cy="283.24429"
      inkscape:document-units="px"
      inkscape:current-layer="layer3"
@@ -1928,7 +1928,7 @@
        style="display:inline"
        inkscape:label="#g3387"
        transform="translate(-556.1241,6.3895453)"
-       id="sensor.nest_temperature">
+       id="sensor.kitchen_multi_temperature">
       <text
          xml:space="preserve"
          x="1052.3999"
