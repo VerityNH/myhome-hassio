@@ -60,6 +60,15 @@ cards:
               class: 'camera-idle'
 
         - entities:
+            - sensor.us_coronavirus_confirmed
+            - sensor.us_coronavirus_current
+            - sensor.ukraine_coronavirus_current
+            - sensor.ukraine_coronavirus_confirmed
+            - sensor.us_coronavirus_recovered
+            - sensor.ukraine_coronavirus_recovered
+          text_template: '${entity.state ? entity.state : "unknown"} %'
+
+        - entities:
             - sensor.kids_multy_illuminance
             - sensor.kitchen_multi_illuminance
             - sensor.master_multi_illuminance
@@ -100,12 +109,6 @@ cards:
             - sensor.kids_multy_temperature
             - sensor.master_multi_temperature
             - sensor.livingroom_multi_temperature
-            - sensor.us_coronavirus_confirmed
-            - sensor.us_coronavirus_current
-            - sensor.ukraine_coronavirus_current
-            - sensor.ukraine_coronavirus_confirmed
-            - sensor.us_coronavirus_recovered
-            - sensor.ukraine_coronavirus_recovered
           type: state-label
           text_template: '${entity.state ? Math.round(entity.state) : "unknown"} C'
           # An example of rounding up a number, i.e. a temperature of 90.1 becomes 91
