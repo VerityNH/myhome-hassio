@@ -7,6 +7,6 @@
     "@sbidy"
   ],
   "requirements": [
-    "pywizlight==0.2.5"
+    "pywizlight==0.2.7"
   ]
 }
