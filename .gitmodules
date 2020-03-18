@@ -1,0 +1,3 @@
+[submodule "custom_components/wiz_light"]
+	path = custom_components/wiz_light
+	url = git@github.com:sbidy/wiz_light.git
