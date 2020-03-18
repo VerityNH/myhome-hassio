@@ -1,3 +1,4 @@
 [submodule "custom_components/wiz_light"]
 	path = custom_components/wiz_light
 url=https://github.com/sbidy/wiz_light.git
+branch=testing
