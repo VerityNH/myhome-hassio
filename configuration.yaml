@@ -74,7 +74,7 @@ binary_sensor: !include binary_sensors.yaml
 
 weather: !include weather.yaml
 
-mqtt: !include mqtt.yaml
+#mqtt: !include mqtt.yaml
 
 input_boolean: !include_dir_named input_boolean/
 input_number: !include_dir_named input_number/
