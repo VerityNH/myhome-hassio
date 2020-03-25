@@ -3,7 +3,7 @@
     light.livingroom_right_lamp:
       state: 'off'
     light.livingroom_left_lamp:
-      min_mireds: 153
-      max_mireds: 400
+      brightness: 255
       color_temp: 153
-      effect: TV time
+      effect: 'TV time'
+      state: 'on'
