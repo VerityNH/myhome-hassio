@@ -66,6 +66,8 @@ cards:
             - sensor.ukraine_coronavirus_confirmed
             - sensor.us_coronavirus_recovered
             - sensor.ukraine_coronavirus_recovered
+            - sensor.us_coronavirus_deaths
+            - sensor.ukraine_coronavirus_deaths
           text_template: '${entity.state ? entity.state : "unknown"}'
 
         - entities:
