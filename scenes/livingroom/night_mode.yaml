@@ -4,8 +4,8 @@
       state: 'off'
     light.livingroom_left_lamp:
       brightness: 115
-        rgb_color:
-          - 0
-          - 0
-          - 153
-        state: 'on'
+      rgb_color:
+        - 0
+        - 0
+        - 153
+      state: 'on'
