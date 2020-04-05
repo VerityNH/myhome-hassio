@@ -3,45 +3,9 @@
     light.livingroom_right_lamp:
       state: 'off'
     light.livingroom_left_lamp:
-      state: 'on'
-      min_mireds: 153
-      max_mireds: 400
-      effect_list:
-        - Ocean
-        - Romance
-        - Sunset
-        - Party
-        - Fireplace
-        - Cozy
-        - Forest
-        - Pastel Colors
-        - Wake up
-        - Bedtime
-        - Warm White
-        - Daylight
-        - Cool white
-        - Night light
-        - Focus
-        - Relax
-        - True colors
-        - TV time
-        - Plantgrowth
-        - Spring
-        - Summer
-        - Fall
-        - Deepdive
-        - Jungle
-        - Mojito
-        - Club
-        - Christmas
-        - Halloween
-        - Candlelight
-        - Golden white
-        - Pulse
-        - Steampunk
-        - Rhythm
-      brightness: 130
-      color_temp: 153
-      effect: TV time
-      friendly_name: Livingroom left lamp
-      supported_features: 23
+      brightness: 115
+        rgb_color:
+          - 0
+          - 0
+          - 153
+        state: 'on'
