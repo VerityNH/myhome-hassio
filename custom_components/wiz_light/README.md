@@ -21,6 +21,19 @@ Features:
 
 This component does need a dependency on `pywizlight` like @sbidy's component which will be install automatically by Home Assistant.
 
+## Bulbs
+| Bulb Type | Dimmer | Color Temp | Effects | RGB |
+|-----------|--------|------------|---------|-----|
+| ESP01_SHDW_01 | X  |   |   |   |
+| ESP01_SHRGB1C_31 | X | X  | X | X |
+| ESP01_SHTW1C_31 | X | X |   |   |
+| ESP56_SHTW3_01 | X |   | (X)  |   |
+| ESP01_SHRGB_03 | X | X | X | X |
+
+Please report as issue your builb type with a feature list:
+
+`echo '{"method":"getSystemConfig","params":{}}' | nc -u -w 1 <YOU BULB IP> 38899`
+
 ## Working features 
  - Brigtness
  - Color (RGB)
@@ -36,9 +49,9 @@ This component does need a dependency on `pywizlight` like @sbidy's component wh
 - Pull to the HA master
   
 ## Install for testing 
-If you want to try the integration please clone this repo to `<confdir>/custom_components/`.
+If you want to try the integration please clone this repo to `<confdir>`.
 
-Run `git clone https://github.com/sbidy/wiz_light` within the `<confdir>/custom_components/`.
+Run `git clone https://github.com/sbidy/wiz_light` within the HA `<confdir>`.
 
 You also have to install the `pywizlight` packages (`pip install pywizlight`). 
 
