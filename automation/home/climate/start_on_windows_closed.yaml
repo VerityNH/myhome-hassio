@@ -11,6 +11,8 @@ action:
   - data: {}
     entity_id: climate.kitchen_thermostat
     service: climate.turn_on
+  - delay:
+      seconds: 10
   - entity_id: climate.kitchen_thermostat
     service_template: >
       {% if (state_attr('weather.openweathermap', 'temperature') < 15) %}
