@@ -1,5 +1,5 @@
 initial_state: 'on'
-alias: Stop climate when windows open
+alias: Start climate when windows closed
 description: ''
 trigger:
   - entity_id: binary_sensor.all_windows_closed
