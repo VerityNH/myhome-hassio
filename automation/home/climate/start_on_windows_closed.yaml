@@ -19,3 +19,4 @@ action:
         script.climate_to_auto
       {% else %}
         script.climate_to_cool
+      {% endif %}
