@@ -11,3 +11,27 @@ turn_off_all_lights:
     service: light.turn_off
   - entity_id: light.living_room_lights
     service: light.turn_off
+climate_to_heat:
+  alias: Climate to heat
+  sequence:
+  - data:
+      entity_id: climate.kitchen_thermostat
+      hvac_mode: heat
+    entity_id: climate.kitchen_thermostat
+    service: climate.set_hvac_mode
+climate_to_auto:
+  alias: Climate to auto
+  sequence:
+  - data:
+      entity_id: climate.kitchen_thermostat
+      hvac_mode: auto
+    entity_id: climate.kitchen_thermostat
+    service: climate.set_hvac_mode
+climate_to_cool:
+  alias: Climate to cool
+  sequence:
+  - data:
+      entity_id: climate.kitchen_thermostat
+      hvac_mode: cool
+    entity_id: climate.kitchen_thermostat
+    service: climate.set_hvac_mode
