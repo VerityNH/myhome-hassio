@@ -11,3 +11,11 @@ action:
   - data: {}
     entity_id: climate.kitchen_thermostat
     service: climate.turn_on
+  - entity_id: climate.kitchen_thermostat
+    service_template: >
+      {% if (state_attr('weather.openweathermap', 'temperature') < 15) %}
+        script.climate_to_heat
+      {% elif ((state_attr('weather.openweathermap', 'temperature') < 15) and (state_attr('weather.openweathermap', 'temperature') < 25)) %}
+        script.climate_to_auto
+      {% else %}
+        script.climate_to_cool
