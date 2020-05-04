@@ -17,8 +17,8 @@ updater:
 zeroconf:
 cloud:
 
-lovelace:
-  mode: yaml        
+#lovelace:
+#  mode: yaml
 
 # Text to speech
 tts:
