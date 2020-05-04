@@ -1,16 +1,19 @@
 - platform: group
   name: Living Room Lights
+  id: living_room_lights
   entities:
     - light.livingroom_left_lamp
     - light.livingroom_right_lamp
 
 - platform: group
   name: Kids Bedroom Lights
+  id: kids_bedroom_lights
   entities:
     - light.kids_left_lamp
     - light.kids_right_lamp
 
 - platform: group
+  id: master_bedroom_lights
   name: Master Bedroom Lights
   entities:
     - light.master_fan_1
@@ -19,11 +22,13 @@
     - light.master_fan_4
 
 - platform: group
+  id: corridor_lights
   name: Corridor Lights
   entities:
     - light.corridor_light
 
 - platform: group
+  id: kitchen_lights
   name: Kitchen Lights
   entities:
     - light.66514121500291c7eb5c
