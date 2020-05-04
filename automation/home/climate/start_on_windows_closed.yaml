@@ -17,7 +17,7 @@ action:
     service_template: >
       {% if (state_attr('weather.kash_hourly', 'temperature') < 15) %}
         script.climate_to_heat
-      {% elif ((state_attr('weather.kash_hourly', 'temperature') > 15) and (state_attr('weather.kash_hourly', 'temperature') < 25)) %}
+      {% elif ((state_attr('weather.kash_hourly', 'temperature') >= 15) and (state_attr('weather.kash_hourly', 'temperature') < 25)) %}
         script.climate_to_auto
       {% else %}
         script.climate_to_cool

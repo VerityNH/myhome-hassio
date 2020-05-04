@@ -1,0 +1,32 @@
+initial_state: 'on'
+alias: Adjust climate control
+description: ''
+trigger:
+  - minutes: /30
+    platform: time_pattern
+condition:
+  - condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.all_windows_closed
+        state: 'off'
+      - above: '25'
+        below: '21'
+        condition: numeric_state
+        entity_id: sensor.average_house_temperature
+      - condition: zone
+        entity_id: person.nata
+        zone: zone.home
+      - condition: state
+        entity_id: binary_sensor.athome
+        state: 'on'
+action:
+  - entity_id: climate.kitchen_thermostat
+    service_template: >
+      {% if (state_attr('weather.kash_hourly', 'temperature') < 15) %}
+        script.climate_to_heat
+      {% elif ((state_attr('weather.kash_hourly', 'temperature') >= 15) and (state_attr('weather.kash_hourly', 'temperature') < 25)) %}
+        script.climate_to_auto
+      {% else %}
+        script.climate_to_cool
+      {% endif %}
