@@ -492,9 +492,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6568542"
-     inkscape:cx="172.0806"
-     inkscape:cy="391.50273"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="187.33838"
+     inkscape:cy="141.50061"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -794,12 +794,13 @@
        ry="0.1949475" />
     <rect
        style="fill:#008000;stroke-width:0.16425107"
-       id="rect4399-5-1-9-8-3"
+       id="binary_sensor.kitchen_patio_door_contact"
        width="60"
        height="3"
        x="377.56812"
        y="771.15619"
-       ry="0.1949475" />
+       ry="0.1949475"
+       inkscape:label="#rect4399-5-1-9-8-3" />
     <rect
        style="fill:#008000;stroke-width:0.12544884"
        id="rect4399-5-1-9-8-6"
@@ -1349,12 +1350,13 @@
        ry="0.1949475" />
     <rect
        style="fill:#008000;stroke-width:0.1180629"
-       id="rect4399-5-1-9-1-39"
+       id="binary_sensor.kids_bedroom_right_window_contact"
        width="31"
        height="3"
        x="102.93825"
        y="771.1524"
-       ry="0.1949475" />
+       ry="0.1949475"
+       inkscape:label="#rect4399-5-1-9-1-39" />
     <rect
        style="fill:#008000;stroke-width:0.1180629"
        id="rect4399-5-1-9-1-3-4"
