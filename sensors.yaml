@@ -1,19 +1,5 @@
 - platform: badnest
 
-- platform: openweathermap
-  api_key: a14bf928a80d2c212159d9d5c601e66f
-  monitored_conditions:
-    - weather
-    - temperature
-    - wind_speed
-    - wind_bearing
-    - humidity
-    - pressure
-    - clouds
-    - rain
-    - snow
-    - weather_code
-
 - platform: waze_travel_time
   name: "Nick to Work"
   origin: device_tracker.sm_g975u
@@ -37,6 +23,15 @@
   origin: device_tracker.sm_n970u
   destination: zone.home
   region: 'US'
+
+- platform: min_max
+  type: mean
+  name: Average house temperature
+  entity_ids:
+    - sensor.kitchen_multi_temperature
+    - sensor.livingroom_multi_temperature
+    - sensor.kids_multy_temperature
+    - sensor.master_multi_temperature
 
 - platform: template
   sensors:
