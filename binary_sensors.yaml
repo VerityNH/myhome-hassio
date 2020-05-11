@@ -34,4 +34,6 @@
           or is_state('binary_sensor.kids_bedroom_right_window_contact', 'on')
           or is_state('binary_sensor.kitchen_patio_door_contact', 'on') }}
 
-
+- platform: car_wash
+  weather: weather.kash_daynight
+  days: 5
