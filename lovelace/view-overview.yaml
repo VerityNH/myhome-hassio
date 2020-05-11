@@ -84,8 +84,6 @@ cards:
 #      - automation.start_vacuum_when_nobody_home
 #      - automation.start_vacuum_at_8_10pm
 #    title: Automation
-  - type: weather-forecast
-    entity: weather.openweathermap
   - type: entities
     entities:
       - scene.kids_night_mode
