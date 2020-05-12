@@ -81,6 +81,10 @@ input_number: !include_dir_named input_number/
 
 uilogs:
 
+vesync:
+  username: !secret vesync_uname
+  password: !secret vesync_passwd
+
 #media_player: !include spotify.yaml
 #spotcast: !include spotcast.yaml
 
