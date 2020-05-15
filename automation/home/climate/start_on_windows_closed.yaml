@@ -12,7 +12,7 @@ action:
     service_template: >
       {% if (states('sensor.smartweather_temperature') | int < 15) %}
         script.climate_to_heat
-      {% elif ((states('sensor.smartweather_temperature') >= 15) | int and (states('sensor.smartweather_temperature') | int < 25)) %}
+      {% elif ((states('sensor.smartweather_temperature') | int >= 15)  and (states('sensor.smartweather_temperature') | int < 25)) %}
         script.climate_to_auto
       {% else %}
         script.climate_to_cool
