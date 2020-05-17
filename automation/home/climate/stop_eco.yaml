@@ -13,3 +13,12 @@ action:
       preset_mode: none
     entity_id: climate.kitchen_thermostat
     service: climate.set_preset_mode
+  - entity_id: climate.kitchen_thermostat
+      service_template: >
+        {% if (states('sensor.smartweather_temperature') | int < 15) %}
+          script.climate_to_heat
+        {% elif ((states('sensor.smartweather_temperature') | int >= 15) and (states('sensor.smartweather_temperature') | int < 25)) %}
+          script.climate_to_auto
+        {% else %}
+          script.climate_to_cool
+        {% endif %}
