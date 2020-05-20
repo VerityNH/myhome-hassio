@@ -40,7 +40,7 @@ frontend: !include frontend.yaml
 
 http: !include http.yaml
 
-tuya: !include tuya.yaml
+#tuya: !include tuya.yaml
 
 ecovacs: !include ecovacs.yaml
 
