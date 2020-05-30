@@ -89,6 +89,8 @@ input_select:
 
 uilogs:
 
+speedtestdotnet:
+
 vesync:
   username: !secret vesync_uname
   password: !secret vesync_passwd
