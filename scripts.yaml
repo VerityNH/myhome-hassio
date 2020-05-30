@@ -11,6 +11,9 @@ turn_off_all_lights:
     service: light.turn_off
   - entity_id: light.living_room_lights
     service: light.turn_off
+  - data: {}
+    entity_id: fan.master_air_purifier
+    service: fan.turn_off
 climate_to_heat:
   alias: Climate to heat
   sequence:
@@ -35,3 +38,9 @@ climate_to_cool:
       hvac_mode: cool
     entity_id: climate.kitchen_thermostat
     service: climate.set_hvac_mode
+'1590857030988':
+  alias: Turn on air purifier
+  sequence:
+  - data: {}
+    entity_id: fan.master_air_purifier
+    service: fan.turn_on
