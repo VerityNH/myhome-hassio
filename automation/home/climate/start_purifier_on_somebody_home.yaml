@@ -1,0 +1,11 @@
+initial_state: 'on'
+alias: Start air purifier when someone home
+description: ''
+trigger:
+  - entity_id: binary_sensor.athome
+    from: 'off'
+    platform: state
+    to: 'on'
+condition: []
+action:
+  - service: script.pure_fan_turn_on

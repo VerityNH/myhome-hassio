@@ -38,7 +38,7 @@ climate_to_cool:
       hvac_mode: cool
     entity_id: climate.kitchen_thermostat
     service: climate.set_hvac_mode
-'1590857030988':
+pure_fan_turn_on:
   alias: Turn on air purifier
   sequence:
   - data: {}
