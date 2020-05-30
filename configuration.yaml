@@ -90,6 +90,12 @@ input_select:
 uilogs:
 
 speedtestdotnet:
+  scan_interval:
+    minutes: 15
+  monitored_conditions:
+    - ping
+    - download
+    - upload
 
 vesync:
   username: !secret vesync_uname
