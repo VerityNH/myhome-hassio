@@ -62,6 +62,8 @@
           living_left_on
         {% elif (is_state('light.livingroom_right_lamp', 'off') and is_state('light.livingroom_left_lamp', 'on') and is_state('light.kitchen_lights', 'off') and is_state('input_boolean.living_nightmode', 'on')) %}
           living_nightmode
+        {% elif (is_state('light.livingroom_right_lamp', 'off') and is_state('light.livingroom_left_lamp', 'on') and is_state('light.kitchen_lights', 'on') and is_state('input_boolean.living_nightmode', 'on')) %}
+          kitchen_and_nightmode
         {% elif (is_state('light.livingroom_right_lamp', 'on') and is_state('light.livingroom_left_lamp', 'on') and is_state('light.kitchen_lights', 'off')) %}
           living_all
         {% elif (is_state('light.livingroom_right_lamp', 'off') and is_state('light.livingroom_left_lamp', 'off') and is_state('light.kitchen_lights', 'on')) %}
