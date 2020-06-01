@@ -79,7 +79,22 @@
         {% else %}
           failed
         {% endif %}
-
+    kids_light_state:
+      friendly_name: "Kids light state"
+      value_template: >-
+        {% if (is_state('light.kids_left_lamp', 'on') and is_state('light.kids_right_lamp', 'off') and is_state('input_boolean.kids_nightmode', 'off')) %}
+          left_on
+        {% elif (is_state('light.kids_left_lamp', 'off') and is_state('light.kids_right_lamp', 'on') and is_state('input_boolean.kids_nightmode', 'off')) %}
+          right_on
+        {% elif (is_state('light.kids_left_lamp', 'off') and is_state('light.kids_right_lamp', 'on') and is_state('input_boolean.kids_nightmode', 'on')) %}
+          kids_nightmode
+        {% elif (is_state('light.kids_left_lamp', 'on') and is_state('light.kids_right_lamp', 'on') and is_state('input_boolean.kids_nightmode', 'off')) %}
+          all
+        {% elif (is_state('light.kids_left_lamp', 'off') and is_state('light.kids_right_lamp', 'off')) %}
+          off
+        {% else %}
+          failed
+        {% endif %}
 - platform: smartweather
   wind_unit: kmh
   monitored_conditions:
