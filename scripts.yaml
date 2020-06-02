@@ -41,6 +41,7 @@ climate_to_cool:
 pure_fan_turn_on:
   alias: Turn on air purifier
   sequence:
-  - data: {}
+  - data:
+      speed: "auto"
     entity_id: fan.master_air_purifier
     service: fan.turn_on
