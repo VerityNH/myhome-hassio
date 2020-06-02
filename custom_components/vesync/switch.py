@@ -1,73 +1,77 @@
 """Support for Etekcity VeSync switches."""
 import logging
-from homeassistant.components.switch import (SwitchDevice)
 
-from . import DOMAIN
+from homeassistant.components.switch import SwitchEntity
+from homeassistant.core import callback
+from homeassistant.helpers.dispatcher import async_dispatcher_connect
+
+from .common import VeSyncDevice
+from .const import DOMAIN, VS_DISCOVERY, VS_DISPATCHERS, VS_SWITCHES
 
 _LOGGER = logging.getLogger(__name__)
 
-ENERGY_UPDATE_INT = 21600
+DEV_TYPE_TO_HA = {
+    "wifi-switch-1.3": "outlet",
+    "ESW03-USA": "outlet",
+    "ESW01-EU": "outlet",
+    "ESW15-USA": "outlet",
+    "ESWL01": "switch",
+    "ESWL03": "switch",
+    "ESO15-TB": "outlet",
+}
 
 
-def setup_platform(hass, config, add_entities, discovery_info=None):
-    """Set up the VeSync switch platform."""
-    if discovery_info is None:
-        return
+async def async_setup_entry(hass, config_entry, async_add_entities):
+    """Set up switches."""
 
-    switches = []
+    async def async_discover(devices):
+        """Add new devices to platform."""
+        _async_setup_entities(devices, async_add_entities)
 
-    manager = hass.data[DOMAIN]['manager']
+    disp = async_dispatcher_connect(
+        hass, VS_DISCOVERY.format(VS_SWITCHES), async_discover
+    )
+    hass.data[DOMAIN][VS_DISPATCHERS].append(disp)
 
-    if manager.outlets is not None and manager.outlets:
-        if len(manager.outlets) == 1:
-            count_string = 'switch'
+    _async_setup_entities(hass.data[DOMAIN][VS_SWITCHES], async_add_entities)
+    return True
+
+
+@callback
+def _async_setup_entities(devices, async_add_entities):
+    """Check if device is online and add entity."""
+    dev_list = []
+    for dev in devices:
+        if DEV_TYPE_TO_HA.get(dev.device_type) == "outlet":
+            dev_list.append(VeSyncSwitchHA(dev))
+        elif DEV_TYPE_TO_HA.get(dev.device_type) == "switch":
+            dev_list.append(VeSyncLightSwitch(dev))
         else:
-            count_string = 'switches'
+            _LOGGER.warning(
+                "%s - Unknown device type - %s", dev.device_name, dev.device_type
+            )
+            continue
 
-        _LOGGER.info("Discovered %d VeSync %s",
-                     len(manager.outlets), count_string)
-
-        if len(manager.outlets) > 1:
-            for switch in manager.outlets:
-                switch._energy_update_interval = ENERGY_UPDATE_INT
-                switches.append(VeSyncSwitchHA(switch))
-                _LOGGER.info("Added a VeSync switch named '%s'",
-                             switch.device_name)
-        else:
-            switches.append(VeSyncSwitchHA(manager.outlets))
-    else:
-        _LOGGER.info("No VeSync switches found")
-
-    add_entities(switches)
+    async_add_entities(dev_list, update_before_add=True)
 
 
-class VeSyncSwitchHA(SwitchDevice):
+class VeSyncSwitchHA(VeSyncDevice, SwitchEntity):
     """Representation of a VeSync switch."""
 
     def __init__(self, plug):
         """Initialize the VeSync switch device."""
+        super().__init__(plug)
         self.smartplug = plug
-
-    @property
-    def unique_id(self):
-        """Return the ID of this switch."""
-        return self.smartplug.cid
-
-    @property
-    def name(self):
-        """Return the name of the switch."""
-        return self.smartplug.device_name
 
     @property
     def device_state_attributes(self):
         """Return the state attributes of the device."""
         attr = {}
-        attr['active_time'] = self.smartplug.active_time
-        attr['voltage'] = self.smartplug.voltage
-        attr['active_time'] = self.smartplug.active_time
-        attr['weekly_energy_total'] = self.smartplug.weekly_energy_total
-        attr['monthly_energy_total'] = self.smartplug.monthly_energy_total
-        attr['yearly_energy_total'] = self.smartplug.yearly_energy_total
+        if hasattr(self.smartplug, "weekly_energy_total"):
+            attr["voltage"] = self.smartplug.voltage
+            attr["weekly_energy_total"] = self.smartplug.weekly_energy_total
+            attr["monthly_energy_total"] = self.smartplug.monthly_energy_total
+            attr["yearly_energy_total"] = self.smartplug.yearly_energy_total
         return attr
 
     @property
@@ -80,25 +84,16 @@ class VeSyncSwitchHA(SwitchDevice):
         """Return the today total energy usage in kWh."""
         return self.smartplug.energy_today
 
-    @property
-    def available(self) -> bool:
-        """Return True if switch is available."""
-        return self.smartplug.connection_status == "online"
-
-    @property
-    def is_on(self):
-        """Return True if switch is on."""
-        return self.smartplug.device_status == "on"
-
-    def turn_on(self, **kwargs):
-        """Turn the switch on."""
-        self.smartplug.turn_on()
-
-    def turn_off(self, **kwargs):
-        """Turn the switch off."""
-        self.smartplug.turn_off()
-
     def update(self):
-        """Handle data changes for node values."""
+        """Update outlet details and energy usage."""
         self.smartplug.update()
         self.smartplug.update_energy()
+
+
+class VeSyncLightSwitch(VeSyncDevice, SwitchEntity):
+    """Handle representation of VeSync Light Switch."""
+
+    def __init__(self, switch):
+        """Initialize Light Switch device class."""
+        super().__init__(switch)
+        self.switch = switch
