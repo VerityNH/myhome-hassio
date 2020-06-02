@@ -87,6 +87,8 @@ async def async_setup_entry(hass, config_entry):
 
     hass.data[DOMAIN][VS_DISPATCHERS] = []
 
+    discovery.load_platform(hass, 'fan', DOMAIN, {}, config)
+
     if device_dict[VS_SWITCHES]:
         switches.extend(device_dict[VS_SWITCHES])
         hass.async_create_task(forward_setup(config_entry, "switch"))
