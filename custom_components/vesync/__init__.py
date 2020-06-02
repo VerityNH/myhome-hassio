@@ -133,9 +133,6 @@ async def async_unload_entry(hass, entry):
     return False
 
 def setup(hass, config):
-    """Set up the VeSync component."""
-    from pyvesync.vesync import VeSync
-
     conf = config[DOMAIN]
 
     manager = VeSync(conf.get(CONF_USERNAME), conf.get(CONF_PASSWORD),
