@@ -1,11 +1,10 @@
-#- platform: ffmpeg
-#  name: Garage cam
-#  input: !secret camera_garage_input
-- platform: generic
+- platform: ffmpeg
   name: Garage cam
-  still_image_url: https://www.apkmirror.com/wp-content/uploads/2019/04/5cc0af6bb22b6.png
-  stream_source: !secret camera_garage_input
-  verify_ssl: false
+  input: !secret camera_garage_input
+#- platform: generic
+#  name: Garage cam
+#  stream_source: !secret camera_garage_input
+#  verify_ssl: false
 
 - platform: badnest
 
