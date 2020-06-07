@@ -97,9 +97,9 @@ speedtestdotnet:
     - download
     - upload
 
-vesync:
-  username: !secret vesync_uname
-  password: !secret vesync_passwd
+#vesync:
+#  username: !secret vesync_uname
+#  password: !secret vesync_passwd
 
 #media_player: !include spotify.yaml
 #spotcast: !include spotcast.yaml
