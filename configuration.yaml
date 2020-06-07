@@ -16,6 +16,7 @@ system_health:
 updater:
 zeroconf:
 cloud:
+discovery:
 
 #lovelace:
 #  mode: yaml
@@ -81,13 +82,20 @@ smartweather:
 #mqtt: !include mqtt.yaml
 
 input_boolean: !include_dir_named input_boolean/
-input_number: !include_dir_named input_number/
+input_number: #!include_dir_named input_number/
+input_text:
+input_datetime:
+input_select:
 
 uilogs:
 
-vesync:
-  username: !secret vesync_uname
-  password: !secret vesync_passwd
+speedtestdotnet:
+  scan_interval:
+    minutes: 15
+  monitored_conditions:
+    - ping
+    - download
+    - upload
 
 #media_player: !include spotify.yaml
 #spotcast: !include spotcast.yaml
