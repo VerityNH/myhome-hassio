@@ -26,11 +26,11 @@
 - platform: group
   name: Kitchen Lights
   entities:
-    - light.66514121500291c7f072
-    - light.66514121500291c7eb5c
-    - light.66514121500291c7eb85
-    - light.70886154d8bfc0daf37b
-    - light.70886154d8bfc0db172b
+    - light.kitchen1
+    - light.kitchen2
+    - light.kitchen3
+    - light.kitchen4
+    - light.kitchen5
 
 - platform: wiz_light
   name: "Livingroom left lamp"
