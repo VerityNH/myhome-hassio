@@ -32,6 +32,12 @@
     - light.kitchen4
     - light.kitchen5
 
+- platform: group
+  name: Cooking Lights
+  entities:
+    - light.cooking_light_1
+    - light.cooking_light_2
+
 - platform: wiz_light
   name: "Livingroom left lamp"
   host: "10.0.0.4"
@@ -67,3 +73,11 @@
 - platform: wiz_light
   name: "Corridor light"
   host: "10.0.0.153"
+
+- platform: wiz_light
+  name: "Cooking light 1"
+  host: "10.0.0.245"
+
+- platform: wiz_light
+  name: "Cooking light 2"
+  host: "10.0.0.250"
