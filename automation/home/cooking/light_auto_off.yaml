@@ -24,6 +24,10 @@ condition:
       entity_id: light.cooking_lights
       state: 'off'
 
+    - condition: state
+      entity_id: light.kitchen_lights
+      state: 'off'
+
     - condition: numeric_state
       entity_id: sensor.kitchen_multi_illuminance
       above: 40
