@@ -3,6 +3,8 @@ turn_off_all_lights:
   sequence:
   - entity_id: light.kitchen_lights
     service: light.turn_off
+  - entity_id: light.cooking_lights
+    service: light.turn_off
   - entity_id: light.kids_bedroom_lights
     service: light.turn_off
   - entity_id: light.master_bedroom_lights
