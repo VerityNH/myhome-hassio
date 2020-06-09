@@ -1,0 +1,24 @@
+initial_state: 'on'
+alias: LIGHT OFF Cooking
+description: ''
+trigger:
+  - device_id: 84994766ffa24856ba202da1b2c6fb55
+    domain: binary_sensor
+    entity_id: binary_sensor.kitchen_multi_motion
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+    platform: device
+    type: no_motion
+
+#condition:
+#  condition: state
+#  entity_id: input_boolean.kitchen_nightmode
+#  state: 'off'
+
+action:
+  - data:
+      entity_id: light.cooking_lights
+    entity_id: light.cooking_lights
+    service: light.turn_off

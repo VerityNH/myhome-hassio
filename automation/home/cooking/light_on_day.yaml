@@ -1,0 +1,26 @@
+initial_state: 'on'
+alias: LIGHT ON Cooking
+description: ''
+trigger:
+  - device_id: 84994766ffa24856ba202da1b2c6fb55
+    domain: binary_sensor
+    entity_id: binary_sensor.kitchen_multi_motion
+    platform: device
+    type: motion
+condition:
+  - condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.athome
+        state: 'on'
+#      - condition: state
+#        entity_id: input_boolean.kitchen_nightmode
+#        state: 'off'
+      - condition: state
+        entity_id: input_boolean.cooking_lights_auto
+        state: 'on'
+action:
+  - data:
+      entity_id: light.cooking_lights
+    entity_id: light.cooking_lights
+    service: light.turn_on
