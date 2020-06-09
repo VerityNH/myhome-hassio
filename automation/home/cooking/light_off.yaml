@@ -2,9 +2,8 @@ initial_state: 'on'
 alias: LIGHT OFF Cooking
 description: ''
 trigger:
-  - device_id: 84994766ffa24856ba202da1b2c6fb55
-    domain: binary_sensor
-    entity_id: binary_sensor.kitchen_multi_motion
+  - domain: binary_sensor
+    entity_id: binary_sensor.cooking_motion_sensor_motion
     for:
       hours: 0
       minutes: 2
