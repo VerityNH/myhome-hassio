@@ -119,6 +119,31 @@ google_assistant:
       expose: false
     light.cooking_lights:
       expose: false
+    input_boolean.living_lights_auto:
+      name: "Living auto mode"
+      aliases:
+        - "Living auto lights"
+        - "Auto lights"
+    input_boolean.kitchen_lights_auto:
+      name: "Kitchen auto mode"
+      aliases:
+        - "Kitchen auto lights"
+        - "Auto lights"
+    input_boolean.cooking_lights_auto:
+      name: "Cooking auto mode"
+      aliases:
+        - "Cooking auto lights"
+        - "Auto lights"
+    input_boolean.kids_lights_auto:
+      name: "Kids auto mode"
+      aliases:
+        - "Kids auto lights"
+        - "Auto lights"
+    input_boolean.master_lights_auto:
+      name: "Master auto mode"
+      aliases:
+        - "Master auto lights"
+        - "Auto lights"
 
 #media_player: !include spotify.yaml
 #spotcast: !include spotcast.yaml
