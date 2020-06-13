@@ -121,25 +121,30 @@ google_assistant:
       expose: false
     input_boolean.living_lights_auto:
       name: "Living auto mode"
+      expose: false
       aliases:
         - "Living auto lights"
         - "Auto lights"
     input_boolean.kitchen_lights_auto:
       name: "Kitchen auto mode"
+      expose: false
       aliases:
         - "Kitchen auto lights"
         - "Auto lights"
     input_boolean.cooking_lights_auto:
+      expose: false
       name: "Cooking auto mode"
       aliases:
         - "Cooking auto lights"
         - "Auto lights"
     input_boolean.kids_lights_auto:
+      expose: false
       name: "Kids auto mode"
       aliases:
         - "Kids auto lights"
         - "Auto lights"
     input_boolean.master_lights_auto:
+      expose: false
       name: "Master auto mode"
       aliases:
         - "Master auto lights"
