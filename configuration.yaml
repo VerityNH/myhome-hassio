@@ -101,12 +101,10 @@ google_assistant:
   project_id: YOUR_PROJECT_ID
   service_account: !include google/HASSIntegration-170c7741d7db.json
   report_state: true
-  secure_devices_pin: 1234
   exposed_domains:
     - switch
     - light
     - sensor
-    - cover
     - fan
 
 #media_player: !include spotify.yaml
