@@ -104,7 +104,6 @@ google_assistant:
   exposed_domains:
     - switch
     - light
-    - sensor
     - fan
     - input_boolean
   entity_config:
