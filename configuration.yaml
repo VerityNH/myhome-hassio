@@ -97,6 +97,12 @@ speedtestdotnet:
     - download
     - upload
 
+google_assistant:
+  project_id: YOUR_PROJECT_ID
+  service_account: !include google/HASSIntegration-170c7741d7db.json
+  report_state: true
+  
+
 #media_player: !include spotify.yaml
 #spotcast: !include spotcast.yaml
 
