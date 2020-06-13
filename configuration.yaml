@@ -106,6 +106,19 @@ google_assistant:
     - light
     - sensor
     - fan
+  entity_config:
+    light.living_room_lights:
+      expose: false
+    light.kids_bedroom_lights:
+      expose: false
+    light.master_bedroom_lights:
+      expose: false
+    light.corridor_lights:
+      expose: false
+    light.kitchen_lights:
+      expose: false
+    light.cooking_lights:
+      expose: false
 
 #media_player: !include spotify.yaml
 #spotcast: !include spotcast.yaml
