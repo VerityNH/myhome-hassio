@@ -98,7 +98,7 @@ speedtestdotnet:
     - upload
 
 google_assistant:
-  project_id: YOUR_PROJECT_ID
+  project_id: hassintegration-695ba
   service_account: !include google/HASSIntegration-170c7741d7db.json
   report_state: true
   exposed_domains:
@@ -106,6 +106,7 @@ google_assistant:
     - light
     - sensor
     - fan
+    - input_boolean
   entity_config:
     light.living_room_lights:
       expose: false
