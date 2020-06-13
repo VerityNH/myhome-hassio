@@ -22,7 +22,7 @@ condition:
   conditions:
     - condition: numeric_state
       entity_id: sensor.kitchen_multi_illuminance
-      below: 40
+      below: 70
 
     - condition: state
       entity_id: input_boolean.cooking_lights_auto
