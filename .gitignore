@@ -26,6 +26,7 @@ tts
 themes
 ssh/
 __pycache__/
+google
 # Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
 ip_bans.yaml
 secrets.yaml
