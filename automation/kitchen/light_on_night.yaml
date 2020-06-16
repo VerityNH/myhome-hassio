@@ -20,5 +20,7 @@ condition:
         entity_id: input_boolean.kitchen_lights_auto
         state: 'on'
 action:
-  - entity_id: light.kitchen1
+  - data:
+      entity_id: light.kitchen_lights
+    entity_id: light.kitchen_lights
     service: light.turn_on
