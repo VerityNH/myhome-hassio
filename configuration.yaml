@@ -153,6 +153,10 @@ google_assistant:
 sonoff:
   username: !secret sonoff_username
   password: !secret sonoff_password
+  devices:
+    10008fd3ee:
+      name: Kitchen lamp
+      device_class: light
 
 #media_player: !include spotify.yaml
 #spotcast: !include spotcast.yaml
