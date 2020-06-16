@@ -13,7 +13,10 @@
 - platform: group
   name: Master Bedroom Lights
   entities:
-    - light.kitchen_lamp
+    - light.master_fan_1
+    - light.master_fan_2
+    - light.master_fan_3
+    - light.master_fan_4
 
 - platform: group
   name: Corridor Lights
@@ -23,11 +26,7 @@
 - platform: group
   name: Kitchen Lights
   entities:
-    - light.kitchen1
-    - light.kitchen2
-    - light.kitchen3
-    - light.kitchen4
-    - light.kitchen5
+    - light.kitchen_lamp
 
 - platform: group
   name: Cooking Lights
