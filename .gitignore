@@ -23,7 +23,6 @@ node-red
 deps
 .HA_VERSION
 tts
-themes
 ssh/
 __pycache__/
 google
