@@ -4,6 +4,7 @@ const LitElement = Object.getPrototypeOf(
 const html = LitElement.prototype.html;
 
 const weatherIconsDay = {
+  clr: "day",
   clear: "day",
   "clear-night": "night",
   cloudy: "cloudy",
