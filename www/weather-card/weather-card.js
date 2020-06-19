@@ -230,6 +230,13 @@ class WeatherCard extends LitElement {
                             lang,
                             {
                               weekday: "short"
+                            })
+                    }
+                            ${
+                        new Date(daily.datetime).toLocaleTimeString(
+                            lang,
+                            {
+                              hour: '2-digit'
                             }
                         )
                     }</span
