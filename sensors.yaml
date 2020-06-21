@@ -120,3 +120,12 @@
     - solar_radiation
     - illuminance
     - lightning_count
+
+- platform: min_max
+  type: mean
+  name: Average house humidity
+  entity_ids:
+    - sensor.kids_multy_relative_humidity
+    - sensor.kitchen_multi_relative_humidity
+    - sensor.livingroom_multi_relative_humidity
+    - sensor.master_multi_relative_humidity
