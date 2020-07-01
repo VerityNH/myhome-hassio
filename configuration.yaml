@@ -92,10 +92,7 @@ uilogs:
 speedtestdotnet:
   scan_interval:
     minutes: 15
-  monitored_conditions:
-    - ping
-    - download
-    - upload
+
 
 google_assistant:
   project_id: hassintegration-695ba
