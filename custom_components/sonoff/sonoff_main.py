@@ -13,7 +13,7 @@ from .sonoff_local import EWeLinkLocal
 _LOGGER = logging.getLogger(__name__)
 
 ATTRS = ('local', 'cloud', 'rssi', 'humidity', 'temperature', 'power',
-         'current', 'voltage', 'battery', 'consumption')
+         'current', 'voltage', 'battery', 'consumption', 'water')
 
 # map cloud attrs to local attrs
 ATTRS_MAP = {
@@ -45,6 +45,12 @@ def get_attrs(state: dict) -> dict:
     for k in ATTRS_MAP:
         if k in state:
             state[ATTRS_MAP[k]] = state.pop(k)
+
+    # Fix "temperature": "2096", "humidity": "6443"
+    for k in ('temperature', 'humidity'):
+        if k in state and isinstance(state[k], str):
+            if state[k].isdigit():
+                state[k] = int(state[k]) / 100.0
 
     return {k: state[k] for k in ATTRS if k in state}
 
@@ -238,7 +244,9 @@ class EWeLinkDevice:
         state = device['params']
 
         self._attrs = device['extra'] or {}
-        self._is_th_3_4_0 = 'mainSwitch' in state
+        # don't know if deviceType only in Sonoff TH
+        # https://github.com/AlexxIT/SonoffLAN/issues/158
+        self._is_th_3_4_0 = 'deviceType' in state
 
         if force_refresh:
             attrs = get_attrs(state)
