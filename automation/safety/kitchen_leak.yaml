@@ -1,0 +1,18 @@
+alias: ALARM - Kitchen Leak Detected
+description: ''
+trigger:
+  - entity_id: binary_sensor.kitchen_leak_sensor_water
+    platform: state
+    from: off
+    to: on
+condition: []
+action:
+  - data:
+      message: Water detected in the Kitchen area!
+      title: LEAK Alarm!!!
+    service: notify.mobile_app_nicksphone
+  - data:
+      message: Water detected in the Kitchen area!
+      title: LEAK Alarm!!!
+    service: notify.mobile_app_sm_n970u
+mode: single

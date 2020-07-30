@@ -1,0 +1,18 @@
+alias: ALARM - Master Bathroom Leak Detected
+description: ''
+trigger:
+  - entity_id: binary_sensor.master_bathroom_leak_sensor_water
+    platform: state
+    from: off
+    to: on
+condition: []
+action:
+  - data:
+      message: Water detected in the Master Bathroom area!
+      title: LEAK Alarm!!!
+    service: notify.mobile_app_nicksphone
+  - data:
+      message: Water detected in the Master Bathroom area!
+      title: LEAK Alarm!!!
+    service: notify.mobile_app_sm_n970u
+mode: single
