@@ -1,0 +1,18 @@
+alias: ALARM - CO Detected
+description: ''
+trigger:
+  - entity_id: sensor.corridor_co_detector
+    platform: state
+  - entity_id: sensor.kitchen_co_detector
+    platform: state
+condition: []
+action:
+  - data:
+      message: CO Detected in the Kitchen or Corridor area!
+      title: CO Alarm!!!
+    service: notify.mobile_app_nicksphone
+  - data:
+      message: CO Detected in the Kitchen or Corridor area!
+      title: CO Alarm!!!
+    service: notify.mobile_app_sm_n970u
+mode: single
