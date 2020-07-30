@@ -1,10 +1,11 @@
 alias: ALARM - Master Bathroom Leak Detected
 description: ''
 trigger:
-  - entity_id: binary_sensor.guest_bathroom_leak_sensor_water
-    platform: state
-    from: off
-    to: on
+- device_id: e5c43a27c4694bbeb759a2faeddf8c77
+  domain: binary_sensor
+  entity_id: binary_sensor.guest_bathroom_leak_sensor_water
+  platform: device
+  type: moist
 condition: []
 action:
   - data:

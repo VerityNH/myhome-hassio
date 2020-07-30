@@ -1,10 +1,11 @@
 alias: ALARM - Kitchen Leak Detected
 description: ''
 trigger:
-  - entity_id: binary_sensor.kitchen_leak_sensor_water
-    platform: state
-    from: off
-    to: on
+- device_id: 73decac62d0945e6b6a5bf6bd539f5eb
+  domain: binary_sensor
+  entity_id: binary_sensor.kitchen_leak_sensor_water
+  platform: device
+  type: moist
 condition: []
 action:
   - data:
