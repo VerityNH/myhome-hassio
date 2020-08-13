@@ -8,11 +8,35 @@ trigger:
 condition: []
 action:
   - data:
-      message: Smoke or Fire Detected in the Kitchen or Corridor area!
+      message: "<b>Smoke or Fire</b> detected in the <b>Kitchen or Corridor area</b>!"
       title: SMOKE Alarm!!!
+      data:
+        channel: Alarm
+        importance: high           # set the channel importance to high
+        ledColor: red              # make the LED flash red for this notification
+        vibrationPattern: "1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000"     # SOS vibration pattern
+        persistent: true           # set to persistent
+        sticky: true               # make sure it doesn't dismiss if selected
+        clickAction: /lovelace/security    # navigate user to the lovelace alarm view
+        icon: /local/images/alarm.png     # relative path to the icon
+        color: red                 # set the color of the notification to red
+        group: alarm               # the group name to group together notifications
+        tag: alarm                 # tag is required in order to remove the persistent notification
     service: notify.mobile_app_nicksphone
   - data:
-      message: Smoke or Fire Detected in the Kitchen or Corridor area!
+      message: "<b>Smoke or Fire</b> detected in the <b>Kitchen or Corridor area</b>!"
       title: SMOKE Alarm!!!
+      data:
+        channel: Alarm
+        importance: high           # set the channel importance to high
+        ledColor: red              # make the LED flash red for this notification
+        vibrationPattern: "1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000"     # SOS vibration pattern
+        persistent: true           # set to persistent
+        sticky: true               # make sure it doesn't dismiss if selected
+        clickAction: /lovelace/security    # navigate user to the lovelace alarm view
+        icon: /local/images/alarm.png     # relative path to the icon
+        color: red                 # set the color of the notification to red
+        group: alarm               # the group name to group together notifications
+        tag: alarm                 # tag is required in order to remove the persistent notification
     service: notify.mobile_app_sm_n970u
 mode: single
