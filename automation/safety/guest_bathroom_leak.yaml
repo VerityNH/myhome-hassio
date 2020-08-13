@@ -15,7 +15,7 @@ action:
         channel: Alarm
         importance: high           # set the channel importance to high
         ledColor: red              # make the LED flash red for this notification
-        vibrationPattern: "100,30,100,30,100,30,200,30,200,30,200,30,100,30,100,30,100"     # SOS vibration pattern
+        vibrationPattern: "1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000"     # SOS vibration pattern
         persistent: true           # set to persistent
         sticky: true               # make sure it doesn't dismiss if selected
         clickAction: /lovelace/security    # navigate user to the lovelace alarm view
