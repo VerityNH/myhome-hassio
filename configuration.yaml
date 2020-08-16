@@ -87,7 +87,7 @@ input_text:
 input_datetime:
 input_select:
 
-uilogs:
+#uilogs:
 
 speedtestdotnet:
   scan_interval:
