@@ -14,14 +14,12 @@ condition:
         below: '21'
         condition: numeric_state
         entity_id: sensor.average_house_temperature
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: input_boolean.guest_mode
-            state: 'on'
-          - condition: state
-            entity_id: binary_sensor.athome
-            state: 'on'
+      - condition: zone
+        entity_id: person.nata
+        zone: zone.home
+      - condition: state
+        entity_id: binary_sensor.athome
+        state: 'on'
 action:
   - entity_id: climate.kitchen_thermostat
     service_template: >
