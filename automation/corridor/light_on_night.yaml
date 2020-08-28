@@ -8,8 +8,18 @@ trigger:
     platform: device
     type: motion
 condition:
-  - after: '23:00:00'
-    before: '6:00:00'
-    condition: time
+  - condition: and
+    conditions:
+      - after: '23:00:00'
+        before: '6:00:00'
+        condition: time
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_boolean.guest_mode
+            state: 'on'
+          - condition: state
+            entity_id: binary_sensor.athome
+            state: 'on'
 action:
   - scene: scene.corridor_night
