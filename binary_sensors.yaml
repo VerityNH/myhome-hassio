@@ -5,7 +5,8 @@
       device_class: occupancy
       value_template: >-
         {{ is_state('person.nata', 'home')
-           or is_state('person.nick', 'home')}}
+           or is_state('person.nick', 'home')
+           or is_state('input_boolean.guest_mode', 'on')}}
 
     nick_home:
       friendly_name: "Nick at home"
