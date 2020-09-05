@@ -37,7 +37,7 @@
 #  view: true
 #  #icon: mdi:home
 #  entities:
-#   - light.kitchen_lights
+#   - light.dining_lights_switch
 #   - media_player.kitchen_display
 #   - climate.kitchen_thermostat
 #

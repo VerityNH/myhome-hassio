@@ -10,7 +10,7 @@ badges:
 
 cards:
   - type: light
-    entity: light.kitchen_lights
+    entity: light.dining_lights_switch
   - type: media-control
     entity: media_player.kitchen_display
   - type: thermostat

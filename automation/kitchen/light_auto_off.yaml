@@ -21,7 +21,7 @@ condition:
   condition: and
   conditions:
     - condition: state
-      entity_id: light.kitchen_lights
+      entity_id: light.dining_lights_switch
       state: 'off'
 
     - condition: numeric_state

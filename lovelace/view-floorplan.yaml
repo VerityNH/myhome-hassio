@@ -10,7 +10,7 @@ cards:
       stylesheet: /local/floorplan/config/home/floorplan.css
       rules:
         - entities:
-            - light.kitchen_lights
+            - light.dining_lights_switch
             - light.livingroom_left_lamp
             - light.livingroom_right_lamp
             - light.corridor_lights

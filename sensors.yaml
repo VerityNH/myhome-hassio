@@ -56,25 +56,25 @@
     first_floor_lights:
       friendly_name: "First floor light state"
       value_template: >-
-        {% if (is_state('light.livingroom_right_lamp', 'on') and is_state('light.livingroom_left_lamp', 'off') and is_state('light.kitchen_lights', 'off') and is_state('input_boolean.living_nightmode', 'off')) %}
+        {% if (is_state('light.livingroom_right_lamp', 'on') and is_state('light.livingroom_left_lamp', 'off') and is_state('light.dining_lights_switch', 'off') and is_state('input_boolean.living_nightmode', 'off')) %}
           living_right_on
-        {% elif (is_state('light.livingroom_right_lamp', 'off') and is_state('light.livingroom_left_lamp', 'on') and is_state('light.kitchen_lights', 'off') and is_state('input_boolean.living_nightmode', 'off')) %}
+        {% elif (is_state('light.livingroom_right_lamp', 'off') and is_state('light.livingroom_left_lamp', 'on') and is_state('light.dining_lights_switch', 'off') and is_state('input_boolean.living_nightmode', 'off')) %}
           living_left_on
-        {% elif (is_state('light.livingroom_right_lamp', 'off') and is_state('light.livingroom_left_lamp', 'on') and is_state('light.kitchen_lights', 'off') and is_state('input_boolean.living_nightmode', 'on')) %}
+        {% elif (is_state('light.livingroom_right_lamp', 'off') and is_state('light.livingroom_left_lamp', 'on') and is_state('light.dining_lights_switch', 'off') and is_state('input_boolean.living_nightmode', 'on')) %}
           living_nightmode
-        {% elif (is_state('light.livingroom_right_lamp', 'off') and is_state('light.livingroom_left_lamp', 'on') and is_state('light.kitchen_lights', 'on') and is_state('input_boolean.living_nightmode', 'on')) %}
+        {% elif (is_state('light.livingroom_right_lamp', 'off') and is_state('light.livingroom_left_lamp', 'on') and is_state('light.dining_lights_switch', 'on') and is_state('input_boolean.living_nightmode', 'on')) %}
           kitchen_and_nightmode
-        {% elif (is_state('light.livingroom_right_lamp', 'on') and is_state('light.livingroom_left_lamp', 'on') and is_state('light.kitchen_lights', 'off') and is_state('input_boolean.living_nightmode', 'off')) %}
+        {% elif (is_state('light.livingroom_right_lamp', 'on') and is_state('light.livingroom_left_lamp', 'on') and is_state('light.dining_lights_switch', 'off') and is_state('input_boolean.living_nightmode', 'off')) %}
           living_all
-        {% elif (is_state('light.livingroom_right_lamp', 'off') and is_state('light.livingroom_left_lamp', 'off') and is_state('light.kitchen_lights', 'on') and is_state('input_boolean.living_nightmode', 'off')) %}
+        {% elif (is_state('light.livingroom_right_lamp', 'off') and is_state('light.livingroom_left_lamp', 'off') and is_state('light.dining_lights_switch', 'on') and is_state('input_boolean.living_nightmode', 'off')) %}
           kitchen_on
-        {% elif (is_state('light.livingroom_right_lamp', 'off') and is_state('light.livingroom_left_lamp', 'on') and is_state('light.kitchen_lights', 'on') and is_state('input_boolean.living_nightmode', 'off')) %}
+        {% elif (is_state('light.livingroom_right_lamp', 'off') and is_state('light.livingroom_left_lamp', 'on') and is_state('light.dining_lights_switch', 'on') and is_state('input_boolean.living_nightmode', 'off')) %}
           kitchen_and_left_on
-        {% elif (is_state('light.livingroom_right_lamp', 'on') and is_state('light.livingroom_left_lamp', 'off') and is_state('light.kitchen_lights', 'on') and is_state('input_boolean.living_nightmode', 'off')) %}
+        {% elif (is_state('light.livingroom_right_lamp', 'on') and is_state('light.livingroom_left_lamp', 'off') and is_state('light.dining_lights_switch', 'on') and is_state('input_boolean.living_nightmode', 'off')) %}
           kitchen_and_right_on
-        {% elif (is_state('light.livingroom_right_lamp', 'on') and is_state('light.livingroom_left_lamp', 'on') and is_state('light.kitchen_lights', 'on') and is_state('input_boolean.living_nightmode', 'off')) %}
+        {% elif (is_state('light.livingroom_right_lamp', 'on') and is_state('light.livingroom_left_lamp', 'on') and is_state('light.dining_lights_switch', 'on') and is_state('input_boolean.living_nightmode', 'off')) %}
           all
-        {% elif (is_state('light.livingroom_right_lamp', 'off') and is_state('light.livingroom_left_lamp', 'off') and is_state('light.kitchen_lights', 'off')) %}
+        {% elif (is_state('light.livingroom_right_lamp', 'off') and is_state('light.livingroom_left_lamp', 'off') and is_state('light.dining_lights_switch', 'off')) %}
           off
         {% else %}
           failed

@@ -1,7 +1,7 @@
 turn_off_all_lights:
   alias: Turn off all lights
   sequence:
-  - entity_id: light.kitchen_lights
+  - entity_id: light.dining_lights_switch
     service: light.turn_off
   - entity_id: light.cooking_lights
     service: light.turn_off

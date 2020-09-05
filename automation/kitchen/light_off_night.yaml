@@ -19,6 +19,6 @@ condition:
 
 action:
   - data:
-      entity_id: light.kitchen_lights
-    entity_id: light.kitchen_lights
+      entity_id: light.dining_lights_switch
+    entity_id: light.dining_lights_switch
     service: light.turn_off

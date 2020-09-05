@@ -114,7 +114,7 @@ google_assistant:
       expose: false
     light.corridor_lights:
       expose: false
-    light.kitchen_lights:
+    light.dining_lights_switch:
       expose: false
     light.cooking_lights:
       expose: false
