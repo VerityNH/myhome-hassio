@@ -22,5 +22,6 @@ condition:
 action:
   - data:
       entity_id: light.dining_lights_switch
+      brightness: 100
     entity_id: light.dining_lights_switch
     service: light.turn_on
