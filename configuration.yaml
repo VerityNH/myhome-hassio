@@ -149,12 +149,19 @@ google_assistant:
         - "Master auto lights"
         - "Auto lights"
 
-arlo:
+aarlo:
   username: !secret arlo_username
   password: !secret arlo_password
+  refresh_devices_every: 2
+  stream_timeout: 120
 
 alarm_control_panel:
-  - platform: arlo
+  - platform: aarlo
+    away_mode_name: armed
+    home_mode_name: home
+    night_mode_name: night
+    trigger_time: 30
+    alarm_volume: 1
 
 #sonoff:
 #  username: !secret sonoff_username
