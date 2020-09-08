@@ -178,3 +178,16 @@ alarm_control_panel:
 #  default: info
 #  logs:
 #    homeassistant.components.smartthings: debug
+
+logger:
+  default: info
+  logs:
+    custom_components.aarlo: debug
+    custom_components.aarlo.alarm_control_panel: debug
+    custom_components.aarlo.binary_sensor: debug
+    custom_components.aarlo.camera: debug
+    custom_components.aarlo.light: debug
+    custom_components.aarlo.media_player: debug
+    custom_components.aarlo.sensor: debug
+    custom_components.aarlo.switch: debug
+    pyaarlo: debug
