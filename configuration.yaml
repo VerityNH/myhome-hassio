@@ -149,6 +149,13 @@ google_assistant:
         - "Master auto lights"
         - "Auto lights"
 
+arlo:
+  username: !secret arlo_username
+  password: !secret arlo_password
+
+alarm_control_panel:
+  - platform: arlo
+
 #sonoff:
 #  username: !secret sonoff_username
 #  password: !secret sonoff_password
