@@ -166,9 +166,9 @@ switch:
 
 alarm_control_panel:
   - platform: aarlo
-    away_mode_name: armed
-    home_mode_name: home
-    night_mode_name: night
+#    away_mode_name: armed
+#    home_mode_name: home
+#    night_mode_name: night
     trigger_time: 30
     alarm_volume: 1
 
