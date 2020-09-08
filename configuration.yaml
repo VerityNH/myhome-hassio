@@ -149,28 +149,28 @@ google_assistant:
         - "Master auto lights"
         - "Auto lights"
 
-arlo:
+aarlo:
   username: !secret arlo_username
   password: !secret arlo_password
   refresh_devices_every: 2
-#  stream_timeout: 120
+  stream_timeout: 120
 
-#switch:
-#  - platform: aarlo
-#    siren: True
-#    all_sirens: True
-#    snapshot: True
-#    doorbell_silence: True
-#    siren_volume: 1
-#    siren_duration: 10
+switch:
+  - platform: aarlo
+    siren: True
+    all_sirens: True
+    snapshot: True
+    doorbell_silence: True
+    siren_volume: 1
+    siren_duration: 10
 
 alarm_control_panel:
-  - platform: arlo
-#    away_mode_name: armed
-#    home_mode_name: home
-#    night_mode_name: night
-#    trigger_time: 30
-#    alarm_volume: 1
+  - platform: aarlo
+    away_mode_name: armed
+    home_mode_name: home
+    night_mode_name: night
+    trigger_time: 30
+    alarm_volume: 1
 
 #sonoff:
 #  username: !secret sonoff_username
