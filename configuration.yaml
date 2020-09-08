@@ -155,6 +155,15 @@ aarlo:
   refresh_devices_every: 2
   stream_timeout: 120
 
+switch:
+  - platform: aarlo
+    siren: True
+    all_sirens: True
+    snapshot: True
+    doorbell_silence: True
+    siren_volume: 1
+    siren_duration: 10
+
 alarm_control_panel:
   - platform: aarlo
     away_mode_name: armed
@@ -179,15 +188,15 @@ alarm_control_panel:
 #  logs:
 #    homeassistant.components.smartthings: debug
 
-logger:
-  default: info
-  logs:
-    custom_components.aarlo: debug
-    custom_components.aarlo.alarm_control_panel: debug
-    custom_components.aarlo.binary_sensor: debug
-    custom_components.aarlo.camera: debug
-    custom_components.aarlo.light: debug
-    custom_components.aarlo.media_player: debug
-    custom_components.aarlo.sensor: debug
-    custom_components.aarlo.switch: debug
-    pyaarlo: debug
+#logger:
+#  default: info
+#  logs:
+#    custom_components.aarlo: debug
+#    custom_components.aarlo.alarm_control_panel: debug
+#    custom_components.aarlo.binary_sensor: debug
+#    custom_components.aarlo.camera: debug
+#    custom_components.aarlo.light: debug
+#    custom_components.aarlo.media_player: debug
+#    custom_components.aarlo.sensor: debug
+#    custom_components.aarlo.switch: debug
+#    pyaarlo: debug

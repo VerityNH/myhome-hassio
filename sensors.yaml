@@ -129,3 +129,15 @@
     - sensor.kitchen_multi_relative_humidity
     - sensor.livingroom_multi_relative_humidity
     - sensor.master_multi_relative_humidity
+
+- platform: aarlo
+  monitored_conditions:
+    - total_cameras
+    - last_capture
+    - recent_activity
+    - captured_today
+    - battery_level
+    - signal_strength
+    - temperature
+    - humidity
+    - air_quality

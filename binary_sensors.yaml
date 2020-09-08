@@ -38,3 +38,11 @@
 - platform: car_wash
   weather: weather.kash_daynight
   days: 5
+
+- platform: aarlo
+  monitored_conditions:
+    - motion
+    - sound
+    - ding
+    - cry
+    - connectivity
