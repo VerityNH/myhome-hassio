@@ -95,31 +95,31 @@
         {% else %}
           failed
         {% endif %}
-- platform: smartweather
-  wind_unit: kmh
-  monitored_conditions:
-    - temperature
-    - feels_like_temperature
-    - heat_index
-    - wind_chill
-    - dewpoint
-    - wind_speed
-    - wind_gust
-    - wind_lull
-    - wind_bearing
-    - wind_direction
-    - precipitation
-    - precipitation_rate
-    - precipitation_last_1hr
-    - precipitation_yesterday
-    - precip_minutes_local_day
-    - precip_minutes_local_yesterday
-    - humidity
-    - pressure
-    - uv
-    - solar_radiation
-    - illuminance
-    - lightning_count
+#- platform: smartweather
+#  wind_unit: kmh
+#  monitored_conditions:
+#    - temperature
+#    - feels_like_temperature
+#    - heat_index
+#    - wind_chill
+#    - dewpoint
+#    - wind_speed
+#    - wind_gust
+#    - wind_lull
+#    - wind_bearing
+#    - wind_direction
+#    - precipitation
+#    - precipitation_rate
+#    - precipitation_last_1hr
+#    - precipitation_yesterday
+#    - precip_minutes_local_day
+#    - precip_minutes_local_yesterday
+#    - humidity
+#    - pressure
+#    - uv
+#    - solar_radiation
+#    - illuminance
+#    - lightning_count
 
 - platform: min_max
   type: mean
