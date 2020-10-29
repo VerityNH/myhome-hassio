@@ -32,7 +32,7 @@ zone: !include zones.yaml
 
 #automation: !include_dir_list automation/
 
-automation: automations.yaml
+automation: !include automations.yaml
 
 script: !include scripts.yaml
 
