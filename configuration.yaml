@@ -30,7 +30,9 @@ group: !include groups.yaml
 
 zone: !include zones.yaml
 
-automation: !include_dir_list automation/
+#automation: !include_dir_list automation/
+
+automation:
 
 script: !include scripts.yaml
 
