@@ -1,5 +1,5 @@
 - id: '1603938426639'
-  alias: Cooking light auto turn off
+  alias: 'COOKING: LIGHT: auto turn off'
   description: ''
   trigger:
   - platform: sun
@@ -26,4 +26,1081 @@
   - service: input_boolean.turn_off
     data:
       entity_id: input_boolean.cooking_lights_auto
+    entity_id: input_boolean.cooking_lights_auto
+  mode: single
+- id: '1603938908950'
+  alias: 'COOKING: LIGHT: auto turn on'
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -00:30:00
+  - platform: time_pattern
+    minutes: /1
+  condition:
+  - condition: and
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.kitchen_multi_illuminance
+      below: '70'
+    - condition: state
+      entity_id: input_boolean.cooking_lights_auto
+      state: 'off'
+  action:
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.cooking_lights_auto
+    entity_id: input_boolean.cooking_lights_auto
+  mode: single
+- id: '1603938994819'
+  alias: 'COOKING: LIGHT: turn off'
+  description: ''
+  trigger:
+  - type: no_motion
+    platform: device
+    device_id: a570862f0dac11eba36f81d6a41c3872
+    entity_id: binary_sensor.cooking_motion_sensor_motion
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+  condition: []
+  action:
+  - data:
+      entity_id: light.cooking_lights
+    entity_id: light.cooking_lights
+    service: light.turn_off
+  mode: single
+- id: '1603939199685'
+  alias: 'COOKING: LIGHT: turn on'
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: a570862f0dac11eba36f81d6a41c3872
+    entity_id: binary_sensor.cooking_motion_sensor_motion
+    domain: binary_sensor
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.athome
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.cooking_lights_auto
+      state: 'on'
+  action:
+  - data:
+      entity_id: light.cooking_lights
+    entity_id: light.cooking_lights
+    service: light.turn_on
+  mode: single
+- id: '1603939331663'
+  alias: 'CORRIDOR: LIGHT: turn off'
+  description: ''
+  trigger:
+  - type: no_motion
+    platform: device
+    device_id: a570dd340dac11eb8158c5f661079c4c
+    entity_id: binary_sensor.corridor_motion_sensor_motion
+    domain: binary_sensor
+  condition: []
+  action:
+  - data:
+      entity_id: light.corridor_lights
+    entity_id: light.corridor_lights
+    service: light.turn_off
+  mode: single
+- id: '1603939428014'
+  alias: 'CORRIDOR: LIGHT: DAY: turn on'
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: a570dd340dac11eb8158c5f661079c4c
+    entity_id: binary_sensor.corridor_motion_sensor_motion
+    domain: binary_sensor
+  condition:
+  - after: '6:00:00'
+    before: '23:00:00'
+    condition: time
+  action:
+  - scene: scene.corridor_day
+  mode: single
+- id: '1603939504172'
+  alias: 'CORRIDOR: LIGHT: NIGHT: turn on'
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: a570dd340dac11eb8158c5f661079c4c
+    entity_id: binary_sensor.corridor_motion_sensor_motion
+    domain: binary_sensor
+  condition:
+  - after: '23:00:00'
+    before: '6:00:00'
+    condition: time
+  action:
+  - scene: scene.corridor_night
+  mode: single
+- id: '1603939854041'
+  alias: 'HOME: CLIMATE: Adjust climate control'
+  description: ''
+  trigger:
+  - minutes: /30
+    platform: time_pattern
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.all_windows_closed
+      state: 'off'
+    - above: '25'
+      below: '21'
+      condition: numeric_state
+      entity_id: sensor.average_house_temperature
+    - condition: zone
+      entity_id: person.nata
+      zone: zone.home
+    - condition: state
+      entity_id: binary_sensor.athome
+      state: 'on'
+  action:
+  - entity_id: climate.kitchen_thermostat
+    service_template: "{% if (states('sensor.smartweather_temperature') | int < 15)\
+      \ %}\n  script.climate_to_heat\n{% elif ((states('sensor.smartweather_temperature')\
+      \ | int >= 15) and (states('sensor.smartweather_temperature') | int < 25)) %}\n\
+      \  script.climate_to_auto\n{% else %}\n  script.climate_to_cool\n{% endif %}\n"
+  mode: single
+- id: '1603939947635'
+  alias: 'HOME: CLIMATE: Start ecomode when nobody home'
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.athome
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: climate.kitchen
+      preset_mode: eco
+    entity_id: climate.kitchen_thermostat
+    service: climate.set_preset_mode
+  mode: single
+- id: '1603940036889'
+  alias: 'HOME: CLIMATE: Start climate when windows closed'
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.all_windows_closed
+    for: 00:00:15
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - entity_id: climate.kitchen_thermostat
+    service_template: "{% if (states('sensor.smartweather_temperature') | int < 15)\
+      \ %}\n  script.climate_to_heat\n{% elif ((states('sensor.smartweather_temperature')\
+      \ | int >= 15)  and (states('sensor.smartweather_temperature') | int < 25))\
+      \ %}\n  script.climate_to_auto\n{% else %}\n  script.climate_to_cool\n{% endif\
+      \ %}\n"
+  mode: single
+- id: '1603940118378'
+  alias: 'HOME: PURIFIER: Start when someone home'
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.athome
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - service: script.pure_fan_turn_on
+  mode: single
+- id: '1603940222640'
+  alias: 'HOME: CLIMATE: Stop ecomode when someone home'
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.athome
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: climate.kitchen
+      preset_mode: none
+    entity_id: climate.kitchen_thermostat
+    service: climate.set_preset_mode
+  - entity_id: climate.kitchen_thermostat
+    service_template: "{% if (states('sensor.smartweather_temperature') | int < 15)\
+      \ %}\n  script.climate_to_heat\n{% elif ((states('sensor.smartweather_temperature')\
+      \ | int >= 15) and (states('sensor.smartweather_temperature') | int < 25)) %}\n\
+      \  script.climate_to_auto\n{% else %}\n  script.climate_to_cool\n{% endif %}\n"
+  mode: single
+- id: '1603940300096'
+  alias: 'HOME: CLIMATE: Stop climate when windows open'
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.all_windows_closed
+    for: 00:00:15
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data: {}
+    entity_id: climate.kitchen_thermostat
+    service: climate.turn_off
+  mode: single
+- id: '1603940368897'
+  alias: 'HOME: LIGHT: Turn lights off when nobody home'
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.athome
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - service: script.turn_off_all_lights
+  mode: single
+- id: '1603940497817'
+  alias: 'HOME: VACUUM: Start vacuum at 8-10pm'
+  description: ''
+  trigger:
+  - at: '20:10'
+    platform: time
+  condition: []
+  action:
+  - data:
+      entity_id: vacuum.e200p8u2391901643866
+    entity_id: vacuum.e200p8u2391901643866
+    service: vacuum.turn_on
+  mode: single
+- id: '1603940564282'
+  alias: 'HOME: VACUUM: Start vacuum when nobody home'
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.athome
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: vacuum.e200p8u2391901643866
+    entity_id: vacuum.e200p8u2391901643866
+    service: vacuum.turn_on
+  mode: single
+- id: '1603940703649'
+  alias: 'KIDS: LIGHT: auto turn off'
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunrise
+    offset: 01:00:00
+  - platform: time_pattern
+    minutes: /10
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: light.kids_bedroom_lights
+      state: 'off'
+    - condition: numeric_state
+      entity_id: sensor.kids_multy_illuminance
+      above: '10'
+    - condition: state
+      entity_id: input_boolean.kids_lights_auto
+      state: 'on'
+  action:
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.kids_lights_auto
+  mode: single
+- id: '1603940800947'
+  alias: 'KIDS: LIGHT: auto turn on'
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -00:30:00
+  - platform: time_pattern
+    minutes: /1
+  condition:
+  - condition: and
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.kids_multy_illuminance
+      below: '10'
+    - condition: state
+      entity_id: input_boolean.kids_lights_auto
+      state: 'off'
+  action:
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.kids_lights_auto
+  mode: single
+- id: '1603940939568'
+  alias: 'KIDS: LIGHT: turn off'
+  description: ''
+  trigger:
+  - type: no_motion
+    platform: device
+    device_id: a57023d80dac11eb8378152e76972078
+    entity_id: binary_sensor.kids_multy_motion
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition:
+  - condition: state
+    entity_id: input_boolean.kids_nightmode
+    state: 'off'
+  action:
+  - data:
+      entity_id: light.kids_bedroom_lights
+    entity_id: light.kids_bedroom_lights
+    service: light.turn_off
+  mode: single
+- id: '1603941029779'
+  alias: 'KIDS: LIGHT: turn on'
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: a57023d80dac11eb8378152e76972078
+    entity_id: binary_sensor.kids_multy_motion
+    domain: binary_sensor
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.athome
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.kids_nightmode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.kids_lights_auto
+      state: 'on'
+  action:
+  - entity_id: light.kids_bedroom_lights
+    service: light.turn_on
+  mode: single
+- id: '1603941127999'
+  alias: 'KIDS: LIGHT: night mode turn off'
+  description: ''
+  trigger:
+  - event: sunrise
+    platform: sun
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.kids_nightmode
+    entity_id: input_boolean.kids_nightmode
+  mode: single
+- id: '1603941207074'
+  alias: 'KIDS: LIGHT: night mode turn on'
+  description: ''
+  trigger:
+  - at: '21:30'
+    platform: time
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.kids_nightmode
+    data:
+      entity_id: input_boolean.kids_nightmode
+  mode: single
+- id: '1603941333137'
+  alias: 'KIDS: LIGHT: ASLEEP: turn off'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.kids_nightmode
+    to: 'off'
+    from: 'on'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.athome
+    state: 'on'
+  action:
+  - scene: scene.kids_day_mode
+  - service: light.turn_off
+    entity_id: light.kids_bedroom_lights
+    data:
+      entity_id: light.kids_bedroom_lights
+  mode: single
+- id: '1603941435601'
+  alias: 'KIDS: LIGHT: ASLEEP: turn on'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.kids_nightmode
+    to: 'on'
+    from: 'off'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.athome
+    state: 'on'
+  action:
+  - scene: scene.kids_night_mode
+  mode: single
+- id: '1603941608422'
+  alias: 'KITCHEN: LIGHT: auto turn off'
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunrise
+    offset: 01:00:00
+  - platform: time_pattern
+    minutes: /10
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: light.dining_lights_switch
+      state: 'off'
+    - condition: numeric_state
+      entity_id: sensor.kitchen_multi_illuminance
+      above: '30'
+    - condition: state
+      entity_id: input_boolean.kitchen_lights_auto
+      state: 'on'
+  action:
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.kitchen_lights_auto
+    entity_id: input_boolean.kitchen_lights_auto
+  mode: single
+- id: '1603941742754'
+  alias: 'KITCHEN: LIGHT: auto turn on'
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -00:30:00
+  - platform: time_pattern
+    minutes: /1
+  condition:
+  - condition: and
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.kitchen_multi_illuminance
+      below: '30'
+    - condition: state
+      entity_id: input_boolean.kitchen_lights_auto
+      state: 'off'
+  action:
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.kitchen_lights_auto
+    entity_id: input_boolean.kitchen_lights_auto
+  mode: single
+- id: '1603941883508'
+  alias: 'KITCHEN: LIGHT: DAY: turn off'
+  description: ''
+  trigger:
+  - type: no_motion
+    platform: device
+    device_id: a57154d80dac11eb9bff254eb8d285bb
+    entity_id: binary_sensor.kitchen_multi_motion
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition:
+  - condition: state
+    entity_id: input_boolean.kitchen_nightmode
+    state: 'off'
+  action:
+  - service: light.turn_off
+    data: {}
+    entity_id: light.dining_lights_switch
+  mode: single
+- id: '1603942001997'
+  alias: 'KITCHEN: LIGHT: NIGHT: turn off'
+  description: ''
+  trigger:
+  - type: no_motion
+    platform: device
+    device_id: a57154d80dac11eb9bff254eb8d285bb
+    entity_id: binary_sensor.kitchen_multi_motion
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition:
+  - condition: state
+    entity_id: input_boolean.kitchen_nightmode
+    state: 'on'
+  action:
+  - entity_id: light.dining_lights_switch
+    service: light.turn_off
+    data: {}
+  mode: single
+- id: '1603942101244'
+  alias: 'KITCHEN: LIGHT: DAY: turn on'
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: a57154d80dac11eb9bff254eb8d285bb
+    entity_id: binary_sensor.kitchen_multi_motion
+    domain: binary_sensor
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.athome
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.kitchen_nightmode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.kitchen_lights_auto
+      state: 'on'
+  action:
+  - data:
+      entity_id: light.dining_lights_switch
+      brightness: 255
+    entity_id: light.dining_lights_switch
+    service: light.turn_on
+  mode: single
+- id: '1603942189236'
+  alias: 'KITCHEN: LIGHT: NIGHT: turn on'
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: a57154d80dac11eb9bff254eb8d285bb
+    entity_id: binary_sensor.kitchen_multi_motion
+    domain: binary_sensor
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.athome
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.kitchen_nightmode
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.kitchen_lights_auto
+      state: 'on'
+  action:
+  - data:
+      entity_id: light.dining_lights_switch
+      brightness: 100
+    entity_id: light.dining_lights_switch
+    service: light.turn_on
+  mode: single
+- id: '1603942267204'
+  alias: 'KITCHEN: LIGHT: night mode turn off'
+  description: ''
+  trigger:
+  - event: sunrise
+    platform: sun
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.kitchen_nightmode
+    data:
+      entity_id: input_boolean.kitchen_nightmode
+  mode: single
+- id: '1603942338196'
+  alias: 'KITCHEN: LIGHT: night mode turn on'
+  description: ''
+  trigger:
+  - at: 00:00
+    platform: time
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.kitchen_nightmode
+    entity_id: input_boolean.kitchen_nightmode
+  mode: single
+- id: '1603942689488'
+  alias: 'LIVINGROOM: LIGHT: light auto turn off'
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunrise
+    offset: 01:00:00
+  - platform: time_pattern
+    minutes: /10
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: light.living_room_lights
+      state: 'off'
+    - condition: numeric_state
+      entity_id: sensor.livingroom_multi_illuminance
+      above: '5'
+    - condition: state
+      entity_id: input_boolean.living_lights_auto
+      state: 'on'
+  action:
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.living_lights_auto
+    data:
+      entity_id: input_boolean.living_lights_auto
+  mode: single
+- id: '1603942804615'
+  alias: 'LIVINGROOM: LIGHT: light auto turn on'
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -00:30:00
+  - platform: time_pattern
+    minutes: /1
+  condition:
+  - condition: and
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.livingroom_multi_illuminance
+      below: '5'
+    - condition: state
+      entity_id: input_boolean.living_lights_auto
+      state: 'off'
+  action:
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.living_lights_auto
+    data:
+      entity_id: input_boolean.living_lights_auto
+  mode: single
+- id: '1603942932890'
+  alias: 'LIVINGROOM: LIGHT: DAY: turn off'
+  description: ''
+  trigger:
+  - type: no_motion
+    platform: device
+    device_id: a573ffc60dac11ebb5ece9a258934119
+    entity_id: binary_sensor.livingroom_multi_motion
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition:
+  - condition: state
+    entity_id: input_boolean.living_nightmode
+    state: 'off'
+  action:
+  - data:
+      entity_id: light.living_room_lights
+    entity_id: light.living_room_lights
+    service: light.turn_off
+  mode: single
+- id: '1603943037581'
+  alias: 'LIVINGROOM: LIGHT: NIGHT: turn off'
+  description: ''
+  trigger:
+  - type: no_motion
+    platform: device
+    device_id: a573ffc60dac11ebb5ece9a258934119
+    entity_id: binary_sensor.livingroom_multi_motion
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition:
+  - condition: state
+    entity_id: input_boolean.living_nightmode
+    state: 'on'
+  action:
+  - data:
+      entity_id: light.living_room_lights
+    entity_id: light.living_room_lights
+    service: light.turn_off
+  mode: single
+- id: '1603943166274'
+  alias: 'LIVINGROOM: LIGHT: DAY: turn on'
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: a573ffc60dac11ebb5ece9a258934119
+    entity_id: binary_sensor.livingroom_multi_motion
+    domain: binary_sensor
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.athome
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.living_nightmode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.living_lights_auto
+      state: 'on'
+  action:
+  - scene: scene.livingroom_day_mode
+  mode: single
+- id: '1603943345901'
+  alias: 'LIVINGROOM: LIGHT: DAY: turn on'
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: a573ffc60dac11ebb5ece9a258934119
+    entity_id: binary_sensor.livingroom_multi_motion
+    domain: binary_sensor
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.athome
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.living_nightmode
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.living_lights_auto
+      state: 'on'
+  action:
+  - scene: scene.livingroom_night_mode
+  mode: single
+- id: '1603943496196'
+  alias: 'LIVINGROOM: LIGHT: night mode turn off'
+  description: ''
+  trigger:
+  - event: sunrise
+    platform: sun
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.living_nightmode
+    data:
+      entity_id: input_boolean.living_nightmode
+  mode: single
+- id: '1603943624347'
+  alias: 'LIVINGROOM: LIGHT: night mode turn on'
+  description: ''
+  trigger:
+  - at: '23:00'
+    platform: time
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.living_nightmode
+    data:
+      entity_id: input_boolean.living_nightmode
+  mode: single
+- id: '1603944332765'
+  alias: 'SAFETY: CORRIDOR: CO: ALARM - CO Detected'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.corridor_co_detector
+    from: Clear
+    to: Detected
+  condition: []
+  action:
+  - data:
+      message: <b>CO</b> detected in the <b>Corridor area</b>!
+      title: SMOKE Alarm!!!
+      data:
+        channel: Alarm
+        importance: high
+        ledColor: red
+        vibrationPattern: 1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000
+        persistent: true
+        sticky: true
+        clickAction: /lovelace/security
+        icon: /local/images/alarm.png
+        color: red
+        group: alarm
+        tag: alarm
+    service: notify.mobile_app_nicksphone
+  - data:
+      message: <b>CO</b> detected in the <b>Corridor area</b>!
+      title: SMOKE Alarm!!!
+      data:
+        channel: Alarm
+        importance: high
+        ledColor: red
+        vibrationPattern: 1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000
+        persistent: true
+        sticky: true
+        clickAction: /lovelace/security
+        icon: /local/images/alarm.png
+        color: red
+        group: alarm
+        tag: alarm
+    service: notify.mobile_app_sm_n970u
+  mode: single
+- id: '1603944388579'
+  alias: 'SAFETY: KITCHEN: CO: ALARM - CO Detected'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.kitchen_co_detector
+    from: Clear
+    to: Detected
+  condition: []
+  action:
+  - data:
+      message: <b>CO</b> detected in the <b>Kitchen area</b>!
+      title: SMOKE Alarm!!!
+      data:
+        channel: Alarm
+        importance: high
+        ledColor: red
+        vibrationPattern: 1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000
+        persistent: true
+        sticky: true
+        clickAction: /lovelace/security
+        icon: /local/images/alarm.png
+        color: red
+        group: alarm
+        tag: alarm
+    service: notify.mobile_app_nicksphone
+  - data:
+      message: <b>CO</b> detected in the <b>Kitchen area</b>!
+      title: SMOKE Alarm!!!
+      data:
+        channel: Alarm
+        importance: high
+        ledColor: red
+        vibrationPattern: 1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000
+        persistent: true
+        sticky: true
+        clickAction: /lovelace/security
+        icon: /local/images/alarm.png
+        color: red
+        group: alarm
+        tag: alarm
+    service: notify.mobile_app_sm_n970u
+  mode: single
+- id: '1603944631356'
+  alias: 'SAFETY: CORRIDOR: SMOKE: ALARM - Smoke Detected'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.corridor_smoke_detector
+    from: Clear
+    to: Detected
+  condition: []
+  action:
+  - data:
+      message: <b>Smoke or Fire</b> detected in the <b>Corridor area</b>!
+      title: SMOKE Alarm!!!
+      data:
+        channel: Alarm
+        importance: high
+        ledColor: red
+        vibrationPattern: 1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000
+        persistent: true
+        sticky: true
+        clickAction: /lovelace/security
+        icon: /local/images/alarm.png
+        color: red
+        group: alarm
+        tag: alarm
+    service: notify.mobile_app_nicksphone
+  - data:
+      message: <b>Smoke or Fire</b> detected in the <b>Corridor area</b>!
+      title: SMOKE Alarm!!!
+      data:
+        channel: Alarm
+        importance: high
+        ledColor: red
+        vibrationPattern: 1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000
+        persistent: true
+        sticky: true
+        clickAction: /lovelace/security
+        icon: /local/images/alarm.png
+        color: red
+        group: alarm
+        tag: alarm
+    service: notify.mobile_app_sm_n970u
+  mode: single
+- id: '1603944715754'
+  alias: 'SAFETY: KITCHEN: SMOKE: ALARM - Smoke Detected'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.kitchen_smoke_detector
+    from: Clear
+    to: Detected
+  condition: []
+  action:
+  - data:
+      message: <b>Smoke or Fire</b> detected in the <b>Kitchen area</b>!
+      title: SMOKE Alarm!!!
+      data:
+        channel: Alarm
+        importance: high
+        ledColor: red
+        vibrationPattern: 1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000
+        persistent: true
+        sticky: true
+        clickAction: /lovelace/security
+        icon: /local/images/alarm.png
+        color: red
+        group: alarm
+        tag: alarm
+    service: notify.mobile_app_nicksphone
+  - data:
+      message: <b>Smoke or Fire</b> detected in the <b>Kitchen area</b>!
+      title: SMOKE Alarm!!!
+      data:
+        channel: Alarm
+        importance: high
+        ledColor: red
+        vibrationPattern: 1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000
+        persistent: true
+        sticky: true
+        clickAction: /lovelace/security
+        icon: /local/images/alarm.png
+        color: red
+        group: alarm
+        tag: alarm
+    service: notify.mobile_app_sm_n970u
+  mode: single
+- id: '1603944917183'
+  alias: 'SAFETY: GUEST BATHROOM: LEAK: Leak Detected'
+  description: ''
+  trigger:
+  - type: moist
+    platform: device
+    device_id: a571195e0dac11eb93ff6b7dc107d0df
+    entity_id: binary_sensor.guest_bathroom_leak_sensor_water
+    domain: binary_sensor
+  condition: []
+  action:
+  - data:
+      message: <b>Water</b> detected in the <b>Guest Bathroom area</b>!
+      title: LEAK Alarm!!!
+      data:
+        channel: Alarm
+        importance: high
+        ledColor: red
+        vibrationPattern: 1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000
+        persistent: true
+        sticky: true
+        clickAction: /lovelace/security
+        icon: /local/images/alarm.png
+        color: red
+        group: alarm
+        tag: alarm
+    service: notify.mobile_app_nicksphone
+  - data:
+      message: <b>Water</b> detected in the <b>Guest Bathroom area</b>!
+      title: LEAK Alarm!!!
+      data:
+        channel: Alarm
+        importance: high
+        ledColor: red
+        vibrationPattern: 1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000
+        persistent: true
+        sticky: true
+        clickAction: /lovelace/security
+        icon: /local/images/alarm.png
+        color: red
+        group: alarm
+        tag: alarm
+    service: notify.mobile_app_sm_n970u
+  mode: single
+- id: '1603945013614'
+  alias: 'SAFETY: KITCHEN: LEAK: Leak Detected'
+  description: ''
+  trigger:
+  - type: moist
+    platform: device
+    device_id: a56f7d600dac11ebaf692fe678c60759
+    entity_id: binary_sensor.kitchen_leak_sensor_water
+    domain: binary_sensor
+  condition: []
+  action:
+  - data:
+      message: <b>Water</b> detected in the <b>Kitchen area</b>!
+      title: LEAK Alarm!!!
+      data:
+        channel: Alarm
+        importance: high
+        ledColor: red
+        vibrationPattern: 1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000
+        persistent: true
+        sticky: true
+        clickAction: /lovelace/security
+        icon: /local/images/alarm.png
+        color: red
+        group: alarm
+        tag: alarm
+    service: notify.mobile_app_nicksphone
+  - data:
+      message: <b>Water</b> detected in the <b>Kitchen area</b>!
+      title: LEAK Alarm!!!
+      data:
+        channel: Alarm
+        importance: high
+        ledColor: red
+        vibrationPattern: 1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000
+        persistent: true
+        sticky: true
+        clickAction: /lovelace/security
+        icon: /local/images/alarm.png
+        color: red
+        group: alarm
+        tag: alarm
+    service: notify.mobile_app_sm_n970u
+  mode: single
+- id: '1603945125139'
+  alias: 'SAFETY: MASTER BATHROOM: LEAK:  Master Bathroom Leak Detected'
+  description: ''
+  trigger:
+  - type: moist
+    platform: device
+    device_id: a573594f0dac11ebbc218b20f373a13f
+    entity_id: binary_sensor.master_bathroom_leak_sensor_water
+    domain: binary_sensor
+  condition: []
+  action:
+  - data:
+      message: <b>Water</b> detected in the <b>Master Bathroom area</b>!
+      title: LEAK Alarm!!!
+      data:
+        channel: Alarm
+        importance: high
+        ledColor: red
+        vibrationPattern: 1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000
+        persistent: true
+        sticky: true
+        clickAction: /lovelace/security
+        icon: /local/images/alarm.png
+        color: red
+        group: alarm
+        tag: alarm
+    service: notify.mobile_app_nicksphone
+  - data:
+      message: <b>Water</b> detected in the <b>Master Bathroom area</b>!
+      title: LEAK Alarm!!!
+      data:
+        channel: Alarm
+        importance: high
+        ledColor: red
+        vibrationPattern: 1000,300,1000,300,1000,300,2000,300,2000,300,2000,300,1000,300,1000,300,1000
+        persistent: true
+        sticky: true
+        clickAction: /lovelace/security
+        icon: /local/images/alarm.png
+        color: red
+        group: alarm
+        tag: alarm
+    service: notify.mobile_app_sm_n970u
   mode: single
