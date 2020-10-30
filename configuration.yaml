@@ -83,7 +83,7 @@ weather: !include weather.yaml
 
 #mqtt: !include mqtt.yaml
 
-input_boolean: !include_dir_named input_boolean/
+input_boolean: #!include_dir_named input_boolean/
 input_number: #!include_dir_named input_number/
 input_text:
 input_datetime:
