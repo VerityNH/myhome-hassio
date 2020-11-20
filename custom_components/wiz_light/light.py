@@ -136,11 +136,17 @@ class WizBulb(LightEntity):
     @property
     def min_mireds(self):
         """Return the coldest color_temp that this light supports."""
+        if self._bulbtype == "ESP17_SHTW9_01":
+            return color_utils.color_temperature_kelvin_to_mired(5000)
+        # default temp
         return color_utils.color_temperature_kelvin_to_mired(6500)
 
     @property
     def max_mireds(self):
         """Return the warmest color_temp that this light supports."""
+        if self._bulbtype == "ESP17_SHTW9_01" or self._bulbtype == "ESP03_SHRGBP_31":
+            return color_utils.color_temperature_kelvin_to_mired(2000)
+        # default temp
         return color_utils.color_temperature_kelvin_to_mired(2500)
 
     @property
@@ -153,13 +159,18 @@ class WizBulb(LightEntity):
         if self._bulbtype == "ESP06_SHDW9_01" or self._bulbtype == "ESP06_SHDW1_01":
             return SUPPORT_BRIGHTNESS | SUPPORT_EFFECT
         # Color Temp and dimmer - not tested
-        if self._bulbtype == "ESP01_SHTW1C_31":
+        if self._bulbtype == "ESP01_SHTW1C_31" or self._bulbtype == "ESP17_SHTW9_01":
             return SUPPORT_BRIGHTNESS | SUPPORT_COLOR_TEMP
         # Firlament bulbs support only dimmer (tested)
         if self._bulbtype == "ESP56_SHTW3_01" or self._bulbtype == "ESP15_SHTW1_01I":
             return SUPPORT_BRIGHTNESS | SUPPORT_COLOR_TEMP | SUPPORT_EFFECT
         # Full feature support (color) - not tested
-        if self._bulbtype == "ESP01_SHRGB1C_31" or self._bulbtype == "ESP01_SHRGB_03":
+        if (
+            self._bulbtype == "ESP01_SHRGB1C_31"
+            or self._bulbtype == "ESP01_SHRGB_03"
+            or self._bulbtype == "ESP03_SHRGBP_31"
+            or self._bulbtype == "ESP03_SHRGB1C_01"
+        ):
             return (
                 SUPPORT_BRIGHTNESS | SUPPORT_COLOR | SUPPORT_COLOR_TEMP | SUPPORT_EFFECT
             )
