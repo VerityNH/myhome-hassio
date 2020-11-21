@@ -44,7 +44,7 @@
 
 - platform: wiz_light
   name: "Master fan 1"
-  host: "10.0.0.190"
+  host: "10.0.0.191"
 
 - platform: wiz_light
   name: "Master fan 2"
