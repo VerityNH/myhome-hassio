@@ -183,10 +183,10 @@ nest:
 sonoff:
   username: !secret sonoff_username
   password: !secret sonoff_password
-  devices:
-    10008fd3ee:
-      name: Master Humidifier
-      device_class: switch
+#  devices:
+#    10008fd3ee:
+#      name: Master Humidifier
+#      device_class: switch
 
 #media_player: !include spotify.yaml
 #spotcast: !include spotcast.yaml
