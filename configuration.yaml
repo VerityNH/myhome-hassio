@@ -180,13 +180,13 @@ nest:
   project_id: !secret nest_project_id    # ("Project ID" in the Device Access Console)
   subscriber_id: !secret nest_subscriber_id # ("Subscription ID" in Google Cloud Console. Replace with full path.)
 
-#sonoff:
-#  username: !secret sonoff_username
-#  password: !secret sonoff_password
-#  devices:
-#    10008fd3ee:
-#      name: Kitchen lamp
-#      device_class: light
+sonoff:
+  username: !secret sonoff_username
+  password: !secret sonoff_password
+  devices:
+    10008fd3ee:
+      name: Master Humidifier
+      device_class: switch
 
 #media_player: !include spotify.yaml
 #spotcast: !include spotcast.yaml
