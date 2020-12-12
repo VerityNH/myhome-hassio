@@ -65,9 +65,6 @@ person:
 
 device_tracker: !include device_tracker.yaml
 
-# Nest integration ???
-badnest: !include nest.yaml
-
 climate: !include thermostat.yaml
 
 sensor: !include sensors.yaml
