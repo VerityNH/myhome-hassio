@@ -167,11 +167,8 @@
       entity_id: binary_sensor.athome
       state: 'on'
   action:
-  - entity_id: climate.kitchen_thermostat
-    service_template: "{% if (states('sensor.smartweather_temperature') | int < 15)\
-      \ %}\n  script.climate_to_heat\n{% elif ((states('sensor.smartweather_temperature')\
-      \ | int >= 15) and (states('sensor.smartweather_temperature') | int < 25)) %}\n\
-      \  script.climate_to_auto\n{% else %}\n  script.climate_to_cool\n{% endif %}\n"
+  - service: script.adjust_climate
+    data: {}
   mode: single
 - id: '1603939947635'
   alias: 'HOME: CLIMATE: Start ecomode when nobody home'
@@ -184,9 +181,9 @@
   condition: []
   action:
   - data:
-      entity_id: climate.kitchen
+      entity_id: climate.dining_room
       preset_mode: eco
-    entity_id: climate.kitchen_thermostat
+    entity_id: climate.dining_room
     service: climate.set_preset_mode
   mode: single
 - id: '1603940036889'
@@ -200,12 +197,8 @@
     to: 'off'
   condition: []
   action:
-  - entity_id: climate.kitchen_thermostat
-    service_template: "{% if (states('sensor.smartweather_temperature') | int < 15)\
-      \ %}\n  script.climate_to_heat\n{% elif ((states('sensor.smartweather_temperature')\
-      \ | int >= 15)  and (states('sensor.smartweather_temperature') | int < 25))\
-      \ %}\n  script.climate_to_auto\n{% else %}\n  script.climate_to_cool\n{% endif\
-      \ %}\n"
+  - service: script.adjust_climate
+    data: {}
   mode: single
 - id: '1603940118378'
   alias: 'HOME: PURIFIER: Start when someone home'
@@ -230,15 +223,12 @@
   condition: []
   action:
   - data:
-      entity_id: climate.kitchen
+      entity_id: climate.dining_room
       preset_mode: none
-    entity_id: climate.kitchen_thermostat
+    entity_id: climate.dining_room
     service: climate.set_preset_mode
-  - entity_id: climate.kitchen_thermostat
-    service_template: "{% if (states('sensor.smartweather_temperature') | int < 15)\
-      \ %}\n  script.climate_to_heat\n{% elif ((states('sensor.smartweather_temperature')\
-      \ | int >= 15) and (states('sensor.smartweather_temperature') | int < 25)) %}\n\
-      \  script.climate_to_auto\n{% else %}\n  script.climate_to_cool\n{% endif %}\n"
+  - service: script.adjust_climate
+    data: {}
   mode: single
 - id: '1603940300096'
   alias: 'HOME: CLIMATE: Stop climate when windows open'
@@ -1103,4 +1093,168 @@
         group: alarm
         tag: alarm
     service: notify.mobile_app_sm_n970u
+  mode: single
+- id: '1606361432600'
+  alias: 'MASTER: HUMIDITY: turn on when low '
+  description: ''
+  trigger:
+  - type: humidity
+    platform: device
+    device_id: a56fb5590dac11ebab58056b1c993e9d
+    entity_id: sensor.master_multi_relative_humidity
+    domain: sensor
+    below: 55
+  - platform: state
+    entity_id: binary_sensor.athome
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.athome
+    state: 'on'
+  - condition: numeric_state
+    entity_id: sensor.master_multi_relative_humidity
+    below: '55'
+  action:
+  - service: switch.turn_on
+    data:
+      entity_id: switch.sonoff_10008fd3ee
+    entity_id: switch.sonoff_10008fd3ee
+  mode: single
+- id: '1606361563469'
+  alias: 'MASTER: HUMIDITY: turn off'
+  description: ''
+  trigger:
+  - type: humidity
+    platform: device
+    device_id: a56fb5590dac11ebab58056b1c993e9d
+    entity_id: sensor.master_multi_relative_humidity
+    domain: sensor
+    above: 55
+  - platform: state
+    entity_id: binary_sensor.athome
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: switch.turn_off
+    data:
+      entity_id: switch.sonoff_10008fd3ee
+    entity_id: switch.sonoff_10008fd3ee
+  mode: single
+- id: '1606365654352'
+  alias: 'LIVINGROOM: HUMIDITY: turn on when low'
+  description: ''
+  trigger:
+  - type: humidity
+    platform: device
+    device_id: a573ffc60dac11ebb5ece9a258934119
+    entity_id: sensor.livingroom_multi_relative_humidity
+    domain: sensor
+    below: 55
+  - platform: state
+    entity_id: binary_sensor.athome
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.athome
+    state: 'on'
+  - condition: numeric_state
+    entity_id: sensor.livingroom_multi_relative_humidity
+    below: '55'
+  action:
+  - service: switch.turn_on
+    data:
+      entity_id: switch.sonoff_10009068c3
+    entity_id: switch.sonoff_10009068c3
+  mode: single
+- id: '1606365746249'
+  alias: 'LIVINGROOM: HUMIDITY: turn off'
+  description: ''
+  trigger:
+  - type: humidity
+    platform: device
+    device_id: a573ffc60dac11ebb5ece9a258934119
+    entity_id: sensor.livingroom_multi_relative_humidity
+    domain: sensor
+    above: 55
+  - platform: state
+    entity_id: binary_sensor.athome
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: switch.turn_off
+    data:
+      entity_id: switch.sonoff_10009068c3
+    entity_id: switch.sonoff_10009068c3
+  mode: single
+- id: '1606601378388'
+  alias: 'KIDS: HUMIDITY: turn on when low'
+  description: ''
+  trigger:
+  - type: humidity
+    platform: device
+    device_id: a57023d80dac11eb8378152e76972078
+    entity_id: sensor.kids_multy_relative_humidity
+    domain: sensor
+    below: 55
+  - platform: state
+    entity_id: binary_sensor.athome
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.athome
+    state: 'on'
+  - condition: numeric_state
+    entity_id: sensor.kids_multy_relative_humidity
+    below: '55'
+  action:
+  - service: switch.turn_on
+    data:
+      entity_id: switch.sonoff_1000b91f0e
+    entity_id: switch.sonoff_1000b91f0e
+  mode: single
+- id: '1606601537766'
+  alias: 'KIDS: HUMIDITY: turn off'
+  description: ''
+  trigger:
+  - type: humidity
+    platform: device
+    device_id: a57023d80dac11eb8378152e76972078
+    entity_id: sensor.kids_multy_relative_humidity
+    domain: sensor
+    below: 0
+    above: 55
+  - platform: state
+    entity_id: binary_sensor.athome
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.sonoff_1000b91f0e
+  mode: single
+- id: '1606882479663'
+  alias: 'KIDS: HUMIDITY: turn off'
+  description: ''
+  trigger:
+  - type: humidity
+    platform: device
+    device_id: a57023d80dac11eb8378152e76972078
+    entity_id: sensor.kids_multy_relative_humidity
+    domain: sensor
+    above: 55
+  - platform: state
+    entity_id: binary_sensor.athome
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.sonoff_1000b91f0e
   mode: single

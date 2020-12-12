@@ -10,9 +10,7 @@ from homeassistant.components.weather import (
     ATTR_FORECAST_TIME,
     ATTR_FORECAST_WIND_BEARING,
     ATTR_FORECAST_WIND_SPEED,
-    ATTR_WEATHER_ATTRIBUTION,
     ATTR_WEATHER_HUMIDITY,
-    ATTR_WEATHER_OZONE,
     ATTR_WEATHER_PRESSURE,
     ATTR_WEATHER_TEMPERATURE,
     ATTR_WEATHER_WIND_BEARING,
@@ -22,11 +20,6 @@ from homeassistant.components.weather import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     CONF_ID,
-    LENGTH_METERS,
-    LENGTH_MILES,
-    LENGTH_KILOMETERS,
-    PRESSURE_HPA,
-    PRESSURE_INHG,
     TEMP_CELSIUS,
 )
 from homeassistant.helpers.typing import HomeAssistantType
@@ -34,16 +27,14 @@ from homeassistant.util.dt import utc_from_timestamp
 import homeassistant.helpers.device_registry as dr
 from .const import (
     DOMAIN,
-    ATTR_UPDATED,
     ATTR_CURRENT_ICON,
     ATTR_FCST_UV,
+    ATTR_TEMP_HIGH_TODAY,
+    ATTR_TEMP_LOW_TODAY,
     DEFAULT_ATTRIBUTION,
     DEVICE_TYPE_WEATHER,
     FORECAST_TYPE_DAILY,
-    FORECAST_TYPE_HOURLY,
     CONDITION_CLASSES,
-    CONF_STATION_ID,
-    CONF_FORECAST_TYPE,
 )
 from .entity import SmartWeatherEntity
 
@@ -116,12 +107,6 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
     def temperature(self) -> int:
         """Return the temperature."""
         if self._current is not None:
-            # Current Temperature is in Fahrenheit if Units is Imperial
-            # we need to convert back to C, as HA also is converting
-            # if self._unit_system == "imperial":
-            #     return (self._current.air_temperature - 32) / 1.8
-            # else:
-            #     return self._current.air_temperature
             return self._current.air_temperature
 
         return None
@@ -196,6 +181,20 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
         )
 
     @property
+    def temp_high_today(self) -> float:
+        """Return Todays High Temp Forecast."""
+        if self._forecast is not None:
+            return self._forecast.temp_high_today
+        return None
+
+    @property
+    def temp_low_today(self) -> float:
+        """Return Todays Low Temp Forecast."""
+        if self._forecast is not None:
+            return self._forecast.temp_low_today
+        return None
+
+    @property
     def attribution(self) -> str:
         """Return the attribution."""
         return DEFAULT_ATTRIBUTION
@@ -211,6 +210,8 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
             ATTR_WEATHER_TEMPERATURE: self.temperature,
             ATTR_WEATHER_WIND_BEARING: self.wind_bearing,
             ATTR_WEATHER_WIND_SPEED: self.wind_speed,
+            ATTR_TEMP_HIGH_TODAY: self.temp_high_today,
+            ATTR_TEMP_LOW_TODAY: self.temp_low_today,
         }
 
     @property
@@ -223,7 +224,8 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
 
         for forecast in self.fcst_coordinator.data:
             condition = next(
-                (k for k, v in CONDITION_CLASSES.items() if forecast.icon in v), None,
+                (k for k, v in CONDITION_CLASSES.items() if forecast.icon in v),
+                None,
             )
 
             if self._forecast_type == FORECAST_TYPE_DAILY:
@@ -234,7 +236,9 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
                         ).isoformat(),
                         ATTR_FORECAST_TEMP: forecast.temp_high,
                         ATTR_FORECAST_TEMP_LOW: forecast.temp_low,
-                        ATTR_FORECAST_PRECIPITATION: round(forecast.precip, 1),
+                        ATTR_FORECAST_PRECIPITATION: round(forecast.precip, 1)
+                        if forecast.precip is not None
+                        else None,
                         ATTR_FORECAST_PRECIPITATION_PROBABILITY: forecast.precip_probability,
                         ATTR_FORECAST_CONDITION: condition,
                         ATTR_FORECAST_WIND_SPEED: forecast.wind_avg,
@@ -249,7 +253,9 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
                             forecast.epochtime
                         ).isoformat(),
                         ATTR_FORECAST_TEMP: forecast.temperature,
-                        ATTR_FORECAST_PRECIPITATION: round(forecast.precip, 1),
+                        ATTR_FORECAST_PRECIPITATION: round(forecast.precip, 1)
+                        if forecast.precip is not None
+                        else None,
                         ATTR_FORECAST_PRECIPITATION_PROBABILITY: forecast.precip_probability,
                         ATTR_FORECAST_CONDITION: condition,
                         ATTR_FORECAST_WIND_SPEED: forecast.wind_avg,

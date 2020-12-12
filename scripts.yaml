@@ -20,30 +20,43 @@ climate_to_heat:
   alias: Climate to heat
   sequence:
   - data:
-      entity_id: climate.kitchen_thermostat
+      entity_id: climate.dining_room
       hvac_mode: heat
     entity_id: climate.kitchen_thermostat
     service: climate.set_hvac_mode
+  mode: single
 climate_to_auto:
   alias: Climate to auto
   sequence:
   - data:
-      entity_id: climate.kitchen_thermostat
+      entity_id: climate.dining_room
       hvac_mode: auto
     entity_id: climate.kitchen_thermostat
     service: climate.set_hvac_mode
+  mode: single
 climate_to_cool:
   alias: Climate to cool
   sequence:
   - data:
-      entity_id: climate.kitchen_thermostat
+      entity_id: climate.dining_room
       hvac_mode: cool
     entity_id: climate.kitchen_thermostat
     service: climate.set_hvac_mode
+  mode: single
 pure_fan_turn_on:
   alias: Turn on air purifier
   sequence:
   - data:
-      speed: "auto"
+      speed: auto
     entity_id: fan.master_air_purifier
     service: fan.turn_on
+adjust_climate:
+  alias: Adjust climate
+  sequence:
+  - entity_id: climate.dining_room
+    service_template: "{% if (states('sensor.smartweather_temperature') | int < 15)\
+      \ %}\n  script.climate_to_heat\n{% elif ((states('sensor.smartweather_temperature')\
+      \ | int >= 15)  and (states('sensor.smartweather_temperature') | int < 25))\
+      \ %}\n  script.climate_to_auto\n{% else %}\n  script.climate_to_cool\n{% endif\
+      \ %}\n"
+  mode: single
