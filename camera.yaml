@@ -6,7 +6,5 @@
 #  stream_source: !secret camera_garage_input
 #  verify_ssl: false
 
-- platform: badnest
-
 - platform: aarlo
   ffmpeg_arguments: '-pred 1 -q:v 2'

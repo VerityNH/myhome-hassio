@@ -1,5 +1,3 @@
-- platform: badnest
-
 - platform: waze_travel_time
   name: "Nick to Work"
   origin: device_tracker.sm_g975u
