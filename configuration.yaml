@@ -187,8 +187,8 @@ sonoff:
 
 #media_player: !include spotify.yaml
 #spotcast: !include spotcast.yaml
-yandex_smart_home_fix:
-  
+#yandex_smart_home_fix:
+
 yandex_smart_home:
   filter:
     include_domains:
