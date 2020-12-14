@@ -203,3 +203,7 @@ yandex_smart_home:
 #      - vacuum
 #      - sensor
 #      - humidifier
+
+yandex_station:
+  username: !secret yandex_username
+  password: !secret yandex_password
