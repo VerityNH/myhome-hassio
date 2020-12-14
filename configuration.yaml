@@ -205,11 +205,7 @@ yandex_smart_home:
 #      - humidifier
     include_entities:
       - light.dining_lights_switch
-      - light.cooking_lights
-      - light.living_room_lights
-      - light.kids_bedroom_lights
-      - light.master_bedroom_lights
-      - light.corridor_lights
+
 
 
 yandex_station:
