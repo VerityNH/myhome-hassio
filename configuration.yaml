@@ -194,11 +194,11 @@ yandex_smart_home:
     include_domains:
       - switch
       - light
-      - climate
       - cover
       - fan
       - vacuum
-
+    include_entities:
+      - climate.dining_room
 
 yandex_station:
   username: !secret yandex_username
