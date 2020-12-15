@@ -190,21 +190,14 @@ sonoff:
 #yandex_smart_home_fix:
 
 yandex_smart_home:
-#  filter:
-#    include_domains:
-#      - switch
-#      - light
-#      - climate
-#      - cover
-#      - fan
-#      - group
-#      - scene
-#      - media_player
-#      - vacuum
-#      - sensor
-#      - humidifier
-
-
+  filter:
+    include_domains:
+      - switch
+      - light
+      - climate
+      - cover
+      - fan
+      - vacuum
 
 
 yandex_station:
