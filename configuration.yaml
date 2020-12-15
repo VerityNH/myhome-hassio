@@ -210,6 +210,7 @@ yandex_smart_home:
 yandex_station:
   username: !secret yandex_username
   password: !secret yandex_password
+  recognition_lang: ru-RU
 
 telegram_bot:
   - platform: polling
