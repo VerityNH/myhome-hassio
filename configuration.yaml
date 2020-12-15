@@ -190,7 +190,7 @@ sonoff:
 #yandex_smart_home_fix:
 
 yandex_smart_home:
-  filter:
+#  filter:
 #    include_domains:
 #      - switch
 #      - light
@@ -203,8 +203,7 @@ yandex_smart_home:
 #      - vacuum
 #      - sensor
 #      - humidifier
-    include_entities:
-      - light.dining_lights_switch
+
 
 
 
