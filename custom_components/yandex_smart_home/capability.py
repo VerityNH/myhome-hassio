@@ -430,9 +430,9 @@ class ThermostatCapability(_ModeCapability):
     climate_map = {
         climate.const.HVAC_MODE_HEAT: 'heat',
         climate.const.HVAC_MODE_COOL: 'cool',
-        climate.const.HVAC_MODE_AUTO: 'heat_cool',
-        # climate.const.HVAC_MODE_DRY: 'dry',
-        # climate.const.HVAC_MODE_FAN_ONLY: 'fan_only'
+        climate.const.HVAC_MODE_AUTO: 'auto',
+        climate.const.HVAC_MODE_DRY: 'dry',
+        climate.const.HVAC_MODE_FAN_ONLY: 'fan_only'
     }
 
     @staticmethod
