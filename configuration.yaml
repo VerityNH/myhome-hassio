@@ -217,3 +217,8 @@ telegram_bot:
     allowed_chat_ids:
       - !secret nick_telegram_id  # укажите ID своего аккаунта
 #      - TELEGRAM_USER2_ID  # при желании, поддерживается несколько аккаунтов
+
+
+conversation:
+  intents:
+    media_player.yandex_station_ff98f029bceb4110b4b81659: [.+]
