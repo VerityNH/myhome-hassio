@@ -210,3 +210,10 @@ yandex_smart_home:
 yandex_station:
   username: !secret yandex_username
   password: !secret yandex_password
+
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegram_bot_token  # создайте своего Телеграм бота
+    allowed_chat_ids:
+      - !secret nick_telegram_id  # укажите ID своего аккаунта
+#      - TELEGRAM_USER2_ID  # при желании, поддерживается несколько аккаунтов
