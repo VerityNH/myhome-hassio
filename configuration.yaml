@@ -217,6 +217,7 @@ telegram_bot:
     api_key: !secret telegram_bot_token  # создайте своего Телеграм бота
     allowed_chat_ids:
       - !secret nick_telegram_id  # укажите ID своего аккаунта
+      - !secret nata_telegram_id
 #      - TELEGRAM_USER2_ID  # при желании, поддерживается несколько аккаунтов
 
 
