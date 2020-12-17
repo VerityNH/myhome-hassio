@@ -687,6 +687,9 @@
   - condition: state
     entity_id: input_boolean.living_nightmode
     state: 'off'
+  - condition: state
+    entity_id: input_boolean.tv_mode
+    state: 'off'
   action:
   - data:
       entity_id: light.living_room_lights
@@ -737,6 +740,9 @@
     - condition: state
       entity_id: input_boolean.living_lights_auto
       state: 'on'
+    - condition: state
+      entity_id: input_boolean.tv_mode
+      state: 'off'
   action:
   - scene: scene.livingroom_day_mode
   mode: single
@@ -1284,4 +1290,22 @@
     data_template:
       target: '{{ trigger.event.data.request_id }}'
       message: '{{ trigger.event.data.text }}'
+  mode: single
+- id: '1608168055282'
+  alias: 'LIVINGROOM: LIGHT: Turn on TV mode'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.tv_mode
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - scene: scene.tv_mode
+  - service: light.turn_off
+    data: {}
+    entity_id: light.dining_lights_switch
+  - service: light.turn_off
+    data: {}
+    entity_id: light.cooking_lights
   mode: single
