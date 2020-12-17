@@ -1,0 +1,8 @@
+- name: TV mode
+  entities:
+    light.livingroom_left_lamp:
+      effect: "TV time"
+      state: 'on'
+    light.livingroom_right_lamp:
+      effect: "TV time"
+      state: 'on'
