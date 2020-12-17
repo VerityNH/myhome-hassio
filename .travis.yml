@@ -18,6 +18,7 @@ before_install:
   - sudo apt-get install -y python-dev pkg-config libavformat-dev libavcodec-dev libavdevice-dev libavutil-dev libswscale-dev libavresample-dev libavfilter-dev
   - pip3 install av==6.1.2
 install:
+  - pip3 install google-auth
   - pip3 install homeassistant
 script:
   - hass -c . --script check_config
