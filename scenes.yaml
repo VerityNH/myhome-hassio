@@ -1,1 +1,50 @@
-[]
+- id: '1608167226075'
+  name: TV mode
+  entities:
+    light.living_room_lights:
+      min_mireds: 153
+      max_mireds: 400
+      effect_list:
+      - Night light
+      - Relax
+      - Halloween
+      - Spring
+      - Daylight
+      - Club
+      - Bedtime
+      - Focus
+      - True colors
+      - Fall
+      - Deepdive
+      - Candlelight
+      - Rhythm
+      - Cozy
+      - Wake up
+      - Jungle
+      - Pastel Colors
+      - Golden white
+      - TV time
+      - Fireplace
+      - Sunset
+      - Summer
+      - Party
+      - Christmas
+      - Plantgrowth
+      - Steampunk
+      - Cool white
+      - Mojito
+      - Warm White
+      - Ocean
+      - Forest
+      - Pulse
+      - Romance
+      brightness: 255
+      color_temp: 153
+      effect: Cool white
+      entity_id:
+      - light.livingroom_left_lamp
+      - light.livingroom_right_lamp
+      friendly_name: Living Room Lights
+      icon: mdi:lightbulb-group
+      supported_features: 23
+      state: 'on'

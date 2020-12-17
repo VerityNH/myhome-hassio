@@ -1258,3 +1258,30 @@
     data: {}
     entity_id: switch.sonoff_1000b91f0e
   mode: single
+- id: '1608041876765'
+  alias: 'UTILITIES: TELEGRAM: Alisa receives request'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: telegram_text
+  condition: []
+  action:
+  - service: media_player.play_media
+    entity_id: media_player.yandex_station_ff98f029bceb4110b4b81659
+    data_template:
+      media_content_id: '{{ trigger.event.data.text }}'
+      media_content_type: question:{{ trigger.event.data.chat_id }}
+  mode: single
+- id: '1608041958269'
+  alias: 'UTILITIES: TELEGRAM: Alisa sends response'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: yandex_station_response
+  condition: []
+  action:
+  - service: telegram_bot.send_message
+    data_template:
+      target: '{{ trigger.event.data.request_id }}'
+      message: '{{ trigger.event.data.text }}'
+  mode: single
