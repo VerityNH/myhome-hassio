@@ -36,4 +36,5 @@ known_devices.yaml
 *.pem
 *.log
 *.db
+.yandex_station.json
 
