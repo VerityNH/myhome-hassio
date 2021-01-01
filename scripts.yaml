@@ -22,7 +22,7 @@ climate_to_heat:
   - data:
       entity_id: climate.dining_room
       hvac_mode: heat
-    entity_id: climate.kitchen_thermostat
+    entity_id: climate.dining_room
     service: climate.set_hvac_mode
   mode: single
 climate_to_auto:
@@ -31,7 +31,7 @@ climate_to_auto:
   - data:
       entity_id: climate.dining_room
       hvac_mode: heat_cool
-    entity_id: climate.kitchen_thermostat
+    entity_id: climate.dining_room
     service: climate.set_hvac_mode
   mode: single
 climate_to_cool:
@@ -40,7 +40,7 @@ climate_to_cool:
   - data:
       entity_id: climate.dining_room
       hvac_mode: cool
-    entity_id: climate.kitchen_thermostat
+    entity_id: climate.dining_room
     service: climate.set_hvac_mode
   mode: single
 pure_fan_turn_on:

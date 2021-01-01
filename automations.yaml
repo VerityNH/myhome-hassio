@@ -242,7 +242,7 @@
   condition: []
   action:
   - data: {}
-    entity_id: climate.kitchen_thermostat
+    entity_id: climate.dining_room
     service: climate.turn_off
   mode: single
 - id: '1603940368897'
@@ -1308,4 +1308,55 @@
   - service: light.turn_off
     data: {}
     entity_id: light.cooking_lights
+  mode: single
+- id: '1608690261796'
+  alias: 'A: XMASS TREE: turn on'
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: a573ffc60dac11ebb5ece9a258934119
+    entity_id: binary_sensor.livingroom_multi_motion
+    domain: binary_sensor
+  - type: motion
+    platform: device
+    device_id: a57154d80dac11eb9bff254eb8d285bb
+    entity_id: binary_sensor.kitchen_multi_motion
+    domain: binary_sensor
+  condition:
+  - condition: state
+    entity_id: binary_sensor.athome
+    state: 'on'
+  action:
+  - service: switch.turn_on
+    data: {}
+    entity_id: switch.sonoff_1000b8ded1
+  mode: single
+- id: '1608690326375'
+  alias: 'A: XMASS TREE: Turn off'
+  description: ''
+  trigger:
+  - type: no_motion
+    platform: device
+    device_id: a573ffc60dac11ebb5ece9a258934119
+    entity_id: binary_sensor.livingroom_multi_motion
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  - type: no_motion
+    platform: device
+    device_id: a57154d80dac11eb9bff254eb8d285bb
+    entity_id: binary_sensor.kitchen_multi_motion
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.sonoff_1000b8ded1
   mode: single
