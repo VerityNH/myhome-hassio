@@ -36,44 +36,44 @@
 
 - platform: wiz_light
   name: "Livingroom left lamp"
-  host: "10.0.0.4"
+  host: "192.168.1.13"
 
 - platform: wiz_light
   name: "Livingroom right lamp"
-  host: "10.0.0.181"
+  host: "192.168.1.9"
 
 - platform: wiz_light
   name: "Master fan 1"
-  host: "10.0.0.191"
+  host: "192.168.1.12"
 
 - platform: wiz_light
   name: "Master fan 2"
-  host: "10.0.0.82"
+  host: "192.168.1.11"
 
 - platform: wiz_light
   name: "Master fan 3"
-  host: "10.0.0.249"
+  host: "192.168.1.7"
 
 - platform: wiz_light
   name: "Master fan 4"
-  host: "10.0.0.206"
+  host: "192.168.1.10"
 
 - platform: wiz_light
   name: "Kids left lamp"
-  host: "10.0.0.47"
+  host: "192.168.1.26"
 
 - platform: wiz_light
   name: "Kids right lamp"
-  host: "10.0.0.187"
+  host: "192.168.1.6"
 
 - platform: wiz_light
   name: "Corridor light"
-  host: "10.0.0.153"
+  host: "192.168.1.17"
 
 - platform: wiz_light
   name: "Cooking light 1"
-  host: "10.0.0.245"
+  host: "192.168.1.20"
 
 - platform: wiz_light
   name: "Cooking light 2"
-  host: "10.0.0.250"
+  host: "192.168.1.19"
