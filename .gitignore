@@ -37,4 +37,5 @@ known_devices.yaml
 *.log
 *.db
 .yandex_station.json
+www/1st floor deebot_liveMap.png
 
