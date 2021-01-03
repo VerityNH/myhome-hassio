@@ -8,3 +8,8 @@
 
 - platform: aarlo
   ffmpeg_arguments: '-pred 1 -q:v 2'
+
+- platform: generic
+  name: Deebot_live_map
+  still_image_url: "https://home.veritynh.dev/local/live_map.png" #Example configuration for livemappath: 'www/live_map.png'
+  verify_ssl: true

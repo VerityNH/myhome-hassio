@@ -47,6 +47,8 @@ http: !include http.yaml
 
 ecovacs: !include ecovacs.yaml
 
+deebot: !include deebot.yaml
+
 stream:
 
 ffmpeg:
