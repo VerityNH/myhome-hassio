@@ -12,4 +12,4 @@
 - platform: generic
   name: "Deebot Live Map"
   still_image_url: "https://home.veritynh.dev/local/1st%20floor%20deebot_liveMap.png" #Example configuration for livemappath: 'www/live_map.png'
-  verify_ssl: true
+  verify_ssl: false
