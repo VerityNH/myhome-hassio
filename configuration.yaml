@@ -203,8 +203,8 @@ yandex_smart_home:
       - light.corridor_lights
       - fan.master_air_purifier
       - switch.tv
-      - vacuum.e200p8u2391901643866
-      - vacuum.1st_floor_deebot
+#      - vacuum.e200p8u2391901643866
+#      - vacuum.1st_floor_deebot
       - switch.sonoff_10009068c3
       - switch.sonoff_1000b91f0e
       - switch.sonoff_10008fd3ee
