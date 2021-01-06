@@ -223,6 +223,8 @@ telegram_bot:
       - !secret nata_telegram_id
 #      - TELEGRAM_USER2_ID  # при желании, поддерживается несколько аккаунтов
 
+upnp:
+  local_ip: 192.168.1.2
 
 conversation:
   intents:
