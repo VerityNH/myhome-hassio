@@ -1,38 +1,38 @@
-#- platform: group
-#  name: Living Room Lights
-#  entities:
-#    - light.livingroom_left_lamp
-#    - light.livingroom_right_lamp
-#
-#- platform: group
-#  name: Kids Bedroom Lights
-#  entities:
-#    - light.kids_left_lamp
-#    - light.kids_right_lamp
-#
-#- platform: group
-#  name: Master Bedroom Lights
-#  entities:
-#    - light.master_fan_1
-#    - light.master_fan_2
-#    - light.master_fan_3
-#    - light.master_fan_4
-#
-#- platform: group
-#  name: Corridor Lights
-#  entities:
-#    - light.corridor_light
-#
-#- platform: group
-#  name: Kitchen Lights
-#  entities:
-#    - light.kitchen_lamp
-#
-#- platform: group
-#  name: Cooking Lights
-#  entities:
-#    - light.cooking_light_1
-#    - light.cooking_light_2
+- platform: group
+  name: Living Room Lights
+  entities:
+    - light.livingroom_left_lamp
+    - light.livingroom_right_lamp
+
+- platform: group
+  name: Kids Bedroom Lights
+  entities:
+    - light.kids_right_lamp
+    - light.kids_left_lamp
+
+- platform: group
+  name: Master Bedroom Lights
+  entities:
+    - light.master_fan_1
+    - light.master_fan_2
+    - light.master_fan_3
+    - light.master_fan_4
+
+- platform: group
+  name: Corridor Lights
+  entities:
+    - light.corridor_light
+
+- platform: group
+  name: Kitchen Lights
+  entities:
+    - light.kitchen_lamp
+
+- platform: group
+  name: Cooking Lights
+  entities:
+    - light.cooking_light_1
+    - light.cooking_light_2
 #
 #- platform: wiz_light
 #  name: "Livingroom left lamp"
