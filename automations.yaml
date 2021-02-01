@@ -265,10 +265,8 @@
     platform: time
   condition: []
   action:
-  - data:
-      entity_id: vacuum.e200p8u2391901643866
-    entity_id: vacuum.e200p8u2391901643866
-    service: vacuum.turn_on
+  - service: script.clean_first_floor
+    data: {}
   mode: single
 - id: '1603940564282'
   alias: 'HOME: VACUUM: Start vacuum when nobody home'
@@ -284,6 +282,8 @@
       entity_id: vacuum.e200p8u2391901643866
     entity_id: vacuum.e200p8u2391901643866
     service: vacuum.turn_on
+  - service: script.clean_first_floor
+    data: {}
   mode: single
 - id: '1603940703649'
   alias: 'KIDS: LIGHT: auto turn off'

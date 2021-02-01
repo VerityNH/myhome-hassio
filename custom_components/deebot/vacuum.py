@@ -85,7 +85,9 @@ class DeebotVacuum(VacuumEntity):
         self._fan_speed = None
         self._live_map = None
         self._live_map_path = hub.config.get(CONF_LIVEMAPPATH) + self._name + '_liveMap.png'
-
+        
+        self.device.refresh_statuses()
+        
         _LOGGER.debug("Vacuum initialized: %s", self.name)
 
     def on_fan_change(self, fan_speed):
@@ -114,7 +116,7 @@ class DeebotVacuum(VacuumEntity):
     @property
     def state(self):
         """Return the state of the vacuum cleaner."""
-        if self.device.vacuum_status is not None:
+        if self.device.vacuum_status is not None and self.device.is_available == True:
             return STATE_CODE_TO_STATE[self.device.vacuum_status]
 
     @property
@@ -175,6 +177,10 @@ class DeebotVacuum(VacuumEntity):
             await self.hass.async_add_executor_job(self.device.SetWaterLevel, params['amount'])
             return
 
+        if command == 'relocate':
+            await self.hass.async_add_executor_job(self.device.Relocate)
+            return
+
         if command == 'auto_clean':
             self.hass.async_add_executor_job(self.device.Clean, params['type'])
             return
@@ -218,20 +224,24 @@ class DeebotVacuum(VacuumEntity):
         Implemented by platform classes. Convention for attribute names
         is lowercase snake_case.
         """
+
+        data: Dict[str, Union[int, List[int]]] = {}
+        
+        # Needed for custom vacuum-card (https://github.com/denysdovhan/vacuum-card)
+        # Should find a better way without breaking everyone rooms script
+        data['status'] = STATE_CODE_TO_STATE[self.device.vacuum_status]
+
         if self.device.getSavedRooms() is not None:
-            rooms: Dict[str, Union[int, List[int]]] = {}
             for r in self.device.getSavedRooms():
                 # convert room name to snake_case to meet the convention
                 room_name = "room_" + slugify(r["subtype"])
-                room_values = rooms.get(room_name)
+                room_values = data.get(room_name)
                 if room_values is None:
-                    rooms[room_name] = r["id"]
+                    data[room_name] = r["id"]
                 elif isinstance(room_values, list):
                     room_values.append(r["id"])
                 else:
                     # Convert from int to list
-                    rooms[room_name] = [room_values, r["id"]]
+                    data[room_name] = [room_values, r["id"]]
 
-            return rooms
-
-        return None
+        return data
