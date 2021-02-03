@@ -17,6 +17,7 @@ updater:
 zeroconf:
 cloud:
 discovery:
+dhcp:
 
 #lovelace:
 #  mode: yaml
