@@ -1,6 +1,6 @@
-- platform: ffmpeg
-  name: Garage cam
-  input: !secret camera_garage_input
+#- platform: ffmpeg
+#  name: Garage cam
+#  input: !secret camera_garage_input
 #- platform: generic
 #  name: Garage cam
 #  stream_source: !secret camera_garage_input
