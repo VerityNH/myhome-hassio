@@ -230,3 +230,8 @@ upnp:
 conversation:
   intents:
     media_player.yandex_station_ff98f029bceb4110b4b81659: [.+]
+
+logger:
+  default: warning
+  logs:
+    homeassistant.components.wiz_light: debug
