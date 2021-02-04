@@ -67,10 +67,14 @@
       seconds: 0
   condition: []
   action:
-  - data:
-      entity_id: light.cooking_lights
-    entity_id: light.cooking_lights
-    service: light.turn_off
+  - type: turn_off
+    device_id: 68cd028e49893f6231f8cc094b88533f
+    entity_id: light.cooking_lamp_1
+    domain: light
+  - type: turn_off
+    device_id: c9eddcb9245553c97630b29dc5dacbfb
+    entity_id: light.cooking_lamp_2
+    domain: light
   mode: single
 - id: '1603939199685'
   alias: 'COOKING: LIGHT: turn on'
@@ -91,10 +95,16 @@
       entity_id: input_boolean.cooking_lights_auto
       state: 'on'
   action:
-  - data:
-      entity_id: light.cooking_lights
-    entity_id: light.cooking_lights
-    service: light.turn_on
+  - type: turn_on
+    device_id: 68cd028e49893f6231f8cc094b88533f
+    entity_id: light.cooking_lamp_1
+    domain: light
+    brightness_pct: 100
+  - type: turn_on
+    device_id: c9eddcb9245553c97630b29dc5dacbfb
+    entity_id: light.cooking_lamp_2
+    domain: light
+    brightness_pct: 100
   mode: single
 - id: '1603939331663'
   alias: 'CORRIDOR: LIGHT: turn off'
@@ -107,10 +117,10 @@
     domain: binary_sensor
   condition: []
   action:
-  - data:
-      entity_id: light.corridor_lights
-    entity_id: light.corridor_lights
-    service: light.turn_off
+  - type: turn_off
+    device_id: 0bc8705f4a11130ad4c852f24cc5ee0e
+    entity_id: light.corridor_lamp
+    domain: light
   mode: single
 - id: '1603939428014'
   alias: 'CORRIDOR: LIGHT: DAY: turn on'
@@ -126,7 +136,11 @@
     before: '23:00:00'
     condition: time
   action:
-  - scene: scene.corridor_day
+  - type: turn_on
+    device_id: 0bc8705f4a11130ad4c852f24cc5ee0e
+    entity_id: light.corridor_lamp
+    domain: light
+    brightness_pct: 100
   mode: single
 - id: '1603939504172'
   alias: 'CORRIDOR: LIGHT: NIGHT: turn on'
@@ -142,7 +156,11 @@
     before: '6:00:00'
     condition: time
   action:
-  - scene: scene.corridor_night
+  - type: turn_on
+    device_id: 0bc8705f4a11130ad4c852f24cc5ee0e
+    entity_id: light.corridor_lamp
+    domain: light
+    brightness_pct: 15
   mode: single
 - id: '1603939854041'
   alias: 'HOME: CLIMATE: Adjust climate control'
@@ -691,10 +709,14 @@
     entity_id: input_boolean.tv_mode
     state: 'off'
   action:
-  - data:
-      entity_id: light.living_room_lights
-    entity_id: light.living_room_lights
-    service: light.turn_off
+  - type: turn_off
+    device_id: 701963bce6680e709c548def84bd320a
+    entity_id: light.livingroom_left_lamp
+    domain: light
+  - type: turn_off
+    device_id: d76882065cd32331f048e6058a0e2577
+    entity_id: light.livingroom_right_lamp
+    domain: light
   mode: single
 - id: '1603943037581'
   alias: 'LIVINGROOM: LIGHT: NIGHT: turn off'
@@ -714,10 +736,14 @@
     entity_id: input_boolean.living_nightmode
     state: 'on'
   action:
-  - data:
-      entity_id: light.living_room_lights
-    entity_id: light.living_room_lights
-    service: light.turn_off
+  - type: turn_off
+    device_id: 701963bce6680e709c548def84bd320a
+    entity_id: light.livingroom_left_lamp
+    domain: light
+  - type: turn_off
+    device_id: d76882065cd32331f048e6058a0e2577
+    entity_id: light.livingroom_right_lamp
+    domain: light
   mode: single
 - id: '1603943166274'
   alias: 'LIVINGROOM: LIGHT: DAY: turn on'
@@ -744,7 +770,16 @@
       entity_id: input_boolean.tv_mode
       state: 'off'
   action:
-  - scene: scene.livingroom_day_mode
+  - type: turn_on
+    device_id: 701963bce6680e709c548def84bd320a
+    entity_id: light.livingroom_left_lamp
+    domain: light
+    brightness_pct: 100
+  - type: turn_on
+    device_id: d76882065cd32331f048e6058a0e2577
+    entity_id: light.livingroom_right_lamp
+    domain: light
+    brightness_pct: 100
   mode: single
 - id: '1603943345901'
   alias: 'LIVINGROOM: LIGHT: DAY: turn on'

@@ -47,7 +47,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {vol.Required(CONF_HOST): cv.string, vol.Required(CONF_NAME): cv.string}
 )
 
-# set poll interval to 15 sec because of changes from external to the bulb
+# set poll interval to 30 sec because of changes from external to the bulb
 SCAN_INTERVAL = timedelta(seconds=15)
 
 
@@ -140,7 +140,7 @@ class WizBulb(LightEntity):
 
         if ATTR_RGB_COLOR in kwargs:
             pilot = rgb2rgbcw(kwargs.get(ATTR_RGB_COLOR), brightness)
-        elif ATTR_HS_COLOR in kwargs:
+        if ATTR_HS_COLOR in kwargs:
             pilot = hs2rgbcw(kwargs.get(ATTR_HS_COLOR), brightness)
         else:
             colortemp = None
@@ -165,7 +165,16 @@ class WizBulb(LightEntity):
                 pilot = PilotBuilder(
                     brightness=brightness, colortemp=colortemp, scene=sceneid
                 )
-        await self._light.turn_on(pilot)
+                _LOGGER.debug(
+                    "[wizlight %s] Pilot will be send with brightness=%s, colortemp=%s, scene=%s",
+                    self._light.ip,
+                    brightness,
+                    colortemp,
+                    sceneid,
+                )
+        await self._light.turn_on(
+            pilot,
+        )
 
     async def async_turn_off(self, **kwargs):
         """Instruct the light to turn off."""
@@ -282,6 +291,9 @@ class WizBulb(LightEntity):
                 await self.update_state_unavailable()
             else:
                 await self.update_state_available()
+        except TimeoutError as ex:
+            _LOGGER.debug(ex)
+            await self.update_state_unavailable()
         except WizLightTimeOutError as ex:
             _LOGGER.debug(ex)
             await self.update_state_unavailable()
