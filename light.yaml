@@ -21,7 +21,7 @@
 - platform: group
   name: Corridor Lights
   entities:
-    - light.corridor_light
+    - light.corridor_lamp
 
 - platform: group
   name: Kitchen Lights
@@ -31,8 +31,8 @@
 - platform: group
   name: Cooking Lights
   entities:
-    - light.cooking_light_1
-    - light.cooking_light_2
+    - light.cooking_lamp_1
+    - light.cooking_lamp_2
 #
 #- platform: wiz_light
 #  name: "Livingroom left lamp"
