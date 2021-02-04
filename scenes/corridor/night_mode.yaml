@@ -1,5 +1,5 @@
 - name: Corridor night
   entities:
-    light.corridor_light:
+    light.corridor_lamp:
       brightness: 30
       state: 'on'

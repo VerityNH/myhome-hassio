@@ -1,5 +1,5 @@
 - name: Corridor day
   entities:
-    light.corridor_light:
+    light.corridor_lamp:
       brightness: 255
       state: 'on'
