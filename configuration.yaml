@@ -193,6 +193,9 @@ sonoff:
 #spotcast: !include spotcast.yaml
 #yandex_smart_home_fix:
 
+media_player:
+  - platform: aarlo
+
 yandex_smart_home:
   filter:
     include_entities:

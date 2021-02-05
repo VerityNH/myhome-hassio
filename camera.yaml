@@ -7,7 +7,7 @@
 #  verify_ssl: false
 
 - platform: aarlo
-  ffmpeg_arguments: '-pred 1 -q:v 2'
+  #ffmpeg_arguments: '-pred 1 -q:v 2'
 
 - platform: generic
   name: "Deebot Live Map"
