@@ -156,6 +156,7 @@ aarlo:
   password: !secret arlo_password
   refresh_devices_every: 2
   stream_timeout: 120
+  user_agent: linux
 
 switch:
   - platform: aarlo
