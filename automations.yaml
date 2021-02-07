@@ -770,6 +770,7 @@
       entity_id: input_boolean.tv_mode
       state: 'off'
   action:
+  - scene: scene.livingroom_day_lights
   - type: turn_on
     device_id: 701963bce6680e709c548def84bd320a
     entity_id: light.livingroom_left_lamp
