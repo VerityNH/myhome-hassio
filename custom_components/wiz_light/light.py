@@ -3,6 +3,7 @@ from datetime import timedelta
 import logging
 
 from pywizlight import SCENES, PilotBuilder, wizlight
+from pywizlight.bulblibrary import BulbType, BulbClass
 from pywizlight.exceptions import (
     WizLightConnectionError,
     WizLightNotKnownBulb,
@@ -88,7 +89,7 @@ class WizBulb(LightEntity):
 
     def __init__(self, light: wizlight, name):
         """Initialize an WiZLight."""
-        self._light = light
+        self._light: wizlight = light
         self._state = None
         self._brightness = None
         self._name = name
@@ -98,7 +99,7 @@ class WizBulb(LightEntity):
         self._available = None
         self._effect = None
         self._scenes = []
-        self._bulbtype = None
+        self._bulbtype: BulbType = None
         self._mac = None
 
     @property
@@ -218,20 +219,15 @@ class WizBulb(LightEntity):
     def effect_list(self):
         """Return the list of supported effects."""
         if self._bulbtype:
-            # Special filament bulb type
-            if self._bulbtype.name == "ESP56_SHTW3_01":
-                return [self._scenes[key] for key in [8, 9, 14, 15, 17, 28, 29, 31]]
-            # Filament bulb without white color led
-            if self._bulbtype.name == "ESP06_SHDW9_01":
-                return [self._scenes[key] for key in [8, 9, 13, 28, 30, 29, 31]]
-            # Filament bulb ST64
-            if self._bulbtype.name == "ESP06_SHDW1_01":
-                return [self._scenes[key] for key in [8, 9, 13, 28, 29, 31]]
-            if self._bulbtype.name == "ESP15_SHTW1_01I":
+            # retrun for TW
+            if self._bulbtype.bulb_type == BulbClass.TW:
                 return [
                     self._scenes[key]
-                    for key in [5, 8, 9, 10, 11, 12, 13, 14, 15, 17, 28, 30, 29, 31]
+                    for key in [6, 9, 10, 11, 12, 13, 14, 15, 16, 18, 29, 30, 31, 32]
                 ]
+            if self._bulbtype.bulb_type == BulbClass.DW:
+                return [self._scenes[key] for key in [9, 10, 13, 14, 29, 30, 31, 32]]
+            # Must be RGB with all
             return self._scenes
         return []
 
@@ -270,12 +266,12 @@ class WizBulb(LightEntity):
             "model": self._bulbtype.name,
         }
 
-    async def update_state_available(self):
+    def update_state_available(self):
         """Update the state if bulb is available."""
         self._state = self._light.status
         self._available = True
 
-    async def update_state_unavailable(self):
+    def update_state_unavailable(self):
         """Update the state if bulb is unavailable."""
         self._state = False
         self._available = False
@@ -288,15 +284,15 @@ class WizBulb(LightEntity):
                 _LOGGER.debug(
                     "[wizlight %s] state unavailable: %s", self._light.ip, self._state
                 )
-                await self.update_state_unavailable()
+                self.update_state_unavailable()
             else:
-                await self.update_state_available()
+                self.update_state_available()
         except TimeoutError as ex:
             _LOGGER.debug(ex)
-            await self.update_state_unavailable()
+            self.update_state_unavailable()
         except WizLightTimeOutError as ex:
             _LOGGER.debug(ex)
-            await self.update_state_unavailable()
+            self.update_state_unavailable()
         _LOGGER.debug("[wizlight %s] updated state: %s", self._light.ip, self._state)
 
     def update_brightness(self):

@@ -17,6 +17,7 @@ class ArloDoorBell(ArloChildDevice):
         super().__init__(name, arlo, attrs)
         self._motion_time_job = None
         self._ding_time_job = None
+        self._has_motion_detect = False
 
     def _motion_stopped(self):
         self._save_and_do_callbacks(MOTION_DETECTED_KEY, False)
@@ -33,18 +34,31 @@ class ArloDoorBell(ArloChildDevice):
 
         # create fake motion/button press event...
         if resource == self.resource_id:
-            cons = event.get("properties", {}).get(CONNECTION_KEY, False)
-            butp = event.get("properties", {}).get(BUTTON_PRESSED_KEY, False)
+            props = event.get("properties", {})
 
-            # acts = event.get('properties',{}).get('activityState',False)
-            if cons and cons == "available":
-                self._save_and_do_callbacks(MOTION_DETECTED_KEY, True)
-                with self._lock:
-                    self._arlo.bg.cancel(self._motion_time_job)
-                    self._motion_time_job = self._arlo.bg.run_in(
-                        self._motion_stopped, self._arlo.cfg.db_motion_time
-                    )
-            if butp:
+            # Newer doorbells send a motionDetected True followed by False. If we
+            # see this then turn off connectionState checking.
+            if MOTION_DETECTED_KEY in props:
+                self._arlo.debug(self.name + " has motion detection support")
+                self._has_motion_detect = True
+
+            # Older doorbells signal a connectionState as available when motion
+            # is detected. We check the properties length to not confuse it
+            # with a device update. There is no motion stopped event so set a
+            # timer to turn off the motion detect.
+            if len(props) == 1 and not self._has_motion_detect:
+                if props.get(CONNECTION_KEY, "") == "available":
+                    self._save_and_do_callbacks(MOTION_DETECTED_KEY, True)
+                    with self._lock:
+                        self._arlo.bg.cancel(self._motion_time_job)
+                        self._motion_time_job = self._arlo.bg.run_in(
+                            self._motion_stopped, self._arlo.cfg.db_motion_time
+                        )
+
+            # For button presses we only get a buttonPressed notification, not
+            # a "no longer pressed" notification - set a timer to turn off the
+            # press.
+            if BUTTON_PRESSED_KEY in props:
                 self._save_and_do_callbacks(BUTTON_PRESSED_KEY, True)
                 with self._lock:
                     self._arlo.bg.cancel(self._ding_time_job)
@@ -52,7 +66,9 @@ class ArloDoorBell(ArloChildDevice):
                         self._button_unpressed, self._arlo.cfg.db_ding_time
                     )
 
-            silent_mode = event.get("properties", {}).get(SILENT_MODE_KEY, {})
+            # Pass silent mode notifications so we can track them in the "ding"
+            # entity.
+            silent_mode = props.get(SILENT_MODE_KEY, {})
             if silent_mode:
                 self._save_and_do_callbacks(SILENT_MODE_KEY, silent_mode)
 
@@ -80,20 +96,29 @@ class ArloDoorBell(ArloChildDevice):
         return super().has_capability(cap)
 
     def silent_mode(self, active, block_call):
-        self._arlo.be.notify(
+        properties = {
+            SILENT_MODE_KEY: {
+                SILENT_MODE_ACTIVE_KEY: active,
+                SILENT_MODE_CALL_KEY: block_call,
+            }
+        }
+        response = self._arlo.be.notify(
             base=self.base_station,
             body={
                 "action": "set",
-                "properties": {
-                    SILENT_MODE_KEY: {
-                        SILENT_MODE_ACTIVE_KEY: active,
-                        SILENT_MODE_CALL_KEY: block_call,
-                    },
-                },
+                "properties": properties,
                 "publishResponse": True,
                 "resource": self.resource_id,
             },
+            wait_for="response",
         )
+        # Not none means a 200 so we assume it works until told otherwise.
+        if response is not None:
+            self._arlo.bg.run(
+                self._save_and_do_callbacks,
+                attr=SILENT_MODE_KEY,
+                value=properties[SILENT_MODE_KEY],
+            )
 
     def update_silent_mode(self):
         """Requests the latest silent mode settings.
@@ -108,3 +133,11 @@ class ArloDoorBell(ArloChildDevice):
                 "publishResponse": False,
             },
         )
+
+    @property
+    def chimes_are_silenced(self):
+        return self._load(SILENT_MODE_KEY, {}).get(SILENT_MODE_ACTIVE_KEY, False)
+
+    @property
+    def calls_are_silenced(self):
+        return self._load(SILENT_MODE_KEY, {}).get(SILENT_MODE_CALL_KEY, False)
