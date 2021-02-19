@@ -1,10 +1,12 @@
 #- platform: ffmpeg
 #  name: Garage cam
 #  input: !secret camera_garage_input
-#- platform: generic
-#  name: Garage cam
-#  stream_source: !secret camera_garage_input
-#  verify_ssl: false
+- platform: generic
+  name: Wyze Cam 1
+  stream_source: http://192.168.1.2:18081
+  still_image_url: https://home.veritynh.dev/api/hassio_ingress/QkrMX9Y-7eNYGl5ILYSDN8FUtUMfOxAu4Up--KxlXa8/picture/1/current/
+  verify_ssl: false
+  scan_interval: 5
 
 - platform: aarlo
   #ffmpeg_arguments: '-pred 1 -q:v 2'
