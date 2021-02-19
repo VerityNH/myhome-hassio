@@ -1145,7 +1145,7 @@
     device_id: a56fb5590dac11ebab58056b1c993e9d
     entity_id: sensor.master_multi_relative_humidity
     domain: sensor
-    below: 55
+    below: 45
   - platform: state
     entity_id: binary_sensor.athome
     from: 'off'
@@ -1172,7 +1172,7 @@
     device_id: a56fb5590dac11ebab58056b1c993e9d
     entity_id: sensor.master_multi_relative_humidity
     domain: sensor
-    above: 55
+    above: 45
   - platform: state
     entity_id: binary_sensor.athome
     from: 'on'
@@ -1193,7 +1193,7 @@
     device_id: a573ffc60dac11ebb5ece9a258934119
     entity_id: sensor.livingroom_multi_relative_humidity
     domain: sensor
-    below: 55
+    below: 45
   - platform: state
     entity_id: binary_sensor.athome
     from: 'off'
@@ -1220,7 +1220,7 @@
     device_id: a573ffc60dac11ebb5ece9a258934119
     entity_id: sensor.livingroom_multi_relative_humidity
     domain: sensor
-    above: 55
+    above: 45
   - platform: state
     entity_id: binary_sensor.athome
     from: 'on'
@@ -1241,7 +1241,7 @@
     device_id: a57023d80dac11eb8378152e76972078
     entity_id: sensor.kids_multy_relative_humidity
     domain: sensor
-    below: 55
+    below: 45
   - platform: state
     entity_id: binary_sensor.athome
     from: 'off'
@@ -1269,7 +1269,7 @@
     entity_id: sensor.kids_multy_relative_humidity
     domain: sensor
     below: 0
-    above: 55
+    above: 45
   - platform: state
     entity_id: binary_sensor.athome
     from: 'on'

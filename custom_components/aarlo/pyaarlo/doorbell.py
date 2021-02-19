@@ -1,6 +1,7 @@
 from .constant import (
     BATTERY_KEY,
     BUTTON_PRESSED_KEY,
+    CHIMES_KEY,
     CONNECTION_KEY,
     MODEL_WIRED_VIDEO_DOORBELL,
     MOTION_DETECTED_KEY,
@@ -18,6 +19,7 @@ class ArloDoorBell(ArloChildDevice):
         self._motion_time_job = None
         self._ding_time_job = None
         self._has_motion_detect = False
+        self._chimes = {}
 
     def _motion_stopped(self):
         self._save_and_do_callbacks(MOTION_DETECTED_KEY, False)
@@ -66,6 +68,10 @@ class ArloDoorBell(ArloChildDevice):
                         self._button_unpressed, self._arlo.cfg.db_ding_time
                     )
 
+            # Save out chimes
+            if CHIMES_KEY in props:
+                self._chimes = props[CHIMES_KEY]
+
             # Pass silent mode notifications so we can track them in the "ding"
             # entity.
             silent_mode = props.get(SILENT_MODE_KEY, {})
@@ -95,31 +101,6 @@ class ArloDoorBell(ArloChildDevice):
                 return False
         return super().has_capability(cap)
 
-    def silent_mode(self, active, block_call):
-        properties = {
-            SILENT_MODE_KEY: {
-                SILENT_MODE_ACTIVE_KEY: active,
-                SILENT_MODE_CALL_KEY: block_call,
-            }
-        }
-        response = self._arlo.be.notify(
-            base=self.base_station,
-            body={
-                "action": "set",
-                "properties": properties,
-                "publishResponse": True,
-                "resource": self.resource_id,
-            },
-            wait_for="response",
-        )
-        # Not none means a 200 so we assume it works until told otherwise.
-        if response is not None:
-            self._arlo.bg.run(
-                self._save_and_do_callbacks,
-                attr=SILENT_MODE_KEY,
-                value=properties[SILENT_MODE_KEY],
-            )
-
     def update_silent_mode(self):
         """Requests the latest silent mode settings.
 
@@ -134,10 +115,69 @@ class ArloDoorBell(ArloChildDevice):
             },
         )
 
+    def _build_chimes(self, on_or_off):
+        chimes = {"traditional": on_or_off}
+        for chime in self._chimes:
+            chimes[chime] = on_or_off
+        return chimes
+
+    def _silence(self, active, calls, chimes):
+
+        # Build settings
+        silence_settings = {
+            SILENT_MODE_ACTIVE_KEY: active,
+            SILENT_MODE_CALL_KEY: calls,
+        }
+        if chimes:
+            silence_settings[CHIMES_KEY] = chimes
+
+        # Build request
+        properties = {SILENT_MODE_KEY: silence_settings}
+        self._arlo.debug(self.name + " silence is " + str(properties))
+
+        # Send out request.
+        response = self._arlo.be.notify(
+            base=self.base_station,
+            body={
+                "action": "set",
+                "properties": properties,
+                "publishResponse": True,
+                "resource": self.resource_id,
+            },
+            wait_for="response",
+        )
+
+        # Not none means a 200 so we assume it works until told otherwise.
+        if response is not None:
+            self._arlo.bg.run(
+                self._save_and_do_callbacks,
+                attr=SILENT_MODE_KEY,
+                value=silence_settings,
+            )
+
+    def silence_off(self):
+        self._silence(False, False, {})
+
+    def silence_on(self):
+        self._silence(True, True, self._build_chimes(True))
+
+    def silence_chimes(self):
+        self._silence(True, False, self._build_chimes(True))
+
+    def silence_calls(self):
+        self._silence(True, True, self._build_chimes(False))
+
     @property
-    def chimes_are_silenced(self):
+    def is_silenced(self):
         return self._load(SILENT_MODE_KEY, {}).get(SILENT_MODE_ACTIVE_KEY, False)
 
     @property
     def calls_are_silenced(self):
         return self._load(SILENT_MODE_KEY, {}).get(SILENT_MODE_CALL_KEY, False)
+
+    @property
+    def chimes_are_silenced(self):
+        for on_or_off in self._load(SILENT_MODE_KEY, {}).get(CHIMES_KEY, {}).values():
+            if on_or_off is True:
+                return True
+        return False
