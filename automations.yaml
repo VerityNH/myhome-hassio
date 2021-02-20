@@ -1396,3 +1396,31 @@
     data: {}
     entity_id: switch.sonoff_1000b8ded1
   mode: single
+- id: '1613851602828'
+  alias: 'UTILITIES : NOBODY HOME'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.athome
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    entity_id: switch.wyze_cam_1_motion_detection
+  mode: single
+- id: '1613851638605'
+  alias: 'UTILITIES : SOMEBODY HOME'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.athome
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.wyze_cam_1_motion_detection
+  mode: single

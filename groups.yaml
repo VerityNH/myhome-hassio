@@ -1,3 +1,55 @@
+wyze_cam_1:
+    - camera.wyze_cam_1
+    - switch.wyze_cam_1_rtsp_server
+    - switch.wyze_cam_1_ir_filter
+    - switch.wyze_cam_1_ir_led
+    - switch.wyze_cam_1_night_mode
+    - switch.wyze_cam_1_night_mode_auto
+    - switch.wyze_cam_1_blue_led
+    - switch.wyze_cam_1_yellow_led
+    - switch.wyze_cam_1_motion_detection
+    - switch.wyze_cam_1_motion_tracking
+    - camera.wyze_cam_1_motion_snapshot
+    - binary_sensor.wyze_cam_1_motion_sensor
+    - cover.wyze_cam_1_move_left_right
+    - cover.wyze_cam_1_move_up_down
+
+living_lights:    
+    name: "Living Room Lights"
+    entities:
+        - light.livingroom_left_lamp
+        - light.livingroom_right_lamp
+
+kids_lights:
+    name: "Kids Bedroom Lights"
+    entities:
+        - light.kids_right_lamp
+        - light.kids_left_lamp
+
+master_lights:
+    name: Master Bedroom Lights
+    entities:
+        - light.master_fan_1
+        - light.master_fan_2
+        - light.master_fan_3
+        - light.master_fan_4
+
+corridor_lights:
+    name: Corridor Lights
+    entities:
+        - light.corridor_lamp
+
+kitchen_lights:
+    name: Kitchen Lights
+    entities:
+        - light.kitchen_lamp
+
+cooking_lights:
+    name: Cooking Lights
+    entities:
+        - light.cooking_lamp_1
+        - light.cooking_lamp_2    
+
 #kitchen_lights:
 #  name: Kitchen Lights
 #  entities:
