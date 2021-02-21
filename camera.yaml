@@ -9,6 +9,9 @@
   name: Wyze Cam 1
   still_image_url: http://192.168.1.254:8765/picture/1/current/
   mjpeg_url: http://192.168.1.254:18081
+  username: !secret camera_user
+  password: !secret camera_password
+  authentication: basic
 
 - platform: aarlo
   #ffmpeg_arguments: '-pred 1 -q:v 2'
