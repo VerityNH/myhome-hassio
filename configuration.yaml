@@ -226,6 +226,7 @@ telegram_bot:
     allowed_chat_ids:
       - !secret nick_telegram_id  # укажите ID своего аккаунта
       - !secret nata_telegram_id
+      - !secret home_telegram_group
 #      - TELEGRAM_USER2_ID  # при желании, поддерживается несколько аккаунтов
 
 upnp:
