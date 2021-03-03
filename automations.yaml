@@ -1289,7 +1289,7 @@
     device_id: a57023d80dac11eb8378152e76972078
     entity_id: sensor.kids_multy_relative_humidity
     domain: sensor
-    above: 55
+    above: 45
   - platform: state
     entity_id: binary_sensor.athome
     from: 'on'

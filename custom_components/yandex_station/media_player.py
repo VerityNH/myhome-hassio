@@ -12,6 +12,8 @@ from homeassistant.components.media_player import SUPPORT_PAUSE, \
     SUPPORT_VOLUME_STEP, SUPPORT_VOLUME_MUTE, SUPPORT_PLAY_MEDIA, \
     SUPPORT_SEEK, SUPPORT_SELECT_SOUND_MODE, SUPPORT_TURN_ON, \
     DEVICE_CLASS_TV, SUPPORT_SELECT_SOURCE
+from homeassistant.config_entries import CONN_CLASS_LOCAL_PUSH, \
+    CONN_CLASS_LOCAL_POLL, CONN_CLASS_ASSUMED
 from homeassistant.const import STATE_PLAYING, STATE_PAUSED, STATE_IDLE
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.util import dt
@@ -77,8 +79,6 @@ async def async_setup_entry(hass, entry, async_add_entities):
         entities.append(entity)
     async_add_entities(entities)
 
-    async_add_entities([YandexIntents(entry.unique_id)])
-
     # add TVs
     if CONF_INCLUDE not in hass.data[DOMAIN][DATA_CONFIG]:
         return
@@ -127,6 +127,9 @@ class YandexStation(MediaPlayerEntity):
         self.quasar = quasar
         self.device = device
         self.requests = {}
+
+    def debug(self, text: str):
+        _LOGGER.debug(f"{self.name} | {text}")
 
     async def async_added_to_hass(self):
         # TODO: проверить смену имени!!!
@@ -303,8 +306,17 @@ class YandexStation(MediaPlayerEntity):
     @property
     def state_attributes(self):
         attrs = super().state_attributes
-        if attrs and self.local_state:
+        if not attrs:
+            return None
+
+        if self.local_state:
             attrs['alice_state'] = self.local_state['aliceState']
+            attrs['connection_class'] = CONN_CLASS_LOCAL_PUSH \
+                if self.local_state['local_push'] \
+                else CONN_CLASS_LOCAL_POLL
+        else:
+            attrs['connection_class'] = CONN_CLASS_ASSUMED
+
         return attrs
 
     async def async_select_sound_mode(self, sound_mode):
@@ -396,7 +408,7 @@ class YandexStation(MediaPlayerEntity):
     async def update(self, data: dict = None):
         """Обновления только в локальном режиме."""
         if data is None:
-            # возвращаем в облачный режим
+            _LOGGER.debug("Возврат в облачный режим")
             self.local_state = None
             self.async_write_ha_state()
             return
@@ -404,6 +416,7 @@ class YandexStation(MediaPlayerEntity):
         data['state'].pop('timeSinceLastVoiceActivity', None)
 
         # _LOGGER.debug(data['state']['aliceState'])
+        data['state']['local_push'] = 'requestId' not in data
 
         # skip same state
         if self.local_state == data['state']:
@@ -480,6 +493,24 @@ class YandexStation(MediaPlayerEntity):
 
         await self.quasar.set_device_config(self.device, device_config)
 
+    async def _set_beta(self, value: str):
+        device_config = await self.quasar.get_device_config(self.device)
+
+        if value == 'True':
+            value = True
+        elif value == 'False':
+            value = False
+        else:
+            value = None
+
+        if value is not None:
+            device_config['beta'] = value
+            await self.quasar.set_device_config(self.device, device_config)
+
+        self.hass.components.persistent_notification.async_create(
+            f"{self.name} бета-тест: {device_config['beta']}"
+        )
+
     async def _shopping_list(self):
         if shopping_list.DOMAIN not in self.hass.data:
             return
@@ -539,6 +570,12 @@ class YandexStation(MediaPlayerEntity):
         if media_type == 'tts':
             media_type = 'text' if self.sound_mode == SOUND_MODE1 \
                 else 'command'
+        elif media_type == 'brightness':
+            await self._set_brightness(media_id)
+            return
+        elif media_type == 'beta':
+            await self._set_beta(media_id)
+            return
 
         if self.local_state:
             if 'https://' in media_id or 'http://' in media_id:
@@ -577,10 +614,6 @@ class YandexStation(MediaPlayerEntity):
                 payload = {'command': 'playMusic', 'id': media_id,
                            'type': media_type}
 
-            elif media_type == 'brightness':
-                await self._set_brightness(media_id)
-                return
-
             elif media_type == 'shopping_list':
                 await self._shopping_list()
                 return
@@ -594,7 +627,7 @@ class YandexStation(MediaPlayerEntity):
                 return
 
             else:
-                _LOGGER.warning(f"Unsupported media: {media_id}")
+                _LOGGER.warning(f"Unsupported local media: {media_id}")
                 return
 
             await self.glagol.send(payload)
@@ -613,7 +646,7 @@ class YandexStation(MediaPlayerEntity):
                 return
 
             else:
-                _LOGGER.warning(f"Unsupported media: {media_type}")
+                _LOGGER.warning(f"Unsupported cloud media: {media_type}")
                 return
 
 
