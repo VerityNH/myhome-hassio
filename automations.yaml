@@ -1252,7 +1252,7 @@
     state: 'on'
   - condition: numeric_state
     entity_id: sensor.kids_multy_relative_humidity
-    below: '55'
+    below: '45'
   action:
   - service: switch.turn_on
     data:
@@ -1268,7 +1268,6 @@
     device_id: a57023d80dac11eb8378152e76972078
     entity_id: sensor.kids_multy_relative_humidity
     domain: sensor
-    below: 0
     above: 45
   - platform: state
     entity_id: binary_sensor.athome
