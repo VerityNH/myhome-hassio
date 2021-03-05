@@ -59,8 +59,6 @@ camera: !include camera.yaml
 
 light: !include light.yaml
 
-# Garage door
-cover: !include garage.yaml
 
 # Person tracker
 #person: !include persons.yaml
