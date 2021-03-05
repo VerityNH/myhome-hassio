@@ -40,17 +40,6 @@
 
 - platform: template
   sensors:
-    nest_temperature:
-      friendly_name: "Nest temperature"
-      value_template: "{{ state_attr('climate.kitchen_thermostat', 'current_temperature') }}"
-      device_class: temperature
-      unit_of_measurement: °C
-
-    nest_humidity:
-      friendly_name: "Nest humidity"
-      value_template: "{{ state_attr('climate.kitchen_thermostat', 'current_humidity') }}"
-      device_class: humidity
-
     first_floor_lights:
       friendly_name: "First floor light state"
       value_template: >-
@@ -93,31 +82,6 @@
         {% else %}
           failed
         {% endif %}
-#- platform: smartweather
-#  wind_unit: kmh
-#  monitored_conditions:
-#    - temperature
-#    - feels_like_temperature
-#    - heat_index
-#    - wind_chill
-#    - dewpoint
-#    - wind_speed
-#    - wind_gust
-#    - wind_lull
-#    - wind_bearing
-#    - wind_direction
-#    - precipitation
-#    - precipitation_rate
-#    - precipitation_last_1hr
-#    - precipitation_yesterday
-#    - precip_minutes_local_day
-#    - precip_minutes_local_yesterday
-#    - humidity
-#    - pressure
-#    - uv
-#    - solar_radiation
-#    - illuminance
-#    - lightning_count
 
 - platform: min_max
   type: mean
