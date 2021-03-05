@@ -1423,3 +1423,37 @@
     data: {}
     entity_id: switch.wyze_cam_1_motion_detection
   mode: single
+- id: '1614913757577'
+  alias: 'MASTER: PURIFIER: Nightmode ON'
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:00:00'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.athome
+    state: 'on'
+  action:
+  - service: fan.set_preset_mode
+    data:
+      preset_mode: sleep
+    target:
+      entity_id: fan.master_air_purifier
+  mode: single
+- id: '1614913808225'
+  alias: 'MASTER: PURIFIER: Nightmode OFF'
+  description: ''
+  trigger:
+  - platform: time
+    at: 09:00:00
+  condition:
+  - condition: state
+    entity_id: binary_sensor.athome
+    state: 'on'
+  action:
+  - service: fan.set_preset_mode
+    data:
+      preset_mode: auto
+    target:
+      entity_id: fan.master_air_purifier
+  mode: single
