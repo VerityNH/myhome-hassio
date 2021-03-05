@@ -20,7 +20,3 @@
   name: "Deebot Live Map"
   still_image_url: "https://home.veritynh.dev/local/Liova_liveMap.png" #Example configuration for livemappath: 'www/live_map.png'
   verify_ssl: false
-
-- platform: generic
-  name: Rain radar
-  still_image_url: "https://www.rainviewer.com/map.html?loc=42.7538,-71.4774,12&oFa=0&oC=0&oU=0&oCS=1&oF=0&oAP=0&rmt=4&c=1&o=83&lm=0&th=0&sm=1&sn=1"
