@@ -7,7 +7,7 @@ before_install:
   - mv travis_secrets.yaml secrets.yaml
   - mv google/travis_google.json google/HASSIntegration-170c7741d7db.json
   - pip3 install six
-  - pip3 install google-auth
+#  - pip3 install google-auth
   - pip3 install google-nest-sdm
 #  - sudo apt-get install -y libudev-dev
 #  - sudo apt-get install -y autoconf automake build-essential cmake libass-dev libfreetype6-dev libjpeg-dev libtheora-dev libtool libvorbis-dev libx264-dev pkg-config wget yasm zlib1g-dev
