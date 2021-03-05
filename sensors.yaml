@@ -1,6 +1,6 @@
 - platform: waze_travel_time
   name: "Nick to Work"
-  origin: device_tracker.sm_g975u
+  origin: device_tracker.nick_s21ultra
   destination: zone.nick_work
   region: 'US'     
 
@@ -12,7 +12,7 @@
 
 - platform: waze_travel_time
   name: "Nick to Home"
-  origin: device_tracker.sm_g975u
+  origin: device_tracker.nick_s21ultra
   destination: zone.home
   region: 'US'
 

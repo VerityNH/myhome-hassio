@@ -13,7 +13,7 @@ badges:
   - entity: person.nata
   - entity: device_tracker.nick_tracker
   - entity: device_tracker.nata_tracker
-  - entity: device_tracker.sm_g975u
+  - entity: device_tracker.nick_s21ultra
   - entity: device_tracker.sm_n970u
   - entity: sensor.nata_to_home
   - entity: sensor.nick_to_home
