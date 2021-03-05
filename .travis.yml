@@ -2,10 +2,10 @@ language: python
 cache: pip
 python:
   - "3.7"
-#before_install:
-#  - pwd
-#  - mv travis_secrets.yaml secrets.yaml
-#  - mv google/travis_google.json google/HASSIntegration-170c7741d7db.json
+before_install:
+  - pwd
+  - mv travis_secrets.yaml secrets.yaml
+  - mv google/travis_google.json google/HASSIntegration-170c7741d7db.json
 #  - sudo apt-get install -y libudev-dev
 #  - sudo apt-get install -y autoconf automake build-essential cmake libass-dev libfreetype6-dev libjpeg-dev libtheora-dev libtool libvorbis-dev libx264-dev pkg-config wget yasm zlib1g-dev
 #  - wget http://ffmpeg.org/releases/ffmpeg-3.2.tar.bz2
@@ -19,8 +19,8 @@ python:
 #  - sudo apt-get install -y python-dev pkg-config libavformat-dev libavcodec-dev libavdevice-dev libavutil-dev libswscale-dev libavresample-dev libavfilter-dev
 #  - pip3 install av==6.1.2
 install:
-  - pip install six
-  - pip3 install google-auth
+#  - pip install six
+#  - pip3 install google-auth
   - pip3 install homeassistant
 script:
   - hass -c . --script check_config
