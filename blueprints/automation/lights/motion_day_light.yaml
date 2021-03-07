@@ -1,7 +1,8 @@
 blueprint:
   name: Turn a light daytime
-  desription: Turns on a light when it is daytime, but it is dark
+  desription: "Turns on a light when it is daytime, but it is dark"
   domain: automation
+
   input:
     motion_entity:
       name: Motion Sensor
