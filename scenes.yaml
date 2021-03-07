@@ -220,51 +220,51 @@
       min_mireds: 153
       max_mireds: 454
       effect_list:
-      - Ocean
-      - Romance
-      - Sunset
-      - Party
-      - Fireplace
-      - Cozy
-      - Forest
-      - Pastel Colors
-      - Wake up
-      - Bedtime
-      - Warm White
-      - Daylight
-      - Cool white
-      - Night light
-      - Focus
-      - Relax
-      - True colors
-      - TV time
-      - Plantgrowth
-      - Spring
-      - Summer
-      - Fall
-      - Deepdive
-      - Jungle
-      - Mojito
-      - Club
-      - Christmas
-      - Halloween
-      - Candlelight
-      - Golden white
-      - Pulse
-      - Steampunk
-      - Rhythm
-      brightness: 115
-      color_temp: 153
+        - Ocean
+        - Romance
+        - Sunset
+        - Party
+        - Fireplace
+        - Cozy
+        - Forest
+        - Pastel Colors
+        - Wake up
+        - Bedtime
+        - Warm White
+        - Daylight
+        - Cool white
+        - Night light
+        - Focus
+        - Relax
+        - True colors
+        - TV time
+        - Plantgrowth
+        - Spring
+        - Summer
+        - Fall
+        - Deepdive
+        - Jungle
+        - Mojito
+        - Club
+        - Christmas
+        - Halloween
+        - Candlelight
+        - Golden white
+        - Pulse
+        - Steampunk
+        - Rhythm
+      brightness: 255
       hs_color:
-      - 240
-      - 100
+        - 240
+        - 100
       rgb_color:
-      - 0
-      - 0
-      - 255
+        - 0
+        - 0
+        - 255
       xy_color:
-      - 0.136
-      - 0.04
+        - 0.136
+        - 0.04
+      effect: TV time
       friendly_name: Livingroom Left Lamp
       supported_features: 23
       state: 'on'
@@ -416,51 +416,41 @@
       min_mireds: 153
       max_mireds: 454
       effect_list:
-      - Ocean
-      - Romance
-      - Sunset
-      - Party
-      - Fireplace
-      - Cozy
-      - Forest
-      - Pastel Colors
-      - Wake up
-      - Bedtime
-      - Warm White
-      - Daylight
-      - Cool white
-      - Night light
-      - Focus
-      - Relax
-      - True colors
-      - TV time
-      - Plantgrowth
-      - Spring
-      - Summer
-      - Fall
-      - Deepdive
-      - Jungle
-      - Mojito
-      - Club
-      - Christmas
-      - Halloween
-      - Candlelight
-      - Golden white
-      - Pulse
-      - Steampunk
-      - Rhythm
+        - Ocean
+        - Romance
+        - Sunset
+        - Party
+        - Fireplace
+        - Cozy
+        - Forest
+        - Pastel Colors
+        - Wake up
+        - Bedtime
+        - Warm White
+        - Daylight
+        - Cool white
+        - Night light
+        - Focus
+        - Relax
+        - True colors
+        - TV time
+        - Plantgrowth
+        - Spring
+        - Summer
+        - Fall
+        - Deepdive
+        - Jungle
+        - Mojito
+        - Club
+        - Christmas
+        - Halloween
+        - Candlelight
+        - Golden white
+        - Pulse
+        - Steampunk
+        - Rhythm
       brightness: 255
       color_temp: 153
-      hs_color:
-      - 240
-      - 100
-      rgb_color:
-      - 0
-      - 0
-      - 255
-      xy_color:
-      - 0.136
-      - 0.04
       effect: Cool white
       friendly_name: Livingroom Left Lamp
       supported_features: 23
