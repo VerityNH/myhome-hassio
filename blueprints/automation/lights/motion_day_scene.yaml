@@ -18,10 +18,10 @@ blueprint:
             domain: scene
     scene_off_target:
       name: Scene to light OFF
-        selector:
-          target:
-            entity:
-              domain: scene
+      selector:
+        target:
+          entity:
+            domain: scene
     at_home:
       name: Presence sensor
       selector:
