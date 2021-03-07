@@ -1,0 +1,85 @@
+blueprint:
+  name: Turn a Day scene on motion
+  description: Turns on a DAY scene lights
+  domain: automation
+
+  input:
+    motion_entity:
+      name: Motion Sensor
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: motion
+    scene_on_target:
+      name: Scene to light ON
+      selector:
+        target:
+          entity:
+            domain: scene
+    scene_off_target:
+      name: Scene to light OFF
+      selector:
+        target:
+          entity:
+            domain: scene
+    at_home:
+      name: Presence sensor
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: occupancy
+    is_dark_time:
+      name: Dark time
+      selector:
+        entity:
+          domain: input_boolean
+    is_bed_time:
+      name: Bed time
+      selector:
+        entity:
+          domain: input_boolean
+    no_motion_wait:
+      name: Wait time
+      description: Time to leave the light on after last motion is detected.
+      default: 120
+      selector:
+        number:
+          min: 0
+          max: 3600
+          unit_of_measurement: seconds
+
+# If motion is detected within the delay,
+# we restart the script.
+mode: restart
+max_exceeded: silent
+
+trigger:
+  platform: state
+  entity_id: !input motion_entity
+  from: "off"
+  to: "on"
+
+condition:
+  - condition: and
+    conditions:
+      - condition: state
+        entity_id: !input at_home
+        state: "on"
+      - condition: state
+        entity_id: !input is_dark_time
+        state: "on"
+      - condition: state
+        entity_id: !input is_bed_time
+        state: "on"
+
+action:
+  - service: scene.turn_on
+    target: !input scene_on_target
+  - wait_for_trigger:
+      platform: state
+      entity_id: !input motion_entity
+      from: "on"
+      to: "off"
+  - delay: !input no_motion_wait
+  - service: scene.turn_on
+    target: !input scene_off_target
