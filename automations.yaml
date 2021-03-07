@@ -1457,3 +1457,18 @@
     target:
       entity_id: fan.master_air_purifier
   mode: single
+- id: '1615131668174'
+  alias: TEST Turn a Day scene on motion
+  description: ''
+  use_blueprint:
+    path: lights/motion_day_scene.yaml
+    input:
+      motion_entity: binary_sensor.livingroom_multi_motion
+      scene_on_target:
+        entity_id: scene.livingroom_day_lights
+      scene_off_target:
+        entity_id: scene.livingroom_lights_off
+      at_home: binary_sensor.athome
+      is_dark_time: input_boolean.living_lights_auto
+      is_bed_time: input_boolean.living_nightmode
+      no_motion_wait: 10
