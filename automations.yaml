@@ -52,60 +52,6 @@
       entity_id: input_boolean.cooking_lights_auto
     entity_id: input_boolean.cooking_lights_auto
   mode: single
-- id: '1603938994819'
-  alias: 'COOKING: LIGHT: turn off'
-  description: ''
-  trigger:
-  - type: no_motion
-    platform: device
-    device_id: a570862f0dac11eba36f81d6a41c3872
-    entity_id: binary_sensor.cooking_motion_sensor_motion
-    domain: binary_sensor
-    for:
-      hours: 0
-      minutes: 2
-      seconds: 0
-  condition: []
-  action:
-  - type: turn_off
-    device_id: 68cd028e49893f6231f8cc094b88533f
-    entity_id: light.cooking_lamp_1
-    domain: light
-  - type: turn_off
-    device_id: c9eddcb9245553c97630b29dc5dacbfb
-    entity_id: light.cooking_lamp_2
-    domain: light
-  mode: single
-- id: '1603939199685'
-  alias: 'COOKING: LIGHT: turn on'
-  description: ''
-  trigger:
-  - type: motion
-    platform: device
-    device_id: a570862f0dac11eba36f81d6a41c3872
-    entity_id: binary_sensor.cooking_motion_sensor_motion
-    domain: binary_sensor
-  condition:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: binary_sensor.athome
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.cooking_lights_auto
-      state: 'on'
-  action:
-  - type: turn_on
-    device_id: 68cd028e49893f6231f8cc094b88533f
-    entity_id: light.cooking_lamp_1
-    domain: light
-    brightness_pct: 100
-  - type: turn_on
-    device_id: c9eddcb9245553c97630b29dc5dacbfb
-    entity_id: light.cooking_lamp_2
-    domain: light
-    brightness_pct: 100
-  mode: single
 - id: '1603939331663'
   alias: 'CORRIDOR: LIGHT: turn off'
   description: ''
@@ -511,106 +457,6 @@
       entity_id: input_boolean.kitchen_lights_auto
     entity_id: input_boolean.kitchen_lights_auto
   mode: single
-- id: '1603941883508'
-  alias: 'KITCHEN: LIGHT: DAY: turn off'
-  description: ''
-  trigger:
-  - type: no_motion
-    platform: device
-    device_id: a57154d80dac11eb9bff254eb8d285bb
-    entity_id: binary_sensor.kitchen_multi_motion
-    domain: binary_sensor
-    for:
-      hours: 0
-      minutes: 5
-      seconds: 0
-  condition:
-  - condition: state
-    entity_id: input_boolean.kitchen_nightmode
-    state: 'off'
-  action:
-  - service: light.turn_off
-    data: {}
-    entity_id: light.dining_lights_switch
-  mode: single
-- id: '1603942001997'
-  alias: 'KITCHEN: LIGHT: NIGHT: turn off'
-  description: ''
-  trigger:
-  - type: no_motion
-    platform: device
-    device_id: a57154d80dac11eb9bff254eb8d285bb
-    entity_id: binary_sensor.kitchen_multi_motion
-    domain: binary_sensor
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-  condition:
-  - condition: state
-    entity_id: input_boolean.kitchen_nightmode
-    state: 'on'
-  action:
-  - entity_id: light.dining_lights_switch
-    service: light.turn_off
-    data: {}
-  mode: single
-- id: '1603942101244'
-  alias: 'KITCHEN: LIGHT: DAY: turn on'
-  description: ''
-  trigger:
-  - type: motion
-    platform: device
-    device_id: a57154d80dac11eb9bff254eb8d285bb
-    entity_id: binary_sensor.kitchen_multi_motion
-    domain: binary_sensor
-  condition:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: binary_sensor.athome
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.kitchen_nightmode
-      state: 'off'
-    - condition: state
-      entity_id: input_boolean.kitchen_lights_auto
-      state: 'on'
-  action:
-  - data:
-      entity_id: light.dining_lights_switch
-      brightness: 255
-    entity_id: light.dining_lights_switch
-    service: light.turn_on
-  mode: single
-- id: '1603942189236'
-  alias: 'KITCHEN: LIGHT: NIGHT: turn on'
-  description: ''
-  trigger:
-  - type: motion
-    platform: device
-    device_id: a57154d80dac11eb9bff254eb8d285bb
-    entity_id: binary_sensor.kitchen_multi_motion
-    domain: binary_sensor
-  condition:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: binary_sensor.athome
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.kitchen_nightmode
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.kitchen_lights_auto
-      state: 'on'
-  action:
-  - data:
-      entity_id: light.dining_lights_switch
-      brightness: 100
-    entity_id: light.dining_lights_switch
-    service: light.turn_on
-  mode: single
 - id: '1603942267204'
   alias: 'KITCHEN: LIGHT: night mode turn off'
   description: ''
@@ -687,124 +533,6 @@
     entity_id: input_boolean.living_lights_auto
     data:
       entity_id: input_boolean.living_lights_auto
-  mode: single
-- id: '1603942932890'
-  alias: 'LIVINGROOM: LIGHT: DAY: turn off'
-  description: ''
-  trigger:
-  - type: no_motion
-    platform: device
-    device_id: a573ffc60dac11ebb5ece9a258934119
-    entity_id: binary_sensor.livingroom_multi_motion
-    domain: binary_sensor
-    for:
-      hours: 0
-      minutes: 5
-      seconds: 0
-  condition:
-  - condition: state
-    entity_id: input_boolean.living_nightmode
-    state: 'off'
-  - condition: state
-    entity_id: input_boolean.tv_mode
-    state: 'off'
-  action:
-  - type: turn_off
-    device_id: 701963bce6680e709c548def84bd320a
-    entity_id: light.livingroom_left_lamp
-    domain: light
-  - type: turn_off
-    device_id: d76882065cd32331f048e6058a0e2577
-    entity_id: light.livingroom_right_lamp
-    domain: light
-  mode: single
-- id: '1603943037581'
-  alias: 'LIVINGROOM: LIGHT: NIGHT: turn off'
-  description: ''
-  trigger:
-  - type: no_motion
-    platform: device
-    device_id: a573ffc60dac11ebb5ece9a258934119
-    entity_id: binary_sensor.livingroom_multi_motion
-    domain: binary_sensor
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-  condition:
-  - condition: state
-    entity_id: input_boolean.living_nightmode
-    state: 'on'
-  action:
-  - type: turn_off
-    device_id: 701963bce6680e709c548def84bd320a
-    entity_id: light.livingroom_left_lamp
-    domain: light
-  - type: turn_off
-    device_id: d76882065cd32331f048e6058a0e2577
-    entity_id: light.livingroom_right_lamp
-    domain: light
-  mode: single
-- id: '1603943166274'
-  alias: 'LIVINGROOM: LIGHT: DAY: turn on'
-  description: ''
-  trigger:
-  - type: motion
-    platform: device
-    device_id: a573ffc60dac11ebb5ece9a258934119
-    entity_id: binary_sensor.livingroom_multi_motion
-    domain: binary_sensor
-  condition:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: binary_sensor.athome
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.living_nightmode
-      state: 'off'
-    - condition: state
-      entity_id: input_boolean.living_lights_auto
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.tv_mode
-      state: 'off'
-  action:
-  - scene: scene.livingroom_day_lights
-  - type: turn_on
-    device_id: 701963bce6680e709c548def84bd320a
-    entity_id: light.livingroom_left_lamp
-    domain: light
-    brightness_pct: 100
-  - type: turn_on
-    device_id: d76882065cd32331f048e6058a0e2577
-    entity_id: light.livingroom_right_lamp
-    domain: light
-    brightness_pct: 100
-  mode: single
-- id: '1603943345901'
-  alias: 'LIVINGROOM: LIGHT: DAY: turn on'
-  description: ''
-  trigger:
-  - type: motion
-    platform: device
-    device_id: a573ffc60dac11ebb5ece9a258934119
-    entity_id: binary_sensor.livingroom_multi_motion
-    domain: binary_sensor
-  condition:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: binary_sensor.athome
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.living_nightmode
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.living_lights_auto
-      state: 'on'
-  action:
-  - scene: scene.livingroom_night_mode
   mode: single
 - id: '1603943496196'
   alias: 'LIVINGROOM: LIGHT: night mode turn off'
@@ -1326,75 +1054,6 @@
       target: '{{ trigger.event.data.request_id }}'
       message: '{{ trigger.event.data.text }}'
   mode: single
-- id: '1608168055282'
-  alias: 'LIVINGROOM: LIGHT: Turn on TV mode'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.tv_mode
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - scene: scene.tv_mode
-  - service: light.turn_off
-    data: {}
-    entity_id: light.dining_lights_switch
-  - service: light.turn_off
-    data: {}
-    entity_id: light.cooking_lights
-  mode: single
-- id: '1608690261796'
-  alias: 'A: XMASS TREE: turn on'
-  description: ''
-  trigger:
-  - type: motion
-    platform: device
-    device_id: a573ffc60dac11ebb5ece9a258934119
-    entity_id: binary_sensor.livingroom_multi_motion
-    domain: binary_sensor
-  - type: motion
-    platform: device
-    device_id: a57154d80dac11eb9bff254eb8d285bb
-    entity_id: binary_sensor.kitchen_multi_motion
-    domain: binary_sensor
-  condition:
-  - condition: state
-    entity_id: binary_sensor.athome
-    state: 'on'
-  action:
-  - service: switch.turn_on
-    data: {}
-    entity_id: switch.sonoff_1000b8ded1
-  mode: single
-- id: '1608690326375'
-  alias: 'A: XMASS TREE: Turn off'
-  description: ''
-  trigger:
-  - type: no_motion
-    platform: device
-    device_id: a573ffc60dac11ebb5ece9a258934119
-    entity_id: binary_sensor.livingroom_multi_motion
-    domain: binary_sensor
-    for:
-      hours: 0
-      minutes: 5
-      seconds: 0
-  - type: no_motion
-    platform: device
-    device_id: a57154d80dac11eb9bff254eb8d285bb
-    entity_id: binary_sensor.kitchen_multi_motion
-    domain: binary_sensor
-    for:
-      hours: 0
-      minutes: 5
-      seconds: 0
-  condition: []
-  action:
-  - service: switch.turn_off
-    data: {}
-    entity_id: switch.sonoff_1000b8ded1
-  mode: single
 - id: '1613851602828'
   alias: 'UTILITIES : NOBODY HOME'
   description: ''
@@ -1457,18 +1116,57 @@
     target:
       entity_id: fan.master_air_purifier
   mode: single
-- id: '1615131668174'
-  alias: TEST Turn a Day scene on motion
+- id: '1615137175129'
+  alias: 'DINING: LIGHT: Automation'
   description: ''
   use_blueprint:
-    path: lights/motion_day_scene.yaml
+    path: lights/motion_light_scene.yaml
+    input:
+      motion_entity: binary_sensor.kitchen_multi_motion
+      scene_day_on_target:
+        entity_id: scene.kitchen_light_day_mode
+      scene_night_on_target:
+        entity_id: scene.dining_light_night_mode
+      scene_off_target:
+        entity_id: scene.dining_light_off
+      at_home: binary_sensor.athome
+      is_dark_time: input_boolean.kitchen_lights_auto
+      is_bed_time: input_boolean.kitchen_nightmode
+      no_motion_wait_day: 300
+      no_motion_wait_night: 60
+- id: '1615137262200'
+  alias: 'COOKING: LIGHT: Automation'
+  description: ''
+  use_blueprint:
+    path: lights/motion_light_scene.yaml
+    input:
+      motion_entity: binary_sensor.cooking_motion_sensor_motion
+      scene_day_on_target:
+        entity_id: scene.cooking_light_day_mode
+      scene_night_on_target:
+        entity_id: scene.cooking_light_night_mode
+      scene_off_target:
+        entity_id: scene.cooking_light_off
+      at_home: binary_sensor.athome
+      is_dark_time: input_boolean.cooking_lights_auto
+      is_bed_time: input_boolean.kitchen_nightmode
+      no_motion_wait_day: 300
+      no_motion_wait_night: 30
+- id: '1615137341222'
+  alias: 'LIVINGROOM: LIGHT: Automation'
+  description: ''
+  use_blueprint:
+    path: lights/motion_light_scene.yaml
     input:
       motion_entity: binary_sensor.livingroom_multi_motion
-      scene_on_target:
+      scene_day_on_target:
         entity_id: scene.livingroom_day_lights
+      scene_night_on_target:
+        entity_id: scene.livingroom_night_mode
       scene_off_target:
         entity_id: scene.livingroom_lights_off
       at_home: binary_sensor.athome
       is_dark_time: input_boolean.living_lights_auto
       is_bed_time: input_boolean.living_nightmode
-      no_motion_wait: 10
+      no_motion_wait_day: 300
+      no_motion_wait_night: 60

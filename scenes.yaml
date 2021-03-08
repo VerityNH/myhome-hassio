@@ -1,5 +1,5 @@
 - id: '1612457673719'
-  name: Kids day mode
+  name: 'KIDS: LIGHTS: Day mode'
   entities:
     light.kids_left_lamp:
       min_mireds: 153
@@ -88,7 +88,7 @@
       supported_features: 23
       state: 'on'
 - id: '1612457764040'
-  name: Kids night mode
+  name: 'KIDS: LIGHT: Night mode'
   entities:
     light.kids_left_lamp:
       min_mireds: 153
@@ -220,50 +220,50 @@
       min_mireds: 153
       max_mireds: 454
       effect_list:
-        - Ocean
-        - Romance
-        - Sunset
-        - Party
-        - Fireplace
-        - Cozy
-        - Forest
-        - Pastel Colors
-        - Wake up
-        - Bedtime
-        - Warm White
-        - Daylight
-        - Cool white
-        - Night light
-        - Focus
-        - Relax
-        - True colors
-        - TV time
-        - Plantgrowth
-        - Spring
-        - Summer
-        - Fall
-        - Deepdive
-        - Jungle
-        - Mojito
-        - Club
-        - Christmas
-        - Halloween
-        - Candlelight
-        - Golden white
-        - Pulse
-        - Steampunk
-        - Rhythm
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
       brightness: 255
       hs_color:
-        - 240
-        - 100
+      - 240
+      - 100
       rgb_color:
-        - 0
-        - 0
-        - 255
+      - 0
+      - 0
+      - 255
       xy_color:
-        - 0.136
-        - 0.04
+      - 0.136
+      - 0.04
       effect: TV time
       friendly_name: Livingroom Left Lamp
       supported_features: 23
@@ -416,39 +416,39 @@
       min_mireds: 153
       max_mireds: 454
       effect_list:
-        - Ocean
-        - Romance
-        - Sunset
-        - Party
-        - Fireplace
-        - Cozy
-        - Forest
-        - Pastel Colors
-        - Wake up
-        - Bedtime
-        - Warm White
-        - Daylight
-        - Cool white
-        - Night light
-        - Focus
-        - Relax
-        - True colors
-        - TV time
-        - Plantgrowth
-        - Spring
-        - Summer
-        - Fall
-        - Deepdive
-        - Jungle
-        - Mojito
-        - Club
-        - Christmas
-        - Halloween
-        - Candlelight
-        - Golden white
-        - Pulse
-        - Steampunk
-        - Rhythm
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
       brightness: 255
       color_temp: 153
       effect: Cool white
@@ -537,4 +537,147 @@
       - Rhythm
       friendly_name: Livingroom Right Lamp
       supported_features: 23
+      state: 'off'
+- id: '1615132576912'
+  name: 'KIDS: LIGHTS: Off'
+  entities:
+    light.kids_left_lamp:
+      min_mireds: 153
+      max_mireds: 454
+      effect_list:
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
+      friendly_name: Kids Left Lamp
+      supported_features: 23
+      state: 'off'
+    light.kids_right_lamp:
+      min_mireds: 153
+      max_mireds: 454
+      effect_list:
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
+      friendly_name: Kids Right Lamp
+      supported_features: 23
+      state: 'off'
+- id: '1615136530698'
+  name: 'DINING: LIGHT: Day mode'
+  entities:
+    light.dining_lights_switch:
+      brightness: 255
+      friendly_name: Dining lights switch
+      supported_features: 33
+      state: 'on'
+- id: '1615136591213'
+  name: 'DINING: LIGHT: Night mode'
+  entities:
+    light.dining_lights_switch:
+      brightness: 64
+      friendly_name: Dining lights switch
+      supported_features: 33
+      state: 'on'
+- id: '1615136633455'
+  name: 'DINING: LIGHT: Off'
+  entities:
+    light.dining_lights_switch:
+      friendly_name: Dining lights switch
+      supported_features: 33
+      state: 'off'
+- id: '1615136706309'
+  name: 'COOKING: LIGHT: Day mode'
+  entities:
+    light.cooking_lamp_1:
+      brightness: 255
+      friendly_name: Cooking Lamp 1
+      supported_features: 1
+      state: 'on'
+    light.cooking_lamp_2:
+      brightness: 255
+      friendly_name: Cooking Lamp 2
+      supported_features: 1
+      state: 'on'
+- id: '1615136768771'
+  name: 'COOKING: LIGHT: Night mode'
+  entities:
+    light.cooking_lamp_1:
+      brightness: 51
+      friendly_name: Cooking Lamp 1
+      supported_features: 1
+      state: 'on'
+    light.cooking_lamp_2:
+      brightness: 51
+      friendly_name: Cooking Lamp 2
+      supported_features: 1
+      state: 'on'
+- id: '1615136804670'
+  name: 'COOKING: LIGHT: Off'
+  entities:
+    light.cooking_lamp_1:
+      friendly_name: Cooking Lamp 1
+      supported_features: 1
+      state: 'off'
+    light.cooking_lamp_2:
+      friendly_name: Cooking Lamp 2
+      supported_features: 1
       state: 'off'
