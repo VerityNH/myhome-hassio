@@ -1,0 +1,113 @@
+blueprint:
+  name: Adjust house climate
+  description: Adjust house climate
+  domain: automation
+
+  input:
+    at_home:
+      name: Presence sensor
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: occupancy
+    avrg_temerature:
+      name: Presence sensor
+      selector:
+        entity:
+          domain: sensor
+          device_class: min_max
+    all_open_sensor:
+      name: All contact sensor
+      selector:
+        entity:
+          domain: binary_sensor
+    temp_high_trgr:
+      description: House temperature when start cooling.
+      default: 25
+      selector:
+        number:
+          min: 22
+          max: 30
+    temp_low_trgr:
+      description: House temperature when start heating.
+      default: 21
+      selector:
+        number:
+          min: 7
+          max: 21
+    otemp_high_trgr:
+      description: Outside temperature when start cooling.
+      default: 25
+      selector:
+        number:
+          min: 22
+          max: 30
+    otemp_low_trgr:
+      description: Outside temperature when start heating.
+      default: 21
+      selector:
+        number:
+          min: 7
+          max: 21
+    thermostat:
+      name: Thermostat
+      selector:
+        entity:
+          domain: climate
+    outside_temp:
+      name: Outside temperature
+      selector:
+        entity:
+          domain: sensor
+          device_class: temperature
+
+
+# If motion is detected within the delay,
+# we restart the script.
+mode: single
+max_exceeded: silent
+
+trigger:
+  platform: time_pattern
+  minutes: /30
+
+condition: and
+conditions:
+  - condition: state
+    entity_id: !input all_open_sensor
+    state: 'off'
+  - above: !input temp_high_trgr
+    below: !input temp_low_trgr
+    condition: numeric_state
+    entity_id: !input avrg_temerature
+  - condition: state
+    entity_id: !input at_home
+    state: 'on'
+
+variables:
+  outsidetemp: !input outside_temp
+  otemplow: !input otemp_low_trgr
+  otemphigh: !input otemp_high_trgr
+action:
+  - choose:
+      - conditions: '{{ outsidetemp < otemplow }}'
+        sequence:
+          - service: climate.set_hvac_mode
+            entity_id: !input thermostat
+            data:
+              entity_id: !input thermostat
+              hvac_mode: heat
+      - conditions: '{{ (outsidetemp >= otemplow) and (outsidetemp < otemphigh) }}'
+        sequence:
+          - service: climate.set_hvac_mode
+            entity_id: !input thermostat
+            data:
+              entity_id: !input thermostat
+              hvac_mode: heat_cool
+      - conditions: '{{ outsidetemp >= otemphigh }}'
+        sequence:
+          - service: climate.set_hvac_mode
+            entity_id: !input thermostat
+            data:
+              entity_id: !input thermostat
+              hvac_mode: cool
