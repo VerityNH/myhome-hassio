@@ -11,11 +11,10 @@ blueprint:
           domain: binary_sensor
           device_class: occupancy
     avrg_temerature:
-      name: Presence sensor
+      name: Average in-house temperature
       selector:
         entity:
           domain: sensor
-          device_class: min_max
     all_open_sensor:
       name: All contact sensor
       selector:
