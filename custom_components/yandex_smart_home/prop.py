@@ -38,6 +38,7 @@ from .const import (
     PRESSURE_UNITS_TO_YANDEX_UNITS,
     PRESSURE_FROM_PASCAL,
     PRESSURE_TO_PASCAL,
+    NOTIFIER_ENABLED,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -60,8 +61,7 @@ class _Property:
 
     type = ''
     instance = ''
-    retrievable = True # default: для встроенного датчика доступен запрос состояния
-    reportable = False # default: оповещение выключено. Встроенный датчик не оповещает платформу об изменении состояния
+    reportable = False
 
     def __init__(self, hass, state, entity_config):
         """Initialize a trait for a state."""
@@ -69,6 +69,8 @@ class _Property:
         self.state = state
         self.config = hass.data[DOMAIN][DATA_CONFIG]
         self.entity_config = entity_config
+        self.retrievable = True
+        self.reportable = hass.data[DOMAIN][NOTIFIER_ENABLED]
 
     def description(self):
         """Return description for a devices request."""
@@ -104,7 +106,7 @@ class _Property:
     @staticmethod
     def bool_value(value):
         """Return the bool value according to any type of value."""
-        return value in [1, STATE_ON, STATE_OPEN, 'high', True] # 1/on/high/open/true
+        return value in [1, STATE_ON, STATE_OPEN, 'high', True]
 
 class _BoolProperty(_Property):
     type = PROPERTY_BOOL
@@ -120,7 +122,7 @@ class _BoolProperty(_Property):
             value = self.state.state
 
         if value in (STATE_UNAVAILABLE, STATE_UNKNOWN, None):
-            raise SmartHomeError(ERR_NOT_SUPPORTED_IN_CURRENT_MODE, "Invalid value")
+            raise SmartHomeError(ERR_NOT_SUPPORTED_IN_CURRENT_MODE, "Invalid bool property value")
 
         return self.bool_value(value)
 
@@ -152,7 +154,7 @@ class TemperatureProperty(_Property):
             value = self.state.attributes.get(climate.ATTR_CURRENT_TEMPERATURE)
 
         if value in (STATE_UNAVAILABLE, STATE_UNKNOWN, None):
-            raise SmartHomeError(ERR_NOT_SUPPORTED_IN_CURRENT_MODE, "Invalid value")
+            raise SmartHomeError(ERR_NOT_SUPPORTED_IN_CURRENT_MODE, "Invalid temperature property value")
 
         return float(value)
 
@@ -185,7 +187,7 @@ class HumidityProperty(_Property):
             value = self.state.attributes.get(climate.ATTR_CURRENT_HUMIDITY)
 
         if value in (STATE_UNAVAILABLE, STATE_UNKNOWN, None):
-            raise SmartHomeError(ERR_NOT_SUPPORTED_IN_CURRENT_MODE, "Invalid value")
+            raise SmartHomeError(ERR_NOT_SUPPORTED_IN_CURRENT_MODE, "Invalid humidity property value")
 
         return float(value)
 
@@ -216,7 +218,7 @@ class PressureProperty(_Property):
         if value in (STATE_UNAVAILABLE, STATE_UNKNOWN, None):
             raise SmartHomeError(
                 ERR_NOT_SUPPORTED_IN_CURRENT_MODE,
-                "Invalid value")
+                "Invalid pressure property value")
 
         # Get a conversion multiplier to pascal
         unit = self.state.attributes.get(ATTR_UNIT_OF_MEASUREMENT)
@@ -226,7 +228,8 @@ class PressureProperty(_Property):
                 f"Unsupported pressure unit: {unit}")
 
         # Convert the value to pascal and then to the chosen Yandex unit
-        return float(value) * PRESSURE_TO_PASCAL[unit] * PRESSURE_FROM_PASCAL[self.config.settings[CONF_PRESSURE_UNIT]]
+        val = float(value) * PRESSURE_TO_PASCAL[unit] * PRESSURE_FROM_PASCAL[self.config.settings[CONF_PRESSURE_UNIT]]
+        return round(val, 2)
 
 @register_property
 class BatteryProperty(_Property):
@@ -256,7 +259,7 @@ class BatteryProperty(_Property):
             value = self.state.attributes.get(ATTR_BATTERY_LEVEL)
 			
         if value in (STATE_UNAVAILABLE, STATE_UNKNOWN, None):
-            raise SmartHomeError(ERR_NOT_SUPPORTED_IN_CURRENT_MODE, "Invalid value")
+            raise SmartHomeError(ERR_NOT_SUPPORTED_IN_CURRENT_MODE, "Invalid battery property value")
 
         return float(value)
 
@@ -267,7 +270,7 @@ class ContactProperty(_BoolProperty):
     @staticmethod
     def supported(domain, features, entity_config, attributes):
         if domain == binary_sensor.DOMAIN:
-            return attributes.get(ATTR_DEVICE_CLASS) == 'opening'
+            return attributes.get(ATTR_DEVICE_CLASS) in ['door', 'garage_door', 'window', 'opening']
 
         return False
 
@@ -291,7 +294,7 @@ class CustomEntityProperty(_Property):
         self.instance_unit = {
             'humidity': 'unit.percent',
             'temperature': 'unit.temperature.celsius',
-            'pressure': self.config.settings[CONF_PRESSURE_UNIT],
+            'pressure': PRESSURE_UNITS_TO_YANDEX_UNITS[self.config.settings[CONF_PRESSURE_UNIT]],
             'water_level': 'unit.percent',
             'co2_level': 'unit.ppm',
             'power': 'unit.watt',
@@ -321,7 +324,7 @@ class CustomEntityProperty(_Property):
         elif self.type == PROPERTY_BOOL:
             return {'instance': self.instance}
 
-        raise SmartHomeError(ERR_NOT_SUPPORTED_IN_CURRENT_MODE, "unit not found for type: {}".format(self.instance))
+        raise SmartHomeError(ERR_NOT_SUPPORTED_IN_CURRENT_MODE, "Unit not found for type: {}".format(self.instance))
 
     def get_value(self):
         value = 0
@@ -345,7 +348,20 @@ class CustomEntityProperty(_Property):
             if value in (STATE_UNAVAILABLE, STATE_UNKNOWN, None):
                 _LOGGER.error(f'Invalid value: {entity}')
                 raise SmartHomeError(ERR_INVALID_VALUE, "Invalid value")
-            return float(value) if self.type != PROPERTY_BOOL else self.bool_value(value)
+
+            if self.instance == 'pressure':
+                # Get a conversion multiplier to pascal
+                unit = entity.attributes.get(ATTR_UNIT_OF_MEASUREMENT)
+                if unit not in PRESSURE_TO_PASCAL:
+                    raise SmartHomeError(
+                        ERR_NOT_SUPPORTED_IN_CURRENT_MODE,
+                        f"Unsupported pressure unit: {unit}")
+
+                # Convert the value to pascal and then to the chosen Yandex unit
+                value = float(value) * PRESSURE_TO_PASCAL[unit] * PRESSURE_FROM_PASCAL[self.config.settings[CONF_PRESSURE_UNIT]]
+                return round(value, 2)
+            else:
+                return float(value) if self.type != PROPERTY_BOOL else self.bool_value(value)
 
         if attribute:
             value = self.state.attributes.get(attribute)

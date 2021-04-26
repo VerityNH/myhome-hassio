@@ -112,21 +112,14 @@
   alias: 'HOME: CLIMATE: Adjust climate control'
   description: ''
   trigger:
-  - minutes: /30
-    platform: time_pattern
+  - platform: time_pattern
+    minutes: /10
   condition:
   - condition: and
     conditions:
     - condition: state
       entity_id: binary_sensor.all_windows_closed
       state: 'off'
-    - above: '25'
-      below: '21'
-      condition: numeric_state
-      entity_id: sensor.average_house_temperature
-    - condition: zone
-      entity_id: person.nata
-      zone: zone.home
     - condition: state
       entity_id: binary_sensor.athome
       state: 'on'
@@ -1170,3 +1163,36 @@
       is_bed_time: input_boolean.living_nightmode
       no_motion_wait_day: 300
       no_motion_wait_night: 60
+- id: '1616518347340'
+  alias: 'HOME: CLIMATE: Adjust climate control 2'
+  description: ''
+  use_blueprint:
+    path: climate/adjust_climate.yaml
+    input:
+      at_home: binary_sensor.athome
+      avrg_temerature: sensor.average_house_temperature
+      all_open_sensor: binary_sensor.all_windows_closed
+      thermostat: climate.dining_room
+      outside_temp: sensor.smartweather_temperature
+- id: '1616518429341'
+  alias: 'HOME: CLIMATE: Adjust climate control 2'
+  description: ''
+  use_blueprint:
+    path: climate/adjust_climate.yaml
+    input:
+      at_home: binary_sensor.athome
+      avrg_temerature: sensor.average_house_temperature
+      all_open_sensor: binary_sensor.all_windows_closed
+      thermostat: climate.dining_room
+      outside_temp: sensor.smartweather_temperature
+- id: '1616518859333'
+  alias: 'HOME: CLIMATE: Adjust climate control 2'
+  description: ''
+  use_blueprint:
+    path: climate/adjust_climate.yaml
+    input:
+      at_home: binary_sensor.athome
+      avrg_temerature: sensor.average_house_temperature
+      all_open_sensor: binary_sensor.all_windows_closed
+      thermostat: climate.dining_room
+      outside_temp: sensor.smartweather_temperature

@@ -38,12 +38,13 @@ from homeassistant.core import DOMAIN as HA_DOMAIN
 from homeassistant.util import color as color_util
 
 from .const import (
+    DOMAIN,
     ERR_INVALID_VALUE,
     ERR_NOT_SUPPORTED_IN_CURRENT_MODE,
     CONF_CHANNEL_SET_VIA_MEDIA_CONTENT_ID, CONF_RELATIVE_VOLUME_ONLY,
     CONF_ENTITY_RANGE_MAX, CONF_ENTITY_RANGE_MIN, 
     CONF_ENTITY_RANGE_PRECISION, CONF_ENTITY_RANGE,
-    CONF_ENTITY_MODE_MAP)
+    CONF_ENTITY_MODE_MAP, NOTIFIER_ENABLED)
 from .error import SmartHomeError
 
 _LOGGER = logging.getLogger(__name__)
@@ -69,7 +70,6 @@ class _Capability:
 
     type = ''
     instance = ''
-    retrievable = True
     reportable = False
 
     def __init__(self, hass, state, entity_config):
@@ -77,6 +77,8 @@ class _Capability:
         self.hass = hass
         self.state = state
         self.entity_config = entity_config
+        self.retrievable = True
+        self.reportable = hass.data[DOMAIN][NOTIFIER_ENABLED]
 
     def description(self):
         """Return description for a devices request."""
@@ -825,11 +827,15 @@ class CoverLevelCapability(_RangeCapability):
         else:
              raise SmartHomeError(ERR_INVALID_VALUE, "Unsupported domain")
              
+        value = state['value']
+        if value < 0:
+            value = min(self.get_value() + value, 0)
+        
         await self.hass.services.async_call(
             self.state.domain,
             service, {
                 ATTR_ENTITY_ID: self.state.entity_id,
-                attr: state['value']
+                attr: value
             }, blocking=True, context=data.context)
 
 @register_capability
@@ -1015,7 +1021,6 @@ class VolumeCapability(_RangeCapability):
     """Set volume functionality."""
 
     instance = 'volume'
-    retrievable = False
 
     def __init__(self, hass, state, config):
         super().__init__(hass, state, config)
@@ -1150,7 +1155,7 @@ class ChannelCapability(_RangeCapability):
 
     def get_value(self):
         """Return the state value of this capability for this entity."""
-        if self.retrievable or self.state.attributes.get(
+        if not self.retrievable or self.state.attributes.get(
                 media_player.ATTR_MEDIA_CONTENT_TYPE) \
                 != media_player.const.MEDIA_TYPE_CHANNEL:
             return 0
@@ -1287,13 +1292,13 @@ class CleanupModeCapability(_ModeCapability):
 
     # 101-105 xiaomi miio fan speeds
     modes_map = {
-        'auto': {'auto', 'Automatic', '102'},
-        'turbo': {'turbo', 'high', 'Performance' '104'},
+        'auto': {'auto', 'automatic', '102'},
+        'turbo': {'turbo', 'high', 'performance', '104'},
         'min': {'min', 'mop'},
         'max': {'max', 'strong'},
         'express': {'express', '105'},
         'normal': {'normal', 'medium', 'middle', '103'},
-        'quiet': {'quiet', 'low', 'min', 'silent', 'Eco', '101'},
+        'quiet': {'quiet', 'low', 'min', 'silent', 'eco', '101'},
     }
 
     @staticmethod

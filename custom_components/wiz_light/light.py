@@ -61,8 +61,10 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
         bulb = wizlight(ip_address)
         # Add devices
         async_add_entities([WizBulb(bulb, config[CONF_NAME])], update_before_add=True)
+        return True
     except WizLightConnectionError:
         _LOGGER.error("Can't add bulb with ip %s.", ip_address)
+        return False
 
 
 async def async_setup_entry(hass, entry, async_add_entities):
@@ -82,6 +84,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
     service_name = slugify(f"{entry.data.get(CONF_NAME)} updateService")
     hass.services.async_register(DOMAIN, service_name, async_update)
+    return True
 
 
 class WizBulb(LightEntity):
@@ -217,19 +220,26 @@ class WizBulb(LightEntity):
 
     @property
     def effect_list(self):
-        """Return the list of supported effects."""
-        if self._bulbtype:
+        """Return the list of supported effects.
+
+        URL: https://docs.pro.wizconnected.com/#light-modes
+        """
+        if self._bulbtype and len(self._scenes) > 0:
             # retrun for TW
             if self._bulbtype.bulb_type == BulbClass.TW:
-                return [
-                    self._scenes[key]
-                    for key in [6, 9, 10, 11, 12, 13, 14, 15, 16, 18, 29, 30, 31, 32]
-                ]
+                e_list = []
+                for key in [6, 9, 10, 11, 12, 13, 14, 15, 16, 18, 29, 30, 31, 32]:
+                    # Array counting correction
+                    e_list.append(self._scenes[key - 1])
+                return e_list
             if self._bulbtype.bulb_type == BulbClass.DW:
-                return [self._scenes[key] for key in [9, 10, 13, 14, 29, 30, 31, 32]]
+                e_list = []
+                for key in [9, 10, 13, 14, 29, 30, 31, 32]:
+                    # Array counting correction
+                    e_list.append(self._scenes[key - 1])
+                return e_list
             # Must be RGB with all
-            return self._scenes
-        return []
+        return self._scenes
 
     @property
     def available(self):
@@ -239,8 +249,6 @@ class WizBulb(LightEntity):
     async def async_update(self):
         """Fetch new state data for this light."""
         await self.update_state()
-        await self.get_bulb_type()
-        await self.get_mac()
 
         if self._state is not None and self._state is not False:
             self.update_brightness()
@@ -281,19 +289,24 @@ class WizBulb(LightEntity):
         try:
             await self._light.updateState()
             if self._light.state is None:
-                _LOGGER.debug(
-                    "[wizlight %s] state unavailable: %s", self._light.ip, self._state
-                )
                 self.update_state_unavailable()
             else:
                 self.update_state_available()
+                # Update the rest of the missing info if available
+                await self.get_bulb_type()
+                await self.get_mac()
         except TimeoutError as ex:
             _LOGGER.debug(ex)
             self.update_state_unavailable()
         except WizLightTimeOutError as ex:
             _LOGGER.debug(ex)
             self.update_state_unavailable()
-        _LOGGER.debug("[wizlight %s] updated state: %s", self._light.ip, self._state)
+        _LOGGER.debug(
+            "[wizlight %s] updated state: %s and available: %s",
+            self._light.ip,
+            self._state,
+            self._available,
+        )
 
     def update_brightness(self):
         """Update the brightness."""
