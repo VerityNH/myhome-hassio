@@ -46,7 +46,7 @@ http: !include http.yaml
 
 #tuya: !include tuya.yaml
 
-ecovacs: !include ecovacs.yaml
+#ecovacs: !include ecovacs.yaml
 
 #deebot: !include deebot.yaml
 
