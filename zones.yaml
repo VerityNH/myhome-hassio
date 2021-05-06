@@ -1,11 +1,11 @@
-- name: Nata Work
-  latitude: 42.4822046
-  longitude: -71.2120512
-  radius: 130
-  icon: mdi:office-building
-
-- name: Nick Work
-  latitude: 42.4961192
-  longitude: -71.2341821
-  radius: 130        
-  icon: mdi:office-building
+#- name: Nata Work
+#  latitude: 42.4822046
+#  longitude: -71.2120512
+#  radius: 130
+#  icon: mdi:office-building
+#
+#- name: Nick Work
+#  latitude: 42.4961192
+#  longitude: -71.2341821
+#  radius: 130
+#  icon: mdi:office-building
