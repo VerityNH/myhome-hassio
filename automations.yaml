@@ -356,7 +356,7 @@
   alias: 'KIDS: LIGHT: night mode turn on'
   description: ''
   trigger:
-  - at: '21:30'
+  - at: '21:00'
     platform: time
   condition: []
   action:
