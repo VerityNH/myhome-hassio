@@ -14,7 +14,7 @@ wyze_cam_1:
     - cover.wyze_cam_1_move_left_right
     - cover.wyze_cam_1_move_up_down
 
-living_lights:    
+living_lights:
     name: "Living Room Lights"
     entities:
         - light.livingroom_left_lamp
@@ -39,16 +39,16 @@ corridor_lights:
     entities:
         - light.corridor_lamp
 
-kitchen_lights:
-    name: Kitchen Lights
-    entities:
-        - light.kitchen_lamp
+#kitchen_lights:
+#    name: Kitchen Lights
+#    entities:
+#        - light.kitchen_lamp
 
 cooking_lights:
     name: Cooking Lights
     entities:
         - light.cooking_lamp_1
-        - light.cooking_lamp_2    
+        - light.cooking_lamp_2
 
 #kitchen_lights:
 #  name: Kitchen Lights
