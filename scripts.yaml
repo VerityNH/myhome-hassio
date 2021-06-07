@@ -68,54 +68,54 @@ clean_livingroom:
   sequence:
   - service: vacuum.send_command
     data:
-      entity_id: vacuum.1st_floor_deebot
       command: spot_area
       params:
         rooms: 0
         cleanings: 2
-    entity_id: vacuum.1st_floor_deebot
+    target:
+      device_id: deb005456ee7d0a0a4db84761f5be229
   mode: single
 clean_guest_bathroom:
   alias: Clean guest bathroom
   sequence:
   - service: vacuum.send_command
     data:
-      entity_id: vacuum.1st_floor_deebot
       command: spot_area
       params:
         rooms: 2
         cleanings: 2
-    entity_id: vacuum.1st_floor_deebot
+    target:
+      device_id: deb005456ee7d0a0a4db84761f5be229
   mode: single
 clean_kitchen:
   alias: Clean kitchen
   sequence:
   - service: vacuum.send_command
     data:
-      entity_id: vacuum.1st_floor_deebot
       command: spot_area
       params:
         rooms: 3
         cleanings: 2
-    entity_id: vacuum.1st_floor_deebot
+    target:
+      device_id: deb005456ee7d0a0a4db84761f5be229
   mode: single
 clean_first_floor:
   alias: Clean first floor
   sequence:
   - service: vacuum.start
-    data:
-      entity_id: vacuum.1st_floor_deebot
-    entity_id: vacuum.1st_floor_deebot
+    data: {}
+    target:
+      device_id: deb005456ee7d0a0a4db84761f5be229
   mode: single
 clean_dining:
   alias: Clean dining
   sequence:
   - service: vacuum.send_command
     data:
-      entity_id: vacuum.1st_floor_deebot
       command: spot_area
       params:
         rooms: 1
         cleanings: 2
-    entity_id: vacuum.1st_floor_deebot
+    target:
+      device_id: deb005456ee7d0a0a4db84761f5be229
   mode: single

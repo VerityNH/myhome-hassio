@@ -89,9 +89,9 @@ input_select:
 
 #uilogs:
 
-speedtestdotnet:
-  scan_interval:
-    minutes: 15
+#speedtestdotnet:
+#  scan_interval:
+#    minutes: 15
 
 
 google_assistant:

@@ -1057,9 +1057,14 @@
     to: 'off'
   condition: []
   action:
-  - service: switch.turn_on
-    data: {}
+  - type: turn_on
+    device_id: 80e2182d771cbcf1e8f555b27bbf7568
     entity_id: switch.wyze_cam_1_motion_detection
+    domain: switch
+  - type: turn_on
+    device_id: 0727afc826ddb9408f51ba73faba9591
+    entity_id: switch.wyze_cam_2_motion_detection
+    domain: switch
   mode: single
 - id: '1613851638605'
   alias: 'UTILITIES : SOMEBODY HOME'
@@ -1067,13 +1072,18 @@
   trigger:
   - platform: state
     entity_id: binary_sensor.athome
-    from: 'on'
-    to: 'off'
+    from: 'off'
+    to: 'on'
   condition: []
   action:
-  - service: switch.turn_off
-    data: {}
+  - type: turn_off
+    device_id: 80e2182d771cbcf1e8f555b27bbf7568
     entity_id: switch.wyze_cam_1_motion_detection
+    domain: switch
+  - type: turn_off
+    device_id: 0727afc826ddb9408f51ba73faba9591
+    entity_id: switch.wyze_cam_2_motion_detection
+    domain: switch
   mode: single
 - id: '1614913757577'
   alias: 'MASTER: PURIFIER: Nightmode ON'
