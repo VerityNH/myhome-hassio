@@ -2,13 +2,12 @@
 import logging
 # Import the device class from the component that you want to support
 from datetime import timedelta
-from typing import List, Optional
+from typing import List, Optional, Callable, Any
 
 from homeassistant.components.climate import (
     ClimateEntity,
     SUPPORT_TARGET_TEMPERATURE_RANGE,
-    SUPPORT_FAN_MODE,
-    SUPPORT_PRESET_MODE
+    SUPPORT_FAN_MODE
 )
 from homeassistant.components.climate.const import (
     HVAC_MODE_AUTO,
@@ -19,78 +18,105 @@ from homeassistant.components.climate.const import (
     FAN_ON,
     PRESET_HOME,
     PRESET_AWAY,
-    PRESET_SLEEP
+    PRESET_SLEEP,
+    CURRENT_HVAC_IDLE,
+    CURRENT_HVAC_HEAT,
+    CURRENT_HVAC_COOL,
+    CURRENT_HVAC_OFF
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_ATTRIBUTION, TEMP_FAHRENHEIT, TEMP_CELSIUS
 from homeassistant.core import HomeAssistant
-from wyzeapy.client import Client
-from wyzeapy.exceptions import AccessTokenError
-from wyzeapy.types import Device, ThermostatProps
+from wyzeapy import Wyzeapy, ThermostatService
+from wyzeapy.services.thermostat_service import Thermostat, TemperatureUnit, HVACMode, Preset, FanMode, HVACState
 
-from .const import DOMAIN
+from .const import DOMAIN, CONF_CLIENT
 
 _LOGGER = logging.getLogger(__name__)
 ATTRIBUTION = "Data provided by Wyze"
 SCAN_INTERVAL = timedelta(seconds=30)
 
 
-async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities):
+async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry,
+                            async_add_entities: Callable[[List[Any], bool], None]):
+    """
+    This function sets up the config entry so that it is available to Home Assistant
+
+    :param hass: The Home Assistant instance
+    :param config_entry: The current config entry
+    :param async_add_entities: A function to add entities
+    :return:
+    """
+
     _LOGGER.debug("""Creating new WyzeApi thermostat component""")
-    client: Client = hass.data[DOMAIN][config_entry.entry_id]
+    client: Wyzeapy = hass.data[DOMAIN][config_entry.entry_id][CONF_CLIENT]
 
-    def get_thermostats() -> List[Device]:
-        try:
-            return client.get_thermostats()
-        except AccessTokenError as e:
-            _LOGGER.warning(e)
-            client.reauthenticate()
-            return client.get_thermostats()
-
-    thermostats = [WyzeThermostat(client, thermostat) for thermostat in
-                   await hass.async_add_executor_job(get_thermostats)]
+    thermostat_service = await client.thermostat_service
+    thermostats = [WyzeThermostat(thermostat_service, thermostat) for thermostat in
+                   await thermostat_service.get_thermostats()]
 
     async_add_entities(thermostats, True)
 
 
 class WyzeThermostat(ClimateEntity):
-    _server_out_of_sync = False
-    _available = False
-    _temp_unit: str = "F"
-    _cool_sp: int
-    _heat_sp: int
-    _fan_mode: str
-    _hvac_mode: str
-    _preset_mode: str
-    _temperature: int
-    _humidity: int
+    """
+    This class defines a representation of a Wyze Thermostat that can be used for Home Assistant
+    """
 
-    def __init__(self, client: Client, device):
-        self._client = client
-        self._device = device
+    # pylint: disable=R0902
+    _server_out_of_sync = False
+
+    def __init__(self, thermostat_service: ThermostatService, thermostat: Thermostat):
+        self._thermostat_service = thermostat_service
+        self._thermostat = thermostat
+
+    def set_temperature(self, **kwargs) -> None:
+        raise NotImplementedError
+
+    def set_humidity(self, humidity: int) -> None:
+        raise NotImplementedError
+
+    def set_fan_mode(self, fan_mode: str) -> None:
+        raise NotImplementedError
+
+    def set_hvac_mode(self, hvac_mode: str) -> None:
+        raise NotImplementedError
+
+    def set_swing_mode(self, swing_mode: str) -> None:
+        raise NotImplementedError
+
+    def set_preset_mode(self, preset_mode: str) -> None:
+        raise NotImplementedError
+
+    def turn_aux_heat_on(self) -> None:
+        raise NotImplementedError
+
+    def turn_aux_heat_off(self) -> None:
+        raise NotImplementedError
 
     @property
     def current_temperature(self) -> float:
-        return float(self._temperature)
+        return self._thermostat.temperature
 
     @property
     def current_humidity(self) -> Optional[int]:
-        return int(self._humidity)
+        return self._thermostat.humidity
 
     @property
     def temperature_unit(self) -> str:
-        if self._temp_unit == "F":
+        if self._thermostat.temp_unit == TemperatureUnit.FAHRENHEIT:
             return TEMP_FAHRENHEIT
 
         return TEMP_CELSIUS
 
     @property
     def hvac_mode(self) -> str:
-        if self._hvac_mode == "auto":
+        # pylint: disable=R1705
+        if self._thermostat.hvac_mode == HVACMode.AUTO:
             return HVAC_MODE_AUTO
-        elif self._hvac_mode == "heat":
+        elif self._thermostat.hvac_mode == HVACMode.HEAT:
             return HVAC_MODE_HEAT
-        elif self._hvac_mode == "cool":
+        elif self._thermostat.hvac_mode == HVACMode.COOL:
             return HVAC_MODE_COOL
         else:
             return HVAC_MODE_OFF
@@ -101,24 +127,19 @@ class WyzeThermostat(ClimateEntity):
 
     @property
     def target_temperature_high(self) -> Optional[float]:
-        return float(self._cool_sp)
+        return self._thermostat.cool_set_point
 
     @property
     def target_temperature_low(self) -> Optional[float]:
-        return float(self._heat_sp)
+        return self._thermostat.heat_set_point
 
     @property
     def preset_mode(self) -> Optional[str]:
-        if self._preset_mode == "home":
-            return PRESET_HOME
-        elif self._preset_mode == "away":
-            return PRESET_AWAY
-        else:
-            return PRESET_SLEEP
+        raise NotImplementedError
 
     @property
     def preset_modes(self) -> Optional[List[str]]:
-        return [PRESET_HOME, PRESET_AWAY, PRESET_SLEEP]
+        raise NotImplementedError
 
     @property
     def is_aux_heat(self) -> Optional[bool]:
@@ -126,9 +147,10 @@ class WyzeThermostat(ClimateEntity):
 
     @property
     def fan_mode(self) -> Optional[str]:
-        if self._fan_mode == "auto":
+        if self._thermostat.fan_mode == FanMode.AUTO:
             return FAN_AUTO
-        return FAN_ON
+        else:
+            return FAN_ON
 
     @property
     def fan_modes(self) -> Optional[List[str]]:
@@ -142,78 +164,95 @@ class WyzeThermostat(ClimateEntity):
     def swing_modes(self) -> Optional[str]:
         raise NotImplementedError
 
-    def set_temperature(self, **kwargs) -> None:
+    @property
+    def hvac_action(self) -> str:
+        # pylint: disable=R1705
+        if self._thermostat.hvac_state == HVACState.IDLE:
+            return CURRENT_HVAC_IDLE
+        elif self._thermostat.hvac_state == HVACState.HEATING:
+            return CURRENT_HVAC_HEAT
+        elif self._thermostat.hvac_state == HVACState.COOLING:
+            return CURRENT_HVAC_COOL
+        else:
+            return CURRENT_HVAC_OFF
+
+    async def async_set_temperature(self, **kwargs) -> None:
         target_temp_low = kwargs['target_temp_low']
         target_temp_high = kwargs['target_temp_high']
 
-        if target_temp_low != self._heat_sp:
-            self._client.set_thermostat_prop(self._device, ThermostatProps.HEAT_SP, int(target_temp_low))
-            self._heat_sp = int(target_temp_low)
-        if target_temp_high != self._cool_sp:
-            self._cool_sp = int(target_temp_high)
-            self._client.set_thermostat_prop(self._device, ThermostatProps.COOL_SP, int(target_temp_high))
+        if target_temp_low != self._thermostat.heat_set_point:
+            await self._thermostat_service.set_heat_point(self._thermostat, int(target_temp_low))
+            self._thermostat.heat_set_point = int(target_temp_low)
+        if target_temp_high != self._thermostat.cool_set_point:
+            await self._thermostat_service.set_cool_point(self._thermostat, int(target_temp_high))
+            self._thermostat.cool_set_point = int(target_temp_high)
 
         self._server_out_of_sync = True
 
-    def set_humidity(self, humidity: int) -> None:
+    async def async_set_humidity(self, humidity: int) -> None:
         raise NotImplementedError
 
-    def set_fan_mode(self, fan_mode: str) -> None:
+    async def async_set_fan_mode(self, fan_mode: str) -> None:
         if fan_mode == FAN_ON:
-            self._client.set_thermostat_prop(self._device, ThermostatProps.FAN_MODE, "on")
+            await self._thermostat_service.set_fan_mode(self._thermostat, FanMode.ON)
+            self._thermostat.fan_mode = FanMode.ON
         elif fan_mode == FAN_AUTO:
-            self._client.set_thermostat_prop(self._device, ThermostatProps.FAN_MODE, "auto")
+            await self._thermostat_service.set_fan_mode(self._thermostat, FanMode.AUTO)
+            self._thermostat.fan_mode = FanMode.AUTO
 
-        self._fan_mode = fan_mode
         self._server_out_of_sync = True
 
-    def set_hvac_mode(self, hvac_mode: str) -> None:
+    async def async_set_hvac_mode(self, hvac_mode: str) -> None:
         if hvac_mode == HVAC_MODE_OFF:
-            self._client.set_thermostat_prop(self._device, ThermostatProps.MODE_SYS, "off")
+            await self._thermostat_service.set_hvac_mode(self._thermostat, HVACMode.OFF)
+            self._thermostat.hvac_mode = HVACMode.OFF
         elif hvac_mode == HVAC_MODE_HEAT:
-            self._client.set_thermostat_prop(self._device, ThermostatProps.MODE_SYS, "heat")
+            await self._thermostat_service.set_hvac_mode(self._thermostat, HVACMode.HEAT)
+            self._thermostat.hvac_mode = HVACMode.HEAT
         elif hvac_mode == HVAC_MODE_COOL:
-            self._client.set_thermostat_prop(self._device, ThermostatProps.MODE_SYS, "cool")
+            await self._thermostat_service.set_hvac_mode(self._thermostat, HVACMode.COOL)
+            self._thermostat.hvac_mode = HVACMode.COOL
         elif hvac_mode == HVAC_MODE_AUTO:
-            self._client.set_thermostat_prop(self._device, ThermostatProps.MODE_SYS, "auto")
+            await self._thermostat_service.set_hvac_mode(self._thermostat, HVACMode.AUTO)
+            self._thermostat.hvac_mode = HVACMode.AUTO
 
-        self._hvac_mode = hvac_mode
         self._server_out_of_sync = True
 
-    def set_swing_mode(self, swing_mode: str) -> None:
+    async def async_set_swing_mode(self, swing_mode: str) -> None:
         raise NotImplementedError
 
-    def set_preset_mode(self, preset_mode: str) -> None:
+    async def async_set_preset_mode(self, preset_mode: str) -> None:
         if preset_mode == PRESET_SLEEP:
-            self._client.set_thermostat_prop(self._device, ThermostatProps.CONFIG_SCENARIO, "sleep")
+            await self._thermostat_service.set_preset(self._thermostat, Preset.SLEEP)
+            self._thermostat.preset = Preset.SLEEP
         elif preset_mode == PRESET_AWAY:
-            self._client.set_thermostat_prop(self._device, ThermostatProps.CONFIG_SCENARIO, "away")
+            await self._thermostat_service.set_preset(self._thermostat, Preset.AWAY)
+            self._thermostat.preset = Preset.AWAY
         elif preset_mode == PRESET_HOME:
-            self._client.set_thermostat_prop(self._device, ThermostatProps.CONFIG_SCENARIO, "home")
+            await self._thermostat_service.set_preset(self._thermostat, Preset.HOME)
+            self._thermostat.preset = Preset.HOME
 
-        self._preset_mode = preset_mode
         self._server_out_of_sync = True
 
-    def turn_aux_heat_on(self) -> None:
+    async def async_turn_aux_heat_on(self) -> None:
         raise NotImplementedError
 
-    def turn_aux_heat_off(self) -> None:
+    async def async_turn_aux_heat_off(self) -> None:
         raise NotImplementedError
 
     @property
     def supported_features(self) -> int:
-        return SUPPORT_TARGET_TEMPERATURE_RANGE | SUPPORT_FAN_MODE | \
-               SUPPORT_PRESET_MODE
+        return SUPPORT_TARGET_TEMPERATURE_RANGE | SUPPORT_FAN_MODE
 
     @property
     def device_info(self) -> dict:
         return {
             "identifiers": {
-                (DOMAIN, self._device.mac)
+                (DOMAIN, self._thermostat.mac)
             },
             "name": self.name,
             "manufacturer": "WyzeLabs",
-            "model": self._device.product_model
+            "model": self._thermostat.product_model
         }
 
     @property
@@ -223,16 +262,16 @@ class WyzeThermostat(ClimateEntity):
     @property
     def name(self) -> str:
         """Return the display name of this lock."""
-        return self._device.nickname
+        return self._thermostat.nickname
 
     @property
     def unique_id(self) -> str:
-        return self._device.mac
+        return self._thermostat.mac
 
     @property
     def available(self) -> bool:
         """Return the connection status of this light"""
-        return self._available
+        return self._thermostat.available
 
     @property
     def device_state_attributes(self):
@@ -241,32 +280,18 @@ class WyzeThermostat(ClimateEntity):
             ATTR_ATTRIBUTION: ATTRIBUTION,
             "state": self.state,
             "available": self.available,
-            "device_model": self._device.product_model,
+            "device_model": self._thermostat.product_model,
             "mac": self.unique_id
         }
 
-    def update(self):
-        if not self._server_out_of_sync:
-            thermostat_props = self._client.get_thermostat_info(self._device)
+    async def async_update(self) -> None:
+        """
+        This function updates the state of the Thermostat
 
-            for prop, value in thermostat_props:
-                if prop == ThermostatProps.TEMP_UNIT:
-                    self._temp_unit = value
-                elif prop == ThermostatProps.COOL_SP:
-                    self._cool_sp = value
-                elif prop == ThermostatProps.HEAT_SP:
-                    self._heat_sp = value
-                elif prop == ThermostatProps.FAN_MODE:
-                    self._fan_mode = value
-                elif prop == ThermostatProps.MODE_SYS:
-                    self._hvac_mode = value
-                elif prop == ThermostatProps.CONFIG_SCENARIO:
-                    self._preset_mode = value
-                elif prop == ThermostatProps.TEMPERATURE:
-                    self._temperature = value
-                elif prop == ThermostatProps.IOT_STATE:
-                    self._available = False if value != 'connected' else True
-                elif prop == ThermostatProps.HUMIDITY:
-                    self._humidity = value
+        :return: None
+        """
+
+        if not self._server_out_of_sync:
+            self._thermostat = await self._thermostat_service.update(self._thermostat)
         else:
             self._server_out_of_sync = False

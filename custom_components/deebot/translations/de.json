@@ -17,10 +17,16 @@
                     "password": "Passwort",
                     "username": "E-mail oder ShortID",
                     "country": "Land",
-                    "continent": "Kontinent",
-                    "live_map": "Live-Karte aktiviert",
-                    "show_color_rooms": "Raumfarbe anzeigen [BETA]"
+                    "continent": "Kontinent"
                 }
+            },
+            "robots": {
+                "data": {
+                    "devices": "Geräte"
+                }
+            },
+            "user_advanced": {
+                "description": "Wählen Sie \"Bumper\" nur, falls Sie eine funktionierende Bumper-Instanz haben. Sonst wählen Sie bitte die empfohlene Variante \"Cloud\"."
             }
         }
    }
