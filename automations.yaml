@@ -215,10 +215,10 @@
   - service: script.turn_off_all_lights
   mode: single
 - id: '1603940497817'
-  alias: 'HOME: VACUUM: Start vacuum at 8-10pm'
+  alias: 'HOME: VACUUM: Start vacuum at 6-10pm'
   description: ''
   trigger:
-  - at: '20:10'
+  - at: '18:10'
     platform: time
   condition: []
   action:

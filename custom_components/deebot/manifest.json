@@ -1,12 +1,12 @@
 {
   "domain": "deebot",
   "name": "Deebot for Home Assistant",
-  "version": "3.1.0",
+  "version": "3.1.2",
   "config_flow": true,
   "documentation": "https://github.com/And3rsL/Deebot-for-Home-Assistant",
   "issue_tracker": "https://github.com/And3rsL/Deebot-for-Home-Assistant/issues",
   "requirements": [
-    "deebotozmo==2.0.3"
+    "deebotozmo==2.1.1"
   ],
   "codeowners": [
     "@And3rsL",

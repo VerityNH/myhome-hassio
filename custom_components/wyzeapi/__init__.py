@@ -16,7 +16,7 @@ from wyzeapy import Wyzeapy
 
 from .const import DOMAIN, CONF_CLIENT
 
-PLATFORMS = ["light", "switch", "binary_sensor", "lock", "climate",
+PLATFORMS = ["light", "switch", "lock", "climate",
              "alarm_control_panel"]  # Fixme: Re add scene
 _LOGGER = logging.getLogger(__name__)
 
@@ -87,7 +87,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     mac_addresses = await client.unique_device_ids
 
     def get_uid():
-        config_path = os.getcwd() + os.sep + 'wyze_config.ini'
+        config_path = hass.config.path('wyze_config.ini')
 
         config = configparser.ConfigParser()
         config.read(config_path)

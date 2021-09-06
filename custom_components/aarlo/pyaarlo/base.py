@@ -20,6 +20,7 @@ from .constant import (
     MODEL_PRO_4,
     MODEL_WIREFREE_VIDEO_DOORBELL,
     PING_CAPABILITY,
+    RESOURCE_CAPABILITY,
     RESTART_PATH,
     SCHEDULE_KEY,
     SIREN_STATE_KEY,
@@ -485,9 +486,24 @@ class ArloBase(ArloDevice):
             if (
                 self.is_own_parent
                 and self.model_id.startswith(
-                    (MODEL_WIREFREE_VIDEO_DOORBELL, MODEL_ESSENTIAL, MODEL_PRO_3_FLOODLIGHT, MODEL_PRO_4)
+                    (
+                        MODEL_WIREFREE_VIDEO_DOORBELL,
+                        MODEL_ESSENTIAL,
+                        MODEL_PRO_3_FLOODLIGHT,
+                        MODEL_PRO_4,
+                    )
                 )
                 and not self.is_corded
+            ):
+                return False
+            return True
+        if cap in (RESOURCE_CAPABILITY,):
+            # Not all devices need (or want) to get their resources queried.
+            if self.model_id.startswith(
+                (
+                    MODEL_WIREFREE_VIDEO_DOORBELL,
+                    MODEL_ESSENTIAL,
+                )
             ):
                 return False
             return True

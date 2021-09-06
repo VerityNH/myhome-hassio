@@ -2,15 +2,27 @@
 import asyncio
 import logging
 
+from awesomeversion import AwesomeVersion
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_DEVICES, CONF_VERIFY_SSL
+from homeassistant.const import CONF_DEVICES, CONF_VERIFY_SSL, CONF_USERNAME
+from homeassistant.const import __version__ as HA_VERSION
 from homeassistant.core import HomeAssistant
+
 from . import hub
-from .const import DOMAIN, STARTUP_MESSAGE
+from .const import DOMAIN, STARTUP_MESSAGE, CONF_BUMPER, CONF_CLIENT_DEVICE_ID, MIN_REQUIRED_HA_VERSION
+from .helpers import get_bumper_device_id
 
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS = ["sensor", "binary_sensor", "vacuum", "camera"]
+
+
+def is_ha_supported() -> bool:
+    if AwesomeVersion(HA_VERSION) >= MIN_REQUIRED_HA_VERSION:
+        return True
+
+    _LOGGER.error(f"Unsupported HA version! Please upgrade home assistant at least to \"{MIN_REQUIRED_HA_VERSION}\"")
+    return False
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -19,6 +31,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if DOMAIN not in hass.data:
         # Print startup message
         _LOGGER.info(STARTUP_MESSAGE)
+
+    if not is_ha_supported():
+        return False
 
     # Store an instance of the "connecting" class that does the work of speaking
     # with your actual devices.
@@ -55,7 +70,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
 
 async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry):
     """Migrate old entry."""
-    _LOGGER.debug("Migrating from version %s", config_entry.version)
+    _LOGGER.debug(f"Migrating from version {config_entry.version}")
 
     if config_entry.version == 1:
         new = {**config_entry.data,
@@ -69,9 +84,17 @@ async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry):
         new[CONF_DEVICES] = devices.get(device_id, [])
 
         config_entry.data = {**new}
-
         config_entry.version = 2
 
-    _LOGGER.info("Migration to version %s successful", config_entry.version)
+    if config_entry.version == 2:
+        new = {**config_entry.data}
+
+        if new.get(CONF_USERNAME) == CONF_BUMPER:
+            new[CONF_CLIENT_DEVICE_ID] = get_bumper_device_id(hass)
+
+        config_entry.data = {**new}
+        config_entry.version = 3
+
+    _LOGGER.info(f"Migration to version {config_entry.version} successful")
 
     return True

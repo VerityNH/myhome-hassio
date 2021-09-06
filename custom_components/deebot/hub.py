@@ -5,6 +5,7 @@ import string
 from typing import Any, Mapping, Optional
 
 import aiohttp
+from aiohttp import ClientError
 from deebotozmo.ecovacs_api import EcovacsAPI
 from deebotozmo.ecovacs_mqtt import EcovacsMqtt
 from deebotozmo.util import md5
@@ -34,13 +35,9 @@ class DeebotHub:
         self._session: aiohttp.ClientSession = aiohttp_client.async_get_clientsession(self._hass,
                                                                                       verify_ssl=self._verify_ssl)
 
-        if config.get(CONF_USERNAME) == CONF_BUMPER:
-            try:
-                location_name = hass.config.location_name.strip().replace(' ', '_')
-            except:
-                location_name = ""
-            device_id = f"Deebot-4-HA_{location_name}"
-        else:
+        device_id = config.get(CONF_CLIENT_DEVICE_ID)
+
+        if not device_id:
             # Generate a random device ID on each bootup
             device_id = "".join(
                 random.choice(string.ascii_uppercase + string.digits) for _ in range(12)
@@ -100,8 +97,13 @@ class DeebotHub:
 
     async def _check_status_task(self):
         while True:
-            await asyncio.sleep(60)
-            await self._check_status_function()
+            try:
+                await asyncio.sleep(60)
+                await self._check_status_function()
+            except ClientError as e:
+                _LOGGER.warning(f"A client error occurred, probably the ecovacs servers are unstable: {e}")
+            except Exception as e:
+                _LOGGER.error(f"Unknown exception occurred: {e}")
 
     async def _check_status_function(self):
         devices = await self._ecovacs_api.get_devices()
