@@ -29,8 +29,7 @@ tts:
 
 group: !include groups.yaml
 
-zone: !include zones.yaml
-
+zone:
 #automation: !include_dir_list automation/
 
 automation: !include automations.yaml
