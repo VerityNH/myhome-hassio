@@ -69,8 +69,6 @@ sensor: !include sensors.yaml
 #Dummy sensors
 binary_sensor: !include binary_sensors.yaml
 
-weather: !include weather.yaml
-
 #smartweather:
 #  station_id: !secret sm_station_id
 #  api_key: !secret sm_api_key
