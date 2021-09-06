@@ -61,12 +61,9 @@ light: !include light.yaml
 
 
 # Person tracker
-#person: !include persons.yaml
 person:
 
 device_tracker: !include device_tracker.yaml
-
-climate: !include thermostat.yaml
 
 sensor: !include sensors.yaml
 

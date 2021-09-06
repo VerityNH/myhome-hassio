@@ -1,6 +1,0 @@
-name: 'Living lights shutdown delay'
-min: 1
-max: 15
-step: 1
-initial: 5
-mode: slider
