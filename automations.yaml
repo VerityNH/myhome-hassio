@@ -11,14 +11,14 @@
   - condition: and
     conditions:
     - condition: state
-      entity_id: light.cooking_lights
+      entity_id: light.cooking_lamp
       state: 'off'
     - condition: state
-      entity_id: light.dining_lights_switch
+      entity_id: light.breakfast_lamp
       state: 'off'
     - condition: numeric_state
       entity_id: sensor.kitchen_multi_illuminance
-      above: '70'
+      above: '30'
     - condition: state
       entity_id: input_boolean.cooking_lights_auto
       state: 'on'
@@ -42,7 +42,7 @@
     conditions:
     - condition: numeric_state
       entity_id: sensor.kitchen_multi_illuminance
-      below: '70'
+      below: '30'
     - condition: state
       entity_id: input_boolean.cooking_lights_auto
       state: 'off'
@@ -53,60 +53,71 @@
     entity_id: input_boolean.cooking_lights_auto
   mode: single
 - id: '1603939331663'
-  alias: 'CORRIDOR: LIGHT: turn off'
+  alias: 'LAUNDRY: LIGHT: turn off'
   description: ''
   trigger:
   - type: no_motion
     platform: device
     device_id: a570dd340dac11eb8158c5f661079c4c
-    entity_id: binary_sensor.corridor_motion_sensor_motion
+    entity_id: binary_sensor.laundry_motion_motion
     domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
   condition: []
   action:
   - type: turn_off
-    device_id: 0bc8705f4a11130ad4c852f24cc5ee0e
-    entity_id: light.corridor_lamp
+    device_id: 7967de631d2eafec026bdf520d5aabc5
+    entity_id: light.laundry_lamp
     domain: light
   mode: single
 - id: '1603939428014'
-  alias: 'CORRIDOR: LIGHT: DAY: turn on'
+  alias: 'LAUNDRY: LIGHT: DAY: turn on'
   description: ''
   trigger:
   - type: motion
     platform: device
     device_id: a570dd340dac11eb8158c5f661079c4c
-    entity_id: binary_sensor.corridor_motion_sensor_motion
+    entity_id: binary_sensor.laundry_motion_motion
     domain: binary_sensor
   condition:
-  - after: '6:00:00'
-    before: '23:00:00'
+  - after: '6:00'
+    before: '23:00'
     condition: time
+  - condition: state
+    entity_id: binary_sensor.athome
+    state: 'on'
   action:
   - type: turn_on
-    device_id: 0bc8705f4a11130ad4c852f24cc5ee0e
-    entity_id: light.corridor_lamp
+    device_id: 7967de631d2eafec026bdf520d5aabc5
+    entity_id: light.laundry_lamp
     domain: light
     brightness_pct: 100
   mode: single
 - id: '1603939504172'
-  alias: 'CORRIDOR: LIGHT: NIGHT: turn on'
+  alias: 'LAUNDRY: LIGHT: NIGHT: turn on'
   description: ''
   trigger:
   - type: motion
     platform: device
     device_id: a570dd340dac11eb8158c5f661079c4c
-    entity_id: binary_sensor.corridor_motion_sensor_motion
+    entity_id: binary_sensor.laundry_motion_motion
     domain: binary_sensor
   condition:
   - after: '23:00:00'
-    before: '6:00:00'
+    before: '6:00'
     condition: time
+  - condition: state
+    entity_id: binary_sensor.athome
+    state: 'on'
   action:
   - type: turn_on
-    device_id: 0bc8705f4a11130ad4c852f24cc5ee0e
-    entity_id: light.corridor_lamp
+    device_id: 7967de631d2eafec026bdf520d5aabc5
+    entity_id: light.laundry_lamp
     domain: light
-    brightness_pct: 15
+    brightness_pct: 30
   mode: single
 - id: '1603939854041'
   alias: 'HOME: CLIMATE: Adjust climate control'
@@ -258,8 +269,8 @@
       entity_id: light.kids_bedroom_lights
       state: 'off'
     - condition: numeric_state
-      entity_id: sensor.kids_multy_illuminance
-      above: '10'
+      entity_id: sensor.kids_multi_illuminance
+      above: '30'
     - condition: state
       entity_id: input_boolean.kids_lights_auto
       state: 'on'
@@ -281,8 +292,8 @@
   - condition: and
     conditions:
     - condition: numeric_state
-      entity_id: sensor.kids_multy_illuminance
-      below: '10'
+      entity_id: sensor.kids_multi_illuminance
+      below: '30'
     - condition: state
       entity_id: input_boolean.kids_lights_auto
       state: 'off'
@@ -298,21 +309,19 @@
   - type: no_motion
     platform: device
     device_id: a57023d80dac11eb8378152e76972078
-    entity_id: binary_sensor.kids_multy_motion
+    entity_id: binary_sensor.kids_multi_motion
     domain: binary_sensor
     for:
       hours: 0
-      minutes: 5
+      minutes: 3
       seconds: 0
+      milliseconds: 0
   condition:
   - condition: state
     entity_id: input_boolean.kids_nightmode
     state: 'off'
   action:
-  - data:
-      entity_id: light.kids_bedroom_lights
-    entity_id: light.kids_bedroom_lights
-    service: light.turn_off
+  - scene: scene.kids_lights_off
   mode: single
 - id: '1603941029779'
   alias: 'KIDS: LIGHT: turn on'
@@ -321,7 +330,7 @@
   - type: motion
     platform: device
     device_id: a57023d80dac11eb8378152e76972078
-    entity_id: binary_sensor.kids_multy_motion
+    entity_id: binary_sensor.kids_multi_motion
     domain: binary_sensor
   condition:
   - condition: and
@@ -336,8 +345,7 @@
       entity_id: input_boolean.kids_lights_auto
       state: 'on'
   action:
-  - entity_id: light.kids_bedroom_lights
-    service: light.turn_on
+  - scene: scene.kids_day_mode
   mode: single
 - id: '1603941127999'
   alias: 'KIDS: LIGHT: night mode turn off'
@@ -345,6 +353,8 @@
   trigger:
   - event: sunrise
     platform: sun
+  - platform: time
+    at: 06:45
   condition: []
   action:
   - service: input_boolean.turn_off
@@ -400,7 +410,7 @@
   - scene: scene.kids_night_mode
   mode: single
 - id: '1603941608422'
-  alias: 'KITCHEN: LIGHT: auto turn off'
+  alias: 'DINING: LIGHT: auto turn off'
   description: ''
   trigger:
   - platform: sun
@@ -412,43 +422,19 @@
   - condition: and
     conditions:
     - condition: state
-      entity_id: light.dining_lights_switch
+      entity_id: light.dining_lamp
       state: 'off'
     - condition: numeric_state
-      entity_id: sensor.kitchen_multi_illuminance
-      above: '30'
+      entity_id: sensor.dining_multi_illuminance
+      above: '40'
     - condition: state
-      entity_id: input_boolean.kitchen_lights_auto
+      entity_id: input_boolean.dining_lights_auto
       state: 'on'
   action:
   - service: input_boolean.turn_off
-    data:
-      entity_id: input_boolean.kitchen_lights_auto
-    entity_id: input_boolean.kitchen_lights_auto
-  mode: single
-- id: '1603941742754'
-  alias: 'KITCHEN: LIGHT: auto turn on'
-  description: ''
-  trigger:
-  - platform: sun
-    event: sunset
-    offset: -00:30:00
-  - platform: time_pattern
-    minutes: /1
-  condition:
-  - condition: and
-    conditions:
-    - condition: numeric_state
-      entity_id: sensor.kitchen_multi_illuminance
-      below: '30'
-    - condition: state
-      entity_id: input_boolean.kitchen_lights_auto
-      state: 'off'
-  action:
-  - service: input_boolean.turn_on
-    data:
-      entity_id: input_boolean.kitchen_lights_auto
-    entity_id: input_boolean.kitchen_lights_auto
+    data: {}
+    target:
+      entity_id: input_boolean.dining_lights_auto
   mode: single
 - id: '1603942267204'
   alias: 'KITCHEN: LIGHT: night mode turn off'
@@ -456,6 +442,8 @@
   trigger:
   - event: sunrise
     platform: sun
+  - platform: time
+    at: 06:45
   condition: []
   action:
   - service: input_boolean.turn_off
@@ -489,11 +477,11 @@
   - condition: and
     conditions:
     - condition: state
-      entity_id: light.living_room_lights
+      entity_id: light.livingroom_lamp
       state: 'off'
     - condition: numeric_state
       entity_id: sensor.livingroom_multi_illuminance
-      above: '5'
+      above: '20'
     - condition: state
       entity_id: input_boolean.living_lights_auto
       state: 'on'
@@ -517,10 +505,15 @@
     conditions:
     - condition: numeric_state
       entity_id: sensor.livingroom_multi_illuminance
-      below: '5'
+      below: '20'
     - condition: state
       entity_id: input_boolean.living_lights_auto
       state: 'off'
+    - condition: device
+      device_id: 0007c8eae41f59cbde491d3c47093e84
+      domain: media_player
+      entity_id: media_player.livingroom_tv
+      type: is_off
   action:
   - service: input_boolean.turn_on
     entity_id: input_boolean.living_lights_auto
@@ -857,169 +850,6 @@
         tag: alarm
     service: notify.mobile_app_sm_n970u
   mode: single
-- id: '1606361432600'
-  alias: 'MASTER: HUMIDITY: turn on when low '
-  description: ''
-  trigger:
-  - type: humidity
-    platform: device
-    device_id: a56fb5590dac11ebab58056b1c993e9d
-    entity_id: sensor.master_multi_relative_humidity
-    domain: sensor
-    below: 45
-  - platform: state
-    entity_id: binary_sensor.athome
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: binary_sensor.athome
-    state: 'on'
-  - condition: numeric_state
-    entity_id: sensor.master_multi_relative_humidity
-    below: '55'
-  action:
-  - service: switch.turn_on
-    data:
-      entity_id: switch.sonoff_10008fd3ee
-    entity_id: switch.sonoff_10008fd3ee
-  mode: single
-- id: '1606361563469'
-  alias: 'MASTER: HUMIDITY: turn off'
-  description: ''
-  trigger:
-  - type: humidity
-    platform: device
-    device_id: a56fb5590dac11ebab58056b1c993e9d
-    entity_id: sensor.master_multi_relative_humidity
-    domain: sensor
-    above: 45
-  - platform: state
-    entity_id: binary_sensor.athome
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - service: switch.turn_off
-    data:
-      entity_id: switch.sonoff_10008fd3ee
-    entity_id: switch.sonoff_10008fd3ee
-  mode: single
-- id: '1606365654352'
-  alias: 'LIVINGROOM: HUMIDITY: turn on when low'
-  description: ''
-  trigger:
-  - type: humidity
-    platform: device
-    device_id: a573ffc60dac11ebb5ece9a258934119
-    entity_id: sensor.livingroom_multi_relative_humidity
-    domain: sensor
-    below: 45
-  - platform: state
-    entity_id: binary_sensor.athome
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: binary_sensor.athome
-    state: 'on'
-  - condition: numeric_state
-    entity_id: sensor.livingroom_multi_relative_humidity
-    below: '55'
-  action:
-  - service: switch.turn_on
-    data:
-      entity_id: switch.sonoff_10009068c3
-    entity_id: switch.sonoff_10009068c3
-  mode: single
-- id: '1606365746249'
-  alias: 'LIVINGROOM: HUMIDITY: turn off'
-  description: ''
-  trigger:
-  - type: humidity
-    platform: device
-    device_id: a573ffc60dac11ebb5ece9a258934119
-    entity_id: sensor.livingroom_multi_relative_humidity
-    domain: sensor
-    above: 45
-  - platform: state
-    entity_id: binary_sensor.athome
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - service: switch.turn_off
-    data:
-      entity_id: switch.sonoff_10009068c3
-    entity_id: switch.sonoff_10009068c3
-  mode: single
-- id: '1606601378388'
-  alias: 'KIDS: HUMIDITY: turn on when low'
-  description: ''
-  trigger:
-  - type: humidity
-    platform: device
-    device_id: a57023d80dac11eb8378152e76972078
-    entity_id: sensor.kids_multy_relative_humidity
-    domain: sensor
-    below: 45
-  - platform: state
-    entity_id: binary_sensor.athome
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: binary_sensor.athome
-    state: 'on'
-  - condition: numeric_state
-    entity_id: sensor.kids_multy_relative_humidity
-    below: '45'
-  action:
-  - service: switch.turn_on
-    data:
-      entity_id: switch.sonoff_1000b91f0e
-    entity_id: switch.sonoff_1000b91f0e
-  mode: single
-- id: '1606601537766'
-  alias: 'KIDS: HUMIDITY: turn off'
-  description: ''
-  trigger:
-  - type: humidity
-    platform: device
-    device_id: a57023d80dac11eb8378152e76972078
-    entity_id: sensor.kids_multy_relative_humidity
-    domain: sensor
-    above: 45
-  - platform: state
-    entity_id: binary_sensor.athome
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - service: switch.turn_off
-    data: {}
-    entity_id: switch.sonoff_1000b91f0e
-  mode: single
-- id: '1606882479663'
-  alias: 'KIDS: HUMIDITY: turn off'
-  description: ''
-  trigger:
-  - type: humidity
-    platform: device
-    device_id: a57023d80dac11eb8378152e76972078
-    entity_id: sensor.kids_multy_relative_humidity
-    domain: sensor
-    above: 45
-  - platform: state
-    entity_id: binary_sensor.athome
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - service: switch.turn_off
-    data: {}
-    entity_id: switch.sonoff_1000b91f0e
-  mode: single
 - id: '1608041876765'
   alias: 'UTILITIES: TELEGRAM: Alisa receives request'
   description: ''
@@ -1125,7 +955,7 @@
   use_blueprint:
     path: lights/motion_light_scene.yaml
     input:
-      motion_entity: binary_sensor.kitchen_multi_motion
+      motion_entity: binary_sensor.dining_multi_motion
       scene_day_on_target:
         entity_id: scene.kitchen_light_day_mode
       scene_night_on_target:
@@ -1133,17 +963,17 @@
       scene_off_target:
         entity_id: scene.dining_light_off
       at_home: binary_sensor.athome
-      is_dark_time: input_boolean.kitchen_lights_auto
+      is_dark_time: input_boolean.dining_lights_auto
       is_bed_time: input_boolean.kitchen_nightmode
-      no_motion_wait_day: 300
-      no_motion_wait_night: 60
+      no_motion_wait_night: 30
+      no_motion_wait_day: 600
 - id: '1615137262200'
   alias: 'COOKING: LIGHT: Automation'
   description: ''
   use_blueprint:
     path: lights/motion_light_scene.yaml
     input:
-      motion_entity: binary_sensor.cooking_motion_sensor_motion
+      motion_entity: binary_sensor.kitchen_multi_motion
       scene_day_on_target:
         entity_id: scene.cooking_light_day_mode
       scene_night_on_target:
@@ -1153,8 +983,8 @@
       at_home: binary_sensor.athome
       is_dark_time: input_boolean.cooking_lights_auto
       is_bed_time: input_boolean.kitchen_nightmode
-      no_motion_wait_day: 300
       no_motion_wait_night: 30
+      no_motion_wait_day: 180
 - id: '1615137341222'
   alias: 'LIVINGROOM: LIGHT: Automation'
   description: ''
@@ -1171,8 +1001,8 @@
       at_home: binary_sensor.athome
       is_dark_time: input_boolean.living_lights_auto
       is_bed_time: input_boolean.living_nightmode
-      no_motion_wait_day: 300
       no_motion_wait_night: 60
+      no_motion_wait_day: 180
 - id: '1616518347340'
   alias: 'HOME: CLIMATE: Adjust climate control 2'
   description: ''
@@ -1206,3 +1036,96 @@
       all_open_sensor: binary_sensor.all_windows_closed
       thermostat: climate.dining_room
       outside_temp: sensor.smartweather_temperature
+- id: '1630962024712'
+  alias: 'DINING: LIGHT: auto turn on'
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -00:30:00
+  - platform: time_pattern
+    minutes: /1
+  condition:
+  - condition: and
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.dining_multi_illuminance
+      below: '30'
+    - condition: state
+      entity_id: input_boolean.dining_lights_auto
+      state: 'off'
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.dining_lights_auto
+  mode: single
+- id: '1631708320081'
+  alias: LIVINGROOM:TV:Turn off lights automation when TV turns on
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: 2624187b4041a85036d38c3e0109489a
+    entity_id: switch.livingroom_tv
+    domain: switch
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.living_lights_auto
+  - type: turn_off
+    device_id: 701963bce6680e709c548def84bd320a
+    entity_id: light.livingroom_lamp
+    domain: light
+  mode: single
+- id: '1631890622332'
+  alias: TV:ON:Hyperion to grabber
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: 2624187b4041a85036d38c3e0109489a
+    entity_id: switch.livingroom_tv
+    domain: switch
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id: light.livingroom_tv_ambilight
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - service: light.turn_on
+    data:
+      effect: USB Capture
+    target:
+      entity_id: light.livingroom_tv_ambilight
+  mode: single
+- id: '1631890685302'
+  alias: TV:OFF:Hyperion to effect
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_off
+    device_id: 2624187b4041a85036d38c3e0109489a
+    entity_id: switch.livingroom_tv
+    domain: switch
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id: light.livingroom_tv_ambilight
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - service: light.turn_on
+    target:
+      entity_id: light.livingroom_tv_ambilight
+    data:
+      effect: Sparks
+  mode: single
