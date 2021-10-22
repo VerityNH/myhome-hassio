@@ -191,10 +191,16 @@ media_player:
 yandex_smart_home:
   filter:
     include_entities:
+      - light.breakfast_lamp
+      - light.cooking_lamp
+      - light.dining_lamp
+      - light.livingroom_lamp
+      - light.hallway_lamp
+      - light.laundry_lamp
       - light.master_bedroom_lights
-      - fan.master_air_purifier
-      - switch.tv
       - vacuum.liova
+      - fan.master_air_purifier
+      - climate.thermostat
 
 yandex_station:
   username: !secret yandex_username
