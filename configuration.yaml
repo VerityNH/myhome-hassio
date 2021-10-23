@@ -189,6 +189,13 @@ media_player:
   - platform: aarlo
 
 yandex_smart_home:
+  notifier:
+    - oauth_token: !secret yandex_oauth_token
+      skill_id: !secret yandex_skill_id
+      user_id: !secret yandex_user_id_nick
+    - oauth_token: !secret yandex_oauth_token
+      skill_id: !secret yandex_skill_id
+      user_id: !secret yandex_user_id_nata
   filter:
     include_entities:
       - light.breakfast_lamp
@@ -198,9 +205,50 @@ yandex_smart_home:
       - light.hallway_lamp
       - light.laundry_lamp
       - light.master_bedroom_lights
+      - light.kids_bedroom_lights
       - vacuum.liova
       - fan.master_air_purifier
       - climate.thermostat
+      - switch.livingroom_tv
+    entity_config:
+      ##########  СВЕТ ##############
+      light.breakfast_lamp:
+        name: "Бэкдор"
+        room: Кухня
+      light.cooking_lamp:
+        name: "Кухня"
+        room: Кухня
+      light.dining_lamp:
+        name: "Столовая"
+        room: Столовая
+      light.livingroom_lamp:
+        name: "Гостиная"
+        room: Гостиная
+      light.hallway_lamp:
+        name: "Прихожая"
+        room: Прихожая
+      light.laundry_lamp:
+        name: "Прачечная"
+        room: Прачечная
+      light.master_bedroom_lights:
+        name: "Главная спальня"
+        room: Главная спальня
+      light.kids_bedroom_lights:
+        name: "Детская"
+        room: Детская
+      ########## Устройства ###############
+      vacuum.liova:
+        name: Пылесос
+        room: Прихожая
+      fan.master_air_purifier:
+        name: "Очиститель воздуха"
+        room: Главная спальня
+      climate.thermostat:
+        name: Термостат
+        room: Гостиная
+      switch.livingroom_tv:
+        name: Телевизор
+        room: Гостиная
 
 yandex_station:
   username: !secret yandex_username
