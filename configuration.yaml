@@ -87,6 +87,9 @@ input_select:
 #  scan_interval:
 #    minutes: 15
 
+alexa:
+  smart_home:
+
 nest:
   client_id: !secret nest_client_id
   client_secret: !secret nest_client_secret
