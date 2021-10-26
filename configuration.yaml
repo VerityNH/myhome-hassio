@@ -87,6 +87,11 @@ input_select:
 #  scan_interval:
 #    minutes: 15
 
+nest:
+  client_id: !secret nest_client_id
+  client_secret: !secret nest_client_secret
+  project_id: !secret nest_project_id    # ("Project ID" in the Device Access Console)
+  subscriber_id: !secret nest_subscriber_id # ("Subscription ID" in Google Cloud Console. Replace with full path.)
 
 google_assistant:
   project_id: hassintegration-695ba
@@ -145,7 +150,7 @@ google_assistant:
       name: "Vacuum"
       aliases:
         - "Kraken"
-    
+
 
 aarlo:
   username: !secret arlo_username
