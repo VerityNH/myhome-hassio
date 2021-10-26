@@ -93,55 +93,59 @@ google_assistant:
   service_account: !include google/HASSIntegration-170c7741d7db.json
   report_state: true
   secure_devices_pin: !secret security_pin
-  exposed_domains:
-    - switch
-    - light
-    - fan
-    - input_boolean
-    - cover
+  expose_by_default: false
   entity_config:
-    light.living_room_lights:
-      expose: false
+    light.breakfast_lamp:
+      expose: true
+      name: "Breakfast lamp"
+      aliases:
+        - "Cat lamp"
+    light.cooking_lamp:
+      expose: true
+      name: "Cooking lamp"
+      aliases:
+        - "Kitchen lamp"
+    light.dining_lamp:
+      expose: true
+      name: "Dining lamp"
     light.kids_bedroom_lights:
-      expose: false
+       expose: true
+       name: "Kids bedroom light"
+       aliases:
+         - "Kids lights"
     light.master_bedroom_lights:
-      expose: false
-    light.corridor_lights:
-       expose: false
-    light.dining_lights_switch:
-      expose: false
-    light.cooking_lights:
-      expose: false
-    input_boolean.living_lights_auto:
-      name: "Living auto mode"
-      expose: false
+      expose: true
+      name: "Master bedroom light"
       aliases:
-        - "Living auto lights"
-        - "Auto lights"
-    input_boolean.kitchen_lights_auto:
-      name: "Kitchen auto mode"
-      expose: false
+        - "Master lights"
+    light.livingroom_lamp:
+      expose: true
+      name: "Livingroom lamp"
+    light.hallway_lamp:
+      expose: true
+      name: "Hallway lamp"
+    light.laundry_lamp:
+      expose: true
+      name: "Laundry lamp"
+    fan.master_air_purifier:
+      name: "Master purifier"
+      expose: true
       aliases:
-        - "Kitchen auto lights"
-        - "Auto lights"
-    input_boolean.cooking_lights_auto:
-      expose: false
-      name: "Cooking auto mode"
+        - "Master air purifier"
+    switch.livingroom_tv:
+      name: "Living room TV"
+      expose: true
       aliases:
-        - "Cooking auto lights"
-        - "Auto lights"
-    input_boolean.kids_lights_auto:
-      expose: false
-      name: "Kids auto mode"
+        - "TV"
+    climate.thermostat:
+      expose: true
+      name: "Thermostat"
+    vacuum.liova:
+      expose: true
+      name: "Vacuum"
       aliases:
-        - "Kids auto lights"
-        - "Auto lights"
-    input_boolean.master_lights_auto:
-      expose: false
-      name: "Master auto mode"
-      aliases:
-        - "Master auto lights"
-        - "Auto lights"
+        - "Kraken"
+    
 
 aarlo:
   username: !secret arlo_username
@@ -166,12 +170,6 @@ alarm_control_panel:
     night_mode_name: night
     trigger_time: 30
     alarm_volume: 1
-
-nest:
-  client_id: !secret nest_client_id
-  client_secret: !secret nest_client_secret
-  project_id: !secret nest_project_id    # ("Project ID" in the Device Access Console)
-  subscriber_id: !secret nest_subscriber_id # ("Subscription ID" in Google Cloud Console. Replace with full path.)
 
 sonoff:
   username: !secret sonoff_username
