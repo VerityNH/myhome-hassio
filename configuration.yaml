@@ -89,6 +89,25 @@ input_select:
 
 alexa:
   smart_home:
+    locale: en-US
+    endpoint: https://api.amazonalexa.com/v3/events
+    client_id: !secret alexa_client_id
+    client_secret: !secret alexa_client_secret
+    filter:
+      include_entities:
+        - light.breakfast_lamp
+        - light.cooking_lamp
+        - light.dining_lamp
+        - light.kids_bedroom_lights
+        - light.master_bedroom_lights
+        - light.livingroom_lamp
+        - light.hallway_lamp
+        - light.laundry_lamp
+        - fan.master_air_purifier
+        - switch.livingroom_tv
+        - vacuum.liova
+    
+
 
 nest:
   client_id: !secret nest_client_id
