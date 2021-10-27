@@ -106,7 +106,7 @@ alexa:
         - fan.master_air_purifier
         - switch.livingroom_tv
         - vacuum.liova
-    
+
 
 
 nest:
@@ -288,6 +288,11 @@ telegram_bot:
       - !secret nata_telegram_id
       - !secret home_telegram_group
 #      - TELEGRAM_USER2_ID  # при желании, поддерживается несколько аккаунтов
+
+notify:
+  - platform: telegram
+    name: telegram
+    chat_id: !secret home_telegram_group
 
 upnp:
   local_ip: 192.168.1.2
