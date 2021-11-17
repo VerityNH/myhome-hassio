@@ -20,6 +20,14 @@
       value_template: >-
         {{ is_state('person.nata', 'home')}}
 
+    all_windows_closed:
+      friendly_name: "All windows closed"
+      device_class: opening
+      value_template: >-
+        {{ is_state('binary_sensor.patio_door_contact', 'on')
+          or is_state('binary_sensor.entrance_contact', 'on')
+          or is_state('binary_sensor.garage_enter_contact', 'on') }}
+
 - platform: aarlo
   monitored_conditions:
     - motion
