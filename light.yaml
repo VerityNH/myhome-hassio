@@ -1,10 +1,14 @@
 - platform: group
   name: Master Bedroom Lights
   entities:
-    - light.master_fan_1
-    - light.master_fan_2
-    - light.master_fan_3
-    - light.master_fan_4
+    - light.masterfan1
+    - light.masterfan2
+    - light.masterfan3
+    - light.masterfan4
+#    - light.master_fan_1
+#    - light.master_fan_2
+#    - light.master_fan_3
+#    - light.master_fan_4
 
 - platform: group
   name: Kids Bedroom Lights
