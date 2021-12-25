@@ -98,10 +98,7 @@ class ArloCfg(object):
 
     @property
     def snapshot_checks(self):
-        checks = self._kw.get("snapshot_checks", [])
-        if not checks:
-            return [1, 5]
-        return checks
+        return self._kw.get("snapshot_checks", [])
 
     @property
     def user_agent(self):
@@ -211,7 +208,6 @@ class ArloCfg(object):
     @property
     def session_file(self):
         return self.storage_dir + "/session.pickle"
-        return None
 
     @property
     def save_session(self):
@@ -258,3 +254,7 @@ class ArloCfg(object):
     @property
     def no_unicode_squash(self):
         return self._kw.get("no_unicode_squash", True)
+
+    @property
+    def use_mqtt(self):
+        return self._kw.get("backend", "mqtt") == "mqtt"

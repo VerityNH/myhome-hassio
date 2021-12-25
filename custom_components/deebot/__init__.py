@@ -14,14 +14,24 @@ from .const import (
     CONF_BUMPER,
     CONF_CLIENT_DEVICE_ID,
     DOMAIN,
+    INTEGRATION_VERSION,
     MIN_REQUIRED_HA_VERSION,
     STARTUP_MESSAGE,
 )
-from .helpers import get_bumper_device_id
+from .util import get_bumper_device_id
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = ["sensor", "binary_sensor", "vacuum", "camera"]
+PLATFORMS = [
+    "binary_sensor",
+    "button",
+    "camera",
+    "number",
+    "select",
+    "sensor",
+    "switch",
+    "vacuum",
+]
 
 
 def is_ha_supported() -> bool:
@@ -45,6 +55,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     if not is_ha_supported():
         return False
+
+    if INTEGRATION_VERSION == "main":
+        _LOGGER.warning("Beta-Version! Use this version only for testing.")
 
     # Store an instance of the "connecting" class that does the work of speaking
     # with your actual devices.
@@ -71,7 +84,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     )
 
     if unload_ok:
-        hass.data[DOMAIN][entry.entry_id].disconnect()
+        await hass.data[DOMAIN][entry.entry_id].disconnect()
         hass.data[DOMAIN].pop(entry.entry_id)
         if len(hass.data[DOMAIN]) == 0:
             hass.data.pop(DOMAIN)

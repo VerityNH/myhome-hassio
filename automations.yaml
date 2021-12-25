@@ -148,11 +148,11 @@
     to: 'off'
   condition: []
   action:
-  - data:
-      entity_id: climate.dining_room
-      preset_mode: eco
-    entity_id: climate.dining_room
-    service: climate.set_preset_mode
+  - device_id: 9d4feb31388fe5f69f3f5687f4c137a5
+    domain: climate
+    entity_id: climate.thermostat
+    type: set_preset_mode
+    preset_mode: Away
   mode: single
 - id: '1603940036889'
   alias: 'HOME: CLIMATE: Start climate when windows closed'
@@ -190,11 +190,11 @@
     to: 'on'
   condition: []
   action:
-  - data:
-      entity_id: climate.dining_room
-      preset_mode: none
-    entity_id: climate.dining_room
-    service: climate.set_preset_mode
+  - device_id: 9d4feb31388fe5f69f3f5687f4c137a5
+    domain: climate
+    entity_id: climate.thermostat
+    type: set_preset_mode
+    preset_mode: Home
   - service: script.adjust_climate
     data: {}
   mode: single
@@ -209,9 +209,11 @@
     to: 'on'
   condition: []
   action:
-  - data: {}
-    entity_id: climate.dining_room
-    service: climate.turn_off
+  - device_id: 9d4feb31388fe5f69f3f5687f4c137a5
+    domain: climate
+    entity_id: climate.thermostat
+    type: set_hvac_mode
+    hvac_mode: 'off'
   mode: single
 - id: '1603940368897'
   alias: 'HOME: LIGHT: Turn lights off when nobody home'
@@ -246,12 +248,10 @@
     to: 'off'
   condition: []
   action:
-  - data:
-      entity_id: vacuum.e200p8u2391901643866
-    entity_id: vacuum.e200p8u2391901643866
-    service: vacuum.turn_on
-  - service: script.clean_first_floor
-    data: {}
+  - device_id: deb005456ee7d0a0a4db84761f5be229
+    domain: vacuum
+    entity_id: vacuum.liova
+    type: clean
   mode: single
 - id: '1603940703649'
   alias: 'KIDS: LIGHT: auto turn off'
@@ -886,15 +886,7 @@
     from: 'on'
     to: 'off'
   condition: []
-  action:
-  - type: turn_on
-    device_id: 80e2182d771cbcf1e8f555b27bbf7568
-    entity_id: switch.wyze_cam_1_motion_detection
-    domain: switch
-  - type: turn_on
-    device_id: 0727afc826ddb9408f51ba73faba9591
-    entity_id: switch.wyze_cam_2_motion_detection
-    domain: switch
+  action: []
   mode: single
 - id: '1613851638605'
   alias: 'UTILITIES : SOMEBODY HOME'
@@ -905,15 +897,7 @@
     from: 'off'
     to: 'on'
   condition: []
-  action:
-  - type: turn_off
-    device_id: 80e2182d771cbcf1e8f555b27bbf7568
-    entity_id: switch.wyze_cam_1_motion_detection
-    domain: switch
-  - type: turn_off
-    device_id: 0727afc826ddb9408f51ba73faba9591
-    entity_id: switch.wyze_cam_2_motion_detection
-    domain: switch
+  action: []
   mode: single
 - id: '1614913757577'
   alias: 'MASTER: PURIFIER: Nightmode ON'
@@ -1127,5 +1111,58 @@
     target:
       entity_id: light.livingroom_tv_ambilight
     data:
-      effect: Sparks
+      effect: X-Mas
+  mode: single
+- id: '1635356554787'
+  alias: 'SECURITY: CAMERA: Person detected'
+  description: ''
+  trigger:
+  - platform: webhook
+    webhook_id: 5cb03a688ec6f3441a46ea8a1542767580093c8caab6f567044c44f01f934e9a
+  condition: []
+  action:
+  - service: notify.telegram
+    data_template:
+      message: A {{trigger.payload_json["after"]["label"]}} was detected by {{trigger.payload_json["after"]["camera"]}}.
+      data:
+        title: A {{trigger.payload_json["after"]["label"]}} was detected.
+        photo:
+        - url: https://home.veritynh.dev/api/frigate/notifications/{{trigger.payload_json["after"]["id"]}}/thumbnail.jpg?format=android
+  - service: notify.telegram
+    data_template:
+      message: A {{trigger.payload_json["after"]["label"]}} was detected by {{trigger.payload_json["after"]["camera"]}}.
+      data:
+        title: A {{trigger.payload_json["after"]["label"]}} was detected.
+        video:
+        - url: https://home.veritynh.dev/api/frigate/notifications/{{trigger.payload_json["after"]["id"]}}/clip.mp4
+  mode: single
+- id: '1637365843857'
+  alias: 'HOME: CLIMATE: Turn on fan during night'
+  description: ''
+  trigger:
+  - platform: time
+    at: 01:30
+  - platform: time
+    at: 04:00
+  condition:
+  - condition: state
+    entity_id: climate.thermostat
+    state: idle
+    attribute: hvac_action
+  action:
+  - service: climate.set_fan_mode
+    data:
+      fan_mode: 'on'
+    target:
+      device_id: 9d4feb31388fe5f69f3f5687f4c137a5
+  - delay:
+      hours: 0
+      minutes: 30
+      seconds: 0
+      milliseconds: 0
+  - service: climate.set_fan_mode
+    target:
+      device_id: 9d4feb31388fe5f69f3f5687f4c137a5
+    data:
+      fan_mode: auto
   mode: single
