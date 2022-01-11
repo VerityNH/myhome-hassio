@@ -263,7 +263,7 @@
 - id: '1612457869962'
   name: 'LIVINGROOM: LIGHTS: Night mode'
   entities:
-    light.livingroom_lamp:
+    light.livingroom_lamp_2:
       min_mireds: 153
       max_mireds: 370
       effect_list:
@@ -421,7 +421,7 @@
 - id: '1612476571209'
   name: 'LIVINGROOM: LIGHTS: Day mode'
   entities:
-    light.livingroom_lamp:
+    light.livingroom_lamp_2:
       min_mireds: 153
       max_mireds: 370
       effect_list:
@@ -481,7 +481,7 @@
 - id: '1615131300600'
   name: 'LIVINGROOM: LIGHTS: Off'
   entities:
-    light.livingroom_lamp:
+    light.livingroom_lamp_2:
       min_mireds: 153
       max_mireds: 370
       effect_list:
@@ -632,7 +632,7 @@
 - id: '1615136530698'
   name: 'DINING: LIGHT: Day mode'
   entities:
-    light.dining_lamp:
+    light.dining_lamp_2:
       min_mireds: 153
       max_mireds: 370
       effect_list:
@@ -692,7 +692,7 @@
 - id: '1615136591213'
   name: 'DINING: LIGHT: Night mode'
   entities:
-    light.dining_lamp:
+    light.dining_lamp_2:
       min_mireds: 153
       max_mireds: 370
       effect_list:
@@ -752,7 +752,7 @@
 - id: '1615136633455'
   name: 'DINING: LIGHT: Off'
   entities:
-    light.dining_lamp:
+    light.dining_lamp_2:
       min_mireds: 153
       max_mireds: 370
       effect_list:
@@ -798,7 +798,7 @@
 - id: '1615136706309'
   name: 'COOKING: LIGHT: Day mode'
   entities:
-    light.cooking_lamp:
+    light.cooking_lamp_2:
       supported_color_modes:
       - brightness
       color_mode: brightness
@@ -806,7 +806,7 @@
       friendly_name: Cooking Lamp
       supported_features: 1
       state: 'on'
-    light.breakfast_lamp:
+    light.breakfast_lamp_2:
       supported_color_modes:
       - brightness
       color_mode: brightness
@@ -817,7 +817,7 @@
 - id: '1615136768771'
   name: 'COOKING: LIGHT: Night mode'
   entities:
-    light.breakfast_lamp:
+    light.breakfast_lamp_2:
       supported_color_modes:
       - brightness
       color_mode: brightness
@@ -825,7 +825,7 @@
       friendly_name: Breakfast Lamp
       supported_features: 1
       state: 'on'
-    light.cooking_lamp:
+    light.cooking_lamp_2:
       supported_color_modes:
       - brightness
       color_mode: brightness
@@ -836,13 +836,13 @@
 - id: '1615136804670'
   name: 'COOKING: LIGHT: Off'
   entities:
-    light.breakfast_lamp:
+    light.breakfast_lamp_2:
       supported_color_modes:
       - brightness
       friendly_name: Breakfast Lamp
       supported_features: 1
       state: 'off'
-    light.cooking_lamp:
+    light.cooking_lamp_2:
       supported_color_modes:
       - brightness
       friendly_name: Cooking Lamp
