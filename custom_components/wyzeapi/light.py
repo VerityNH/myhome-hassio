@@ -5,7 +5,7 @@ import asyncio
 import logging
 # Import the device class from the component that you want to support
 from datetime import timedelta
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable, List
 
 import homeassistant.util.color as color_util
 from homeassistant.components.light import (
@@ -22,10 +22,11 @@ from homeassistant.const import ATTR_ATTRIBUTION
 from homeassistant.core import HomeAssistant, callback
 from wyzeapy import Wyzeapy, BulbService
 from wyzeapy.services.bulb_service import Bulb
-from wyzeapy.types import DeviceTypes
-from .token_manager import token_exception_handler
+from wyzeapy.types import DeviceTypes, PropertyIDs
+from wyzeapy.utils import create_pid_pair
 
 from .const import DOMAIN, CONF_CLIENT
+from .token_manager import token_exception_handler
 
 _LOGGER = logging.getLogger(__name__)
 ATTRIBUTION = "Data provided by Wyze"
@@ -66,7 +67,8 @@ class WyzeLight(LightEntity):
         self._device_type = DeviceTypes(self._bulb.product_type)
         if self._device_type not in [
             DeviceTypes.LIGHT,
-            DeviceTypes.MESH_LIGHT
+            DeviceTypes.MESH_LIGHT,
+            DeviceTypes.LIGHTSTRIP
         ]:
             raise AttributeError("Device type not supported")
 
@@ -93,60 +95,44 @@ class WyzeLight(LightEntity):
     def should_poll(self) -> bool:
         return False
 
-    def translate_color_temp(self, value: float) -> Optional[float]:
-        """
-        This function maps an input minimum and maximum to the output minimum and maximum
-
-        :param value: The value to be converted
-        :return: The converted value
-        """
-
-        if value is None:
-            return None
-
-        # under 1000 we can easily assume that the value is in mireds
-        if value < 1000:
-            if value < self.min_mireds:
-                value = self.min_mireds
-            elif value > self.max_mireds:
-                value = self.max_mireds
-            return color_util.color_temperature_mired_to_kelvin(value)
-        if value >= 1000:
-            # use the color bulb range by default as it is wider.
-            temp_max = 6500
-            temp_min = 1800
-            if self._device_type is DeviceTypes.LIGHT:
-                temp_min = 2700
-            if value < temp_min:
-                value = temp_min
-            elif value > temp_max:
-                value = temp_max
-            return color_util.color_temperature_kelvin_to_mired(value)
-
     @token_exception_handler
     async def async_turn_on(self, **kwargs: Any) -> None:
+        options = []
         if kwargs.get(ATTR_BRIGHTNESS) is not None:
             _LOGGER.debug("Setting brightness")
-            brightness = round((kwargs.get(ATTR_BRIGHTNESS) / 255) * 100, 1)
+            brightness = round((kwargs.get(ATTR_BRIGHTNESS) / 255) * 100)
 
-            loop = asyncio.get_event_loop()
-            loop.create_task(self._bulb_service.set_brightness(self._bulb, int(brightness)))
+            options.append(create_pid_pair(PropertyIDs.BRIGHTNESS, str(brightness)))
+
+            _LOGGER.debug("Setting brightness to %s" % brightness)
+            _LOGGER.debug("Options: %s" % options)
+
+            self._bulb.brightness = brightness
         if kwargs.get(ATTR_COLOR_TEMP) is not None:
             _LOGGER.debug("Setting color temp")
-            color_temp = self.translate_color_temp(kwargs.get(ATTR_COLOR_TEMP))
+            color_temp = color_util.color_temperature_mired_to_kelvin(kwargs.get(ATTR_COLOR_TEMP))
 
-            loop = asyncio.get_event_loop()
-            loop.create_task(self._bulb_service.set_color_temp(self._bulb, int(color_temp)))
-        if self._device_type is DeviceTypes.MESH_LIGHT and kwargs.get(ATTR_HS_COLOR) is not None:
+            options.append(create_pid_pair(PropertyIDs.COLOR_TEMP, str(color_temp)))
+
+            self._bulb.color_temp = color_temp
+            self._bulb.color = color_util.color_rgb_to_hex(*color_util.color_temperature_to_rgb(color_temp))
+        if (
+            kwargs.get(ATTR_HS_COLOR) is not None
+            and (
+                self._device_type is DeviceTypes.MESH_LIGHT
+                or self._device_type is DeviceTypes.LIGHTSTRIP
+            )
+        ):
             _LOGGER.debug("Setting color")
             color = color_util.color_rgb_to_hex(*color_util.color_hs_to_RGB(*kwargs.get(ATTR_HS_COLOR)))
 
-            loop = asyncio.get_event_loop()
-            loop.create_task(self._bulb_service.set_color(self._bulb, color))
+            options.append(create_pid_pair(PropertyIDs.COLOR, str(color)))
+
+            self._bulb.color = color
 
         _LOGGER.debug("Turning on light")
         loop = asyncio.get_event_loop()
-        loop.create_task(self._bulb_service.turn_on(self._bulb))
+        loop.create_task(self._bulb_service.turn_on(self._bulb, options))
 
         self._bulb.on = True
         self._just_updated = True
@@ -180,7 +166,7 @@ class WyzeLight(LightEntity):
         return color_util.color_RGB_to_hs(*color_util.rgb_hex_to_rgb_list(self._bulb.color))
 
     @property
-    def device_state_attributes(self):
+    def extra_state_attributes(self):
         """Return device attributes of the entity."""
         dev_info = {
             ATTR_ATTRIBUTION: ATTRIBUTION,
@@ -190,6 +176,7 @@ class WyzeLight(LightEntity):
             "mac": self.unique_id
         }
 
+        # noinspection DuplicatedCode
         if self._bulb.device_params.get("ip"):
             dev_info["IP"] = str(self._bulb.device_params.get("ip"))
         if self._bulb.device_params.get("rssi"):
@@ -211,18 +198,17 @@ class WyzeLight(LightEntity):
     @property
     def color_temp(self):
         """Return the CT color value in mired."""
-        return self.translate_color_temp(self._bulb.color_temp)
+        return color_util.color_temperature_kelvin_to_mired(self._bulb.color_temp)
 
-    # Assuming that mireds follow the 1,000,000/kelvin temperature conversion, these values for min/max *should* work
     @property
     def max_mireds(self) -> int:
         if self._device_type is DeviceTypes.MESH_LIGHT:
-            return 556
-        return 370
+            return color_util.color_temperature_kelvin_to_mired(1800) - 1
+        return color_util.color_temperature_kelvin_to_mired(2700) - 1
 
     @property
     def min_mireds(self) -> int:
-        return 154
+        return color_util.color_temperature_kelvin_to_mired(6500) + 1
 
     @property
     def is_on(self):
@@ -231,7 +217,10 @@ class WyzeLight(LightEntity):
 
     @property
     def supported_features(self):
-        if self._bulb.type is DeviceTypes.MESH_LIGHT:
+        if (
+            self._bulb.type is DeviceTypes.MESH_LIGHT
+            or self._bulb.type is DeviceTypes.LIGHTSTRIP
+        ):
             return SUPPORT_BRIGHTNESS | SUPPORT_COLOR_TEMP | SUPPORT_COLOR
         return SUPPORT_BRIGHTNESS | SUPPORT_COLOR_TEMP
 

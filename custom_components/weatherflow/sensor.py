@@ -514,6 +514,22 @@ SENSOR_TYPES: tuple[WeatherFlowSensorEntityDescription, ...] = (
         unit_type="none",
         tempest_sensor=None,
     ),
+    WeatherFlowSensorEntityDescription(
+        key="freezing_line",
+        name="Freezing Line",
+        icon="mdi:altimeter",
+        state_class=STATE_CLASS_MEASUREMENT,
+        unit_type="altitude",
+        tempest_sensor=None,
+    ),
+    WeatherFlowSensorEntityDescription(
+        key="cloud_base",
+        name="Cloud Base",
+        icon="mdi:weather-cloudy",
+        state_class=STATE_CLASS_MEASUREMENT,
+        unit_type="altitude",
+        tempest_sensor=None,
+    ),
 )
 
 
@@ -560,6 +576,10 @@ async def async_setup_entry(
 class WeatherFlowSensor(WeatherFlowEntity, SensorEntity):
     """A WeatherFlow Sensor."""
 
+    # pylint: disable=too-many-instance-attributes
+    # pylint: disable=too-many-arguments
+    # Eight is reasonable in this case.
+
     def __init__(
         self,
         weatherflowapi,
@@ -579,7 +599,6 @@ class WeatherFlowSensor(WeatherFlowEntity, SensorEntity):
             description,
             entries,
         )
-        self._attr_name = f"{DOMAIN.capitalize()} {self.entity_description.name}"
         if self.entity_description.native_unit_of_measurement is None:
             self._attr_native_unit_of_measurement = unit_descriptions[
                 self.entity_description.unit_type
