@@ -15,7 +15,6 @@ from .const import (
     CONF_ENTITY_PROPERTY_ENTITY,
     CONF_ENTITY_PROPERTY_TYPE,
     CONF_ENTITY_PROPERTY_UNIT_OF_MEASUREMENT,
-    CONF_PRESSURE_UNIT,
     ERR_DEVICE_UNREACHABLE,
     EVENT_INSTANCES,
     FLOAT_INSTANCES,
@@ -73,9 +72,6 @@ class CustomEntityProperty(AbstractProperty, ABC):
         return True
 
     def get_value(self) -> str | float | None:
-        if not self.retrievable:
-            return None
-
         value_attribute = self.property_config.get(CONF_ENTITY_PROPERTY_ATTRIBUTE)
 
         if value_attribute:
@@ -94,7 +90,7 @@ class CustomEntityProperty(AbstractProperty, ABC):
 
     @property
     def property_entity_id(self) -> str | None:
-        return self.property_config.get(CONF_ENTITY_PROPERTY_ENTITY)
+        return self.property_config.get(CONF_ENTITY_PROPERTY_ENTITY, self.property_state.entity_id)
 
 
 class CustomFloatEntityProperty(CustomEntityProperty, FloatProperty):
@@ -102,16 +98,12 @@ class CustomFloatEntityProperty(CustomEntityProperty, FloatProperty):
                  property_state: State, property_config: dict[str, str]):
         super().__init__(hass, config, state, property_state, property_config)
 
-        self.instance_unit = PROPERTY_FLOAT_INSTANCE_TO_UNITS[self.instance]
-
+    @property
+    def unit(self) -> str:
         if self.instance == const.FLOAT_INSTANCE_PRESSURE:
-            self.instance_unit = PRESSURE_UNITS_TO_YANDEX_UNITS[self.config.settings[CONF_PRESSURE_UNIT]]
+            return PRESSURE_UNITS_TO_YANDEX_UNITS[self.config.pressure_unit]
 
-    def parameters(self) -> dict[str, Any]:
-        return {
-            'instance': self.instance,
-            'unit': self.instance_unit
-        }
+        return PROPERTY_FLOAT_INSTANCE_TO_UNITS[self.instance]
 
     def get_value(self) -> float | None:
         value = super().get_value()
@@ -136,4 +128,4 @@ class CustomEventEntityProperty(CustomEntityProperty, EventProperty):
         return self.event_value(super().get_value())
 
     def supported(self) -> bool:
-        return bool(self.config.settings.get(const.CONF_BETA))
+        return bool(self.config.beta)

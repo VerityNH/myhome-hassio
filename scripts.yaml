@@ -1,47 +1,72 @@
 turn_off_all_lights:
   alias: Turn off all lights
   sequence:
-  - entity_id: light.dining_lights_switch
-    service: light.turn_off
-  - entity_id: light.cooking_lights
-    service: light.turn_off
-  - entity_id: light.kids_bedroom_lights
-    service: light.turn_off
-  - entity_id: light.master_bedroom_lights
-    service: light.turn_off
-  - entity_id: light.corridor_lights
-    service: light.turn_off
-  - entity_id: light.living_room_lights
-    service: light.turn_off
+  - service: light.turn_off
+    data: {}
+    target:
+      area_id: cf25f41fccce4463b6188222ec8fcf1f
+  - service: light.turn_off
+    data: {}
+    target:
+      area_id: hallway
+  - service: light.turn_off
+    data: {}
+    target:
+      area_id: 6008dd25445d47858be0aec51a683e41
+  - service: light.turn_off
+    data: {}
+    target:
+      area_id: e807772b4b9948d79f2a44355b1ae770
+  - service: light.turn_off
+    data: {}
+    target:
+      area_id: laundry
+  - service: light.turn_off
+    data: {}
+    target:
+      area_id: b6c2e2d642564bb39daf84af2a4ce9a1
+  - service: light.turn_off
+    target:
+      area_id: f1f3c6b22b11456695c1bbea0e3ee2d8
   - data: {}
     entity_id: fan.master_air_purifier
     service: fan.turn_off
+  mode: single
 climate_to_heat:
   alias: Climate to heat
   sequence:
-  - data:
-      entity_id: climate.dining_room
-      hvac_mode: heat
-    entity_id: climate.dining_room
-    service: climate.set_hvac_mode
+  - device_id: 9d4feb31388fe5f69f3f5687f4c137a5
+    domain: climate
+    entity_id: climate.thermostat
+    type: set_hvac_mode
+    hvac_mode: heat
+  - service: climate.turn_on
+    target:
+      device_id: 9d4feb31388fe5f69f3f5687f4c137a5
   mode: single
 climate_to_auto:
   alias: Climate to auto
   sequence:
-  - data:
-      entity_id: climate.dining_room
-      hvac_mode: heat_cool
-    entity_id: climate.dining_room
-    service: climate.set_hvac_mode
+  - device_id: 9d4feb31388fe5f69f3f5687f4c137a5
+    domain: climate
+    entity_id: climate.thermostat
+    type: set_hvac_mode
+    hvac_mode: heat_cool
+  - service: climate.turn_on
+    target:
+      device_id: 9d4feb31388fe5f69f3f5687f4c137a5
   mode: single
 climate_to_cool:
   alias: Climate to cool
   sequence:
-  - data:
-      entity_id: climate.dining_room
-      hvac_mode: cool
-    entity_id: climate.dining_room
-    service: climate.set_hvac_mode
+  - device_id: 9d4feb31388fe5f69f3f5687f4c137a5
+    domain: climate
+    entity_id: climate.thermostat
+    type: set_hvac_mode
+    hvac_mode: cool
+  - service: climate.turn_on
+    target:
+      device_id: 9d4feb31388fe5f69f3f5687f4c137a5
   mode: single
 pure_fan_turn_on:
   alias: Turn on air purifier
@@ -57,9 +82,9 @@ adjust_climate:
   alias: Adjust climate
   sequence:
   - entity_id: climate.dining_room
-    service_template: "{% if (states('sensor.smartweather_temperature') | int < 15)\
-      \ %}\n  script.climate_to_heat\n{% elif ((states('sensor.smartweather_temperature')\
-      \ | int >= 15)  and (states('sensor.smartweather_temperature') | int < 25))\
+    service_template: "{% if (states('sensor.weatherflow_air_temperature') | int <\
+      \ 10) %}\n  script.climate_to_heat\n{% elif ((states('sensor.weatherflow_air_temperature')\
+      \ | int >= 10)  and (states('sensor.weatherflow_air_temperature') | int < 20))\
       \ %}\n  script.climate_to_auto\n{% else %}\n  script.climate_to_cool\n{% endif\
       \ %}\n"
   mode: single
