@@ -122,17 +122,17 @@ google_assistant:
   secure_devices_pin: !secret security_pin
   expose_by_default: false
   entity_config:
-    light.breakfast_lamp:
+    light.breakfast_lamp_2:
       expose: true
       name: "Breakfast lamp"
       aliases:
         - "Cat lamp"
-    light.cooking_lamp:
+    light.cooking_lamp_2:
       expose: true
       name: "Cooking lamp"
       aliases:
         - "Kitchen lamp"
-    light.dining_lamp:
+    light.dining_lamp_2:
       expose: true
       name: "Dining lamp"
     light.kids_bedroom_lights:
@@ -145,7 +145,7 @@ google_assistant:
       name: "Master bedroom light"
       aliases:
         - "Master lights"
-    light.livingroom_lamp:
+    light.livingroom_lamp_2:
       expose: true
       name: "Livingroom lamp"
     light.hallway_lamp:
