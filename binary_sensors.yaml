@@ -8,6 +8,7 @@
            or is_state('person.nick', 'home')
            or is_state('person.alisa', 'home')
            or is_state('person.sasha', 'home')
+           or is_state('person.alla', 'home')
            or is_state('input_boolean.guest_mode', 'on')}}
 
     nick_home:
