@@ -198,9 +198,6 @@ alarm_control_panel:
     trigger_time: 30
     alarm_volume: 1
 
-sonoff:
-  username: !secret sonoff_username
-  password: !secret sonoff_password
 #  devices:
 #    10008fd3ee:
 #      name: Master Humidifier
