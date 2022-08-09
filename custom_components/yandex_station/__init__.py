@@ -8,7 +8,7 @@ from homeassistant.components.media_player import ATTR_MEDIA_CONTENT_ID, \
 from homeassistant.config_entries import SOURCE_IMPORT, ConfigEntry
 from homeassistant.const import CONF_USERNAME, CONF_PASSWORD, ATTR_ENTITY_ID, \
     EVENT_HOMEASSISTANT_STOP, CONF_TOKEN, CONF_INCLUDE, CONF_DEVICES, \
-    CONF_HOST, CONF_PORT
+    CONF_HOST, CONF_PORT, CONF_NAME
 from homeassistant.core import ServiceCall, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import config_validation as cv, discovery
@@ -24,7 +24,8 @@ _LOGGER = logging.getLogger(__name__)
 
 MAIN_DOMAINS = ['media_player', 'select']
 SUB_DOMAINS = [
-    'climate', 'light', 'remote', 'switch', 'vacuum', 'humidifier', 'sensor'
+    'climate', 'light', 'remote', 'switch', 'vacuum', 'humidifier', 'sensor',
+    'water_heater'
 ]
 
 CONF_TTS_NAME = 'tts_service_name'
@@ -49,9 +50,7 @@ CONFIG_SCHEMA = vol.Schema({
                 vol.Optional(CONF_PORT, default=1961): cv.port,
             }, extra=vol.ALLOW_EXTRA),
         },
-        vol.Optional(CONF_MEDIA_PLAYERS): {
-            cv.entity_id: cv.string
-        },
+        vol.Optional(CONF_MEDIA_PLAYERS): vol.Any(dict, list),
         vol.Optional(CONF_RECOGNITION_LANG): cv.string,
         vol.Optional(CONF_PROXY): cv.string,
         vol.Optional(CONF_DEBUG, default=False): cv.boolean,
@@ -61,10 +60,13 @@ CONFIG_SCHEMA = vol.Schema({
 
 async def async_setup(hass: HomeAssistant, hass_config: dict):
     """Main setup of component."""
+    config: dict = hass_config.get(DOMAIN) or {}
     hass.data[DOMAIN] = {
-        DATA_CONFIG: hass_config.get(DOMAIN) or {},
+        DATA_CONFIG: config,
         DATA_SPEAKERS: {}
     }
+
+    YandexSession.proxy = config.get(CONF_PROXY)
 
     await _init_local_discovery(hass)
     await _init_services(hass)
@@ -82,9 +84,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     session = async_create_clientsession(hass)
     yandex = YandexSession(session, **entry.data)
     yandex.add_update_listener(update_cookie_and_token)
-
-    config = hass.data[DOMAIN][DATA_CONFIG]
-    yandex.proxy = config.get(CONF_PROXY)
 
     try:
         ok = await yandex.refresh_cookies()
@@ -226,8 +225,8 @@ async def _setup_entry_from_config(hass: HomeAssistant):
         return
 
     # check if already configured
-    for entrie in hass.config_entries.async_entries(DOMAIN):
-        if entrie.unique_id == config[CONF_USERNAME]:
+    for entry in hass.config_entries.async_entries(DOMAIN):
+        if entry.unique_id == config[CONF_USERNAME]:
             return
 
     # load config/.yandex_station.json

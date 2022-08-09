@@ -11,26 +11,33 @@ import homeassistant.util.color as color_util
 from homeassistant.components.light import (
     ATTR_BRIGHTNESS,
     ATTR_COLOR_TEMP,
+    ATTR_EFFECT,
     ATTR_HS_COLOR,
     SUPPORT_BRIGHTNESS,
     SUPPORT_COLOR_TEMP,
     SUPPORT_COLOR,
+    COLOR_MODE_ONOFF,
+    SUPPORT_EFFECT,
     LightEntity
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_ATTRIBUTION
 from homeassistant.core import HomeAssistant, callback
-from wyzeapy import Wyzeapy, BulbService
+from wyzeapy import Wyzeapy, BulbService, CameraService
 from wyzeapy.services.bulb_service import Bulb
 from wyzeapy.types import DeviceTypes, PropertyIDs
 from wyzeapy.utils import create_pid_pair
+from wyzeapy.services.camera_service import Camera
+from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
-from .const import DOMAIN, CONF_CLIENT
+from .const import DOMAIN, CONF_CLIENT, BULB_LOCAL_CONTROL, CAMERA_UPDATED
 from .token_manager import token_exception_handler
 
 _LOGGER = logging.getLogger(__name__)
 ATTRIBUTION = "Data provided by Wyze"
 SCAN_INTERVAL = timedelta(seconds=30)
+EFFECT_MUSIC_MODE = "music mode"
+EFFECT_SUN_MATCH = "sun match"
 
 
 @token_exception_handler
@@ -46,10 +53,17 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry,
 
     _LOGGER.debug("""Creating new WyzeApi light component""")
     client: Wyzeapy = hass.data[DOMAIN][config_entry.entry_id][CONF_CLIENT]
+    camera_service = await client.camera_service
 
     bulb_service = await client.bulb_service
 
-    lights = [WyzeLight(bulb_service, light) for light in await bulb_service.get_bulbs()]
+    lights = [WyzeLight(bulb_service, light, config_entry) for light in await bulb_service.get_bulbs()]
+
+
+    for camera in await camera_service.get_cameras():
+        # Only model that I know of that has a floodlight
+        if camera.product_model == "WYZE_CAKP2JFUS":
+            lights.append(WyzeCamerafloodlight(camera, camera_service))
 
     async_add_entities(lights, True)
 
@@ -61,10 +75,12 @@ class WyzeLight(LightEntity):
 
     _just_updated = False
 
-    def __init__(self, bulb_service: BulbService, bulb: Bulb):
+    def __init__(self, bulb_service: BulbService, bulb: Bulb, config_entry):
         """Initialize a Wyze Bulb."""
         self._bulb = bulb
         self._device_type = DeviceTypes(self._bulb.product_type)
+        self._config_entry = config_entry
+        self._local_control = config_entry.options.get(BULB_LOCAL_CONTROL)
         if self._device_type not in [
             DeviceTypes.LIGHT,
             DeviceTypes.MESH_LIGHT,
@@ -98,8 +114,8 @@ class WyzeLight(LightEntity):
     @token_exception_handler
     async def async_turn_on(self, **kwargs: Any) -> None:
         options = []
+
         if kwargs.get(ATTR_BRIGHTNESS) is not None:
-            _LOGGER.debug("Setting brightness")
             brightness = round((kwargs.get(ATTR_BRIGHTNESS) / 255) * 100)
 
             options.append(create_pid_pair(PropertyIDs.BRIGHTNESS, str(brightness)))
@@ -108,14 +124,26 @@ class WyzeLight(LightEntity):
             _LOGGER.debug("Options: %s" % options)
 
             self._bulb.brightness = brightness
+
+        if self._bulb.sun_match:  # Turn off sun match if we're changing anything other than brightness
+            if any([kwargs.get(ATTR_COLOR_TEMP, kwargs.get(ATTR_HS_COLOR))]):
+                options.append(create_pid_pair(PropertyIDs.SUN_MATCH, str(0)))
+                self._bulb.sun_match = False
+                _LOGGER.debug("Turning off sun match")
+
         if kwargs.get(ATTR_COLOR_TEMP) is not None:
             _LOGGER.debug("Setting color temp")
             color_temp = color_util.color_temperature_mired_to_kelvin(kwargs.get(ATTR_COLOR_TEMP))
 
             options.append(create_pid_pair(PropertyIDs.COLOR_TEMP, str(color_temp)))
 
+            if self._device_type in [DeviceTypes.MESH_LIGHT, DeviceTypes.LIGHTSTRIP]:
+                options.append(create_pid_pair(PropertyIDs.COLOR_MODE, str(2)))  # Put bulb in White Mode
+                self._bulb.color_mode = '2'
+
             self._bulb.color_temp = color_temp
             self._bulb.color = color_util.color_rgb_to_hex(*color_util.color_temperature_to_rgb(color_temp))
+
         if (
             kwargs.get(ATTR_HS_COLOR) is not None
             and (
@@ -126,13 +154,33 @@ class WyzeLight(LightEntity):
             _LOGGER.debug("Setting color")
             color = color_util.color_rgb_to_hex(*color_util.color_hs_to_RGB(*kwargs.get(ATTR_HS_COLOR)))
 
-            options.append(create_pid_pair(PropertyIDs.COLOR, str(color)))
+            options.extend(
+                [
+                    create_pid_pair(PropertyIDs.COLOR, str(color)),
+                    create_pid_pair(PropertyIDs.COLOR_MODE, str(1))  # Put bulb in Color Mode
+                ]
+            )
 
             self._bulb.color = color
+            self._bulb.color_mode = '1'
+
+        if (
+            kwargs.get(ATTR_EFFECT) == EFFECT_MUSIC_MODE
+            and self._device_type is DeviceTypes.LIGHTSTRIP
+        ):
+            _LOGGER.debug("Setting Music Mode")
+            options.append(create_pid_pair(PropertyIDs.COLOR_MODE, str(3)))
+            self._bulb.color_mode = '3'
+
+        if kwargs.get(ATTR_EFFECT) == EFFECT_SUN_MATCH:
+            _LOGGER.debug("Setting Sun Match")
+            options.append(create_pid_pair(PropertyIDs.SUN_MATCH, str(1)))
+            self._bulb.sun_match = True
 
         _LOGGER.debug("Turning on light")
+        self._local_control = self._config_entry.options.get(BULB_LOCAL_CONTROL)
         loop = asyncio.get_event_loop()
-        loop.create_task(self._bulb_service.turn_on(self._bulb, options))
+        loop.create_task(self._bulb_service.turn_on(self._bulb, self._local_control, options))
 
         self._bulb.on = True
         self._just_updated = True
@@ -140,8 +188,9 @@ class WyzeLight(LightEntity):
 
     @token_exception_handler
     async def async_turn_off(self, **kwargs: Any) -> None:
+        self._local_control = self._config_entry.options.get(BULB_LOCAL_CONTROL)
         loop = asyncio.get_event_loop()
-        loop.create_task(self._bulb_service.turn_off(self._bulb))
+        loop.create_task(self._bulb_service.turn_off(self._bulb, self._local_control))
 
         self._bulb.on = False
         self._just_updated = True
@@ -172,7 +221,7 @@ class WyzeLight(LightEntity):
             ATTR_ATTRIBUTION: ATTRIBUTION,
             "state": self.is_on,
             "available": self.available,
-            "device model": self._bulb.product_model,
+            "device_model": self._bulb.product_model,
             "mac": self.unique_id
         }
 
@@ -183,6 +232,23 @@ class WyzeLight(LightEntity):
             dev_info["RSSI"] = str(self._bulb.device_params.get("rssi"))
         if self._bulb.device_params.get("ssid"):
             dev_info["SSID"] = str(self._bulb.device_params.get("ssid"))
+        dev_info["Sun Match"] = self._bulb.sun_match
+
+        if (
+            self._device_type is DeviceTypes.MESH_LIGHT
+            or self._device_type is DeviceTypes.LIGHTSTRIP
+        ):
+            dev_info["local_control"] = (
+                self._local_control
+                and not self._bulb.cloud_fallback
+            )
+
+            if self._bulb.color_mode == '1':
+                dev_info["mode"] = "Color"
+            elif self._bulb.color_mode == '2':
+                dev_info["mode"] = "White"
+            elif self._bulb.color_mode == '3':
+                dev_info["mode"] = "Music"
 
         return dev_info
 
@@ -211,18 +277,23 @@ class WyzeLight(LightEntity):
         return color_util.color_temperature_kelvin_to_mired(6500) + 1
 
     @property
+    def effect_list(self):
+        if self._device_type is DeviceTypes.LIGHTSTRIP:
+            return [EFFECT_MUSIC_MODE, EFFECT_SUN_MATCH]
+        else:
+            return [EFFECT_SUN_MATCH]
+
+    @property
     def is_on(self):
         """Return true if light is on."""
         return self._bulb.on
 
     @property
     def supported_features(self):
-        if (
-            self._bulb.type is DeviceTypes.MESH_LIGHT
-            or self._bulb.type is DeviceTypes.LIGHTSTRIP
-        ):
-            return SUPPORT_BRIGHTNESS | SUPPORT_COLOR_TEMP | SUPPORT_COLOR
-        return SUPPORT_BRIGHTNESS | SUPPORT_COLOR_TEMP
+        if self._bulb.type in [DeviceTypes.MESH_LIGHT, DeviceTypes.LIGHTSTRIP]:
+            return SUPPORT_BRIGHTNESS | SUPPORT_COLOR_TEMP | SUPPORT_COLOR | SUPPORT_EFFECT
+        else:
+            return SUPPORT_BRIGHTNESS | SUPPORT_COLOR_TEMP | SUPPORT_EFFECT
 
     @token_exception_handler
     async def async_update(self):
@@ -239,6 +310,7 @@ class WyzeLight(LightEntity):
     def async_update_callback(self, bulb: Bulb):
         """Update the bulb's state."""
         self._bulb = bulb
+        self._local_control = self._config_entry.options.get(BULB_LOCAL_CONTROL)
         self.async_schedule_update_ha_state()
 
     async def async_added_to_hass(self) -> None:
@@ -249,4 +321,96 @@ class WyzeLight(LightEntity):
         return await super().async_added_to_hass()
 
     async def async_will_remove_from_hass(self) -> None:
-        self._bulb_service.unregister_updater()
+        self._bulb_service.unregister_updater(self._bulb)
+
+class WyzeCamerafloodlight(LightEntity):
+    """Representation of a Wyze Camera floodlight."""
+    _available: bool
+    _just_updated = False
+
+    def __init__(self, camera: Camera, camera_service: CameraService) -> None:
+        self._device = camera
+        self._service = camera_service
+        self._is_on = False
+
+    @token_exception_handler
+    async def async_turn_on(self, **kwargs) -> None:
+        """Turn the floodlight on."""
+        await self._service.floodlight_on(self._device)
+
+        self._is_on = True
+        self._just_updated = True
+        self.async_schedule_update_ha_state()
+
+    @token_exception_handler
+    async def async_turn_off(self, **kwargs):
+        """Turn the floodlight off."""
+        await self._service.floodlight_off(self._device)
+
+        self._is_on = False
+        self._just_updated = True
+        self.async_schedule_update_ha_state()
+
+    @property
+    def should_poll(self) -> bool:
+        return False
+
+    @property
+    def is_on(self):
+        """Return true if floodlight is on."""
+        """Get info from camera service"""
+        return self._device.floodlight
+
+    @property
+    def name(self) -> str:
+        return f"{self._device.nickname} floodlight"
+
+    @property
+    def unique_id(self):
+        return f"{self._device.mac}-floodlight"
+
+    @property
+    def extra_state_attributes(self):
+        """Return device attributes of the entity."""
+        return {
+            ATTR_ATTRIBUTION: ATTRIBUTION,
+            "state": self.is_on,
+            "available": self.available,
+            "device model": f"{self._device.product_model}.floodlight",
+            "mac": self.unique_id
+        }
+
+    @property
+    def device_info(self):
+        return {
+            "identifiers": {
+                (DOMAIN, self._device.mac)
+            },
+            "name": self.name,
+            "manufacturer": "WyzeLabs",
+            "model": self._device.product_model
+        }
+
+    @callback
+    def handle_camera_update(self, camera: Camera) -> None:
+        """Update the camera object whenever there is an update"""
+        self._device = camera
+        self.async_write_ha_state()
+
+    async def async_added_to_hass(self) -> None:
+        self.async_on_remove(
+            async_dispatcher_connect(
+                self.hass,
+                f"{CAMERA_UPDATED}-{self._device.mac}",
+                self.handle_camera_update,
+            )
+        )
+
+    @property
+    def icon(self):
+        """Return the icon to use in the frontend."""
+        return "mdi:track-light"
+
+    @property
+    def color_mode(self):
+        return COLOR_MODE_ONOFF

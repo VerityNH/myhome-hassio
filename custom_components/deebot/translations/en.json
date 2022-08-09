@@ -1,28 +1,34 @@
 {
   "config": {
     "abort": {
-      "already_configured": "Already configured"
+      "already_configured": "Already configured",
+      "reauth_successful": "Re-authentication was successful"
     },
     "error": {
-      "cannot_connect": "Can't connect to the ecovacs API",
+      "cannot_connect": "Can't connect to the ecovacs API. Please check the logs",
       "invalid_auth": "Invalid username or password",
-      "unknown": "Unknown error",
-      "invalid_country": "Country code should be two letter code, ex: us, uk, etc ",
-      "invalid_continent": "Continent code should be two letter code, ex: ww, eu, etc ",
-      "select_robots": "Please select at least 1 robot"
+      "invalid_continent": "Continent code should be two letter code",
+      "invalid_country": "Country code should be two letter code",
+      "no_supported_devices_found": "No supported devices found",
+      "select_robots": "Please select at least 1 robot",
+      "unknown": "Unknown error. Please check the logs"
     },
     "step": {
-      "user": {
-        "data": {
-          "password": "Password",
-          "username": "E-mail or ShortID",
-          "country": "Country",
-          "continent": "Continent"
-        }
-      },
       "robots": {
         "data": {
           "devices": "Devices"
+        }
+      },
+      "user": {
+        "data": {
+          "continent": "Continent",
+          "country": "Country",
+          "password": "Password",
+          "username": "E-mail or ShortID"
+        },
+        "data_description": {
+          "continent": "The two letter continent code. Ex.: ww, eu. If your country code is not working try ww",
+          "country": "The two letter country code. Ex.: us, uk"
         }
       },
       "user_advanced": {

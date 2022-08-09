@@ -1,6 +1,7 @@
 import asyncio
 import json
 import logging
+from typing import Optional
 
 from aiohttp import WSMsgType
 
@@ -13,6 +14,7 @@ IOT_TYPES = {
     'temperature': 'devices.capabilities.range',
     'fan_speed': 'devices.capabilities.mode',
     'thermostat': 'devices.capabilities.mode',
+    'heat': 'devices.capabilities.mode',
     'volume': 'devices.capabilities.range',
     'pause': 'devices.capabilities.toggle',
     'mute': 'devices.capabilities.toggle',
@@ -24,6 +26,9 @@ IOT_TYPES = {
     'humidity': 'devices.capabilities.range',
     'ionization': 'devices.capabilities.toggle',
     'backlight': 'devices.capabilities.toggle',
+    # kettle:
+    'keep_warm': 'devices.capabilities.toggle',
+    'tea_mode': 'devices.capabilities.mode',
     # don't work
     'hsv': 'devices.capabilities.color_setting',
     'rgb': 'devices.capabilities.color_setting',
@@ -41,9 +46,12 @@ def encode(uid: str) -> str:
     return 'ХА ' + ''.join([MASK_RU[MASK_EN.index(s)] for s in uid])
 
 
-def decode(uid: str) -> str:
+def decode(uid: str) -> Optional[str]:
     """Раскодируем UID из рус.букв."""
-    return ''.join([MASK_EN[MASK_RU.index(s)] for s in uid[3:]])
+    try:
+        return ''.join([MASK_EN[MASK_RU.index(s)] for s in uid[3:]])
+    except Exception:
+        return None
 
 
 class YandexQuasar:
@@ -141,16 +149,21 @@ class YandexQuasar:
                 'type': 'scenario.trigger.voice',
                 'value': name[3:]
             }],
-            'requested_speaker_capabilities': [],
-            'devices': [{
-                'id': device_id,
-                'capabilities': [{
-                    'type': 'devices.capabilities.quasar.server_action',
-                    'state': {
-                        'instance': 'phrase_action',
-                        'value': 'пустышка'
-                    }
-                }]
+            'steps': [{
+                'type': 'scenarios.steps.actions',
+                'parameters': {
+                    'requested_speaker_capabilities': [],
+                    'launch_devices': [{
+                        'id': device_id,
+                        'capabilities': [{
+                            'type': 'devices.capabilities.quasar.server_action',
+                            'state': {
+                                'instance': 'phrase_action',
+                                'value': 'пустышка'
+                            }
+                        }]
+                    }]
+                }
             }]
         }
         r = await self.session.post(f"{URL_USER}/scenarios", json=payload)
@@ -179,17 +192,22 @@ class YandexQuasar:
                 'type': 'scenario.trigger.voice',
                 'value': name
             }],
-            'requested_speaker_capabilities': speaker,
-            'devices': [{
-                'id': self.hass_id,
-                'capabilities': [{
-                    'type': 'devices.capabilities.range',
-                    'state': {
-                        'instance': 'volume',
-                        'relative': False,
-                        'value': num
-                    }
-                }]
+            'steps': [{
+                'type': 'scenarios.steps.actions',
+                'parameters': {
+                    'requested_speaker_capabilities': speaker,
+                    'launch_devices': [{
+                        'id': self.hass_id,
+                        'capabilities': [{
+                            'type': 'devices.capabilities.range',
+                            'state': {
+                                'instance': 'volume',
+                                'relative': False,
+                                'value': num
+                            }
+                        }]
+                    }]
+                }
             }]
         }
         r = await self.session.post(f"{URL_USER}/scenarios", json=payload)
@@ -212,16 +230,21 @@ class YandexQuasar:
                 'type': 'scenario.trigger.voice',
                 'value': name[3:]
             }],
-            'requested_speaker_capabilities': [],
-            'devices': [{
-                'id': device['id'],
-                'capabilities': [{
-                    'type': 'devices.capabilities.quasar.server_action',
-                    'state': {
-                        'instance': action,
-                        'value': text
-                    }
-                }]
+            'steps': [{
+                'type': 'scenarios.steps.actions',
+                'parameters': {
+                    'requested_speaker_capabilities': [],
+                    'launch_devices': [{
+                        'id': device['id'],
+                        'capabilities': [{
+                            'type': 'devices.capabilities.quasar.server_action',
+                            'state': {
+                                'instance': action,
+                                'value': text
+                            }
+                        }]
+                    }]
+                }
             }]
         }
 

@@ -1,6 +1,6 @@
 """Support for Deebot Vaccums."""
 import logging
-from typing import Any, Dict, List, Mapping, Optional
+from typing import Any, Mapping
 
 import voluptuous as vol
 from deebot_client.commands import (
@@ -27,18 +27,9 @@ from deebot_client.events.event_bus import EventListener
 from deebot_client.models import Room, VacuumState
 from deebot_client.vacuum_bot import VacuumBot
 from homeassistant.components.vacuum import (
-    SUPPORT_BATTERY,
-    SUPPORT_FAN_SPEED,
-    SUPPORT_LOCATE,
-    SUPPORT_MAP,
-    SUPPORT_PAUSE,
-    SUPPORT_RETURN_HOME,
-    SUPPORT_SEND_COMMAND,
-    SUPPORT_START,
-    SUPPORT_STATE,
-    SUPPORT_STOP,
     StateVacuumEntity,
     StateVacuumEntityDescription,
+    VacuumEntityFeature,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -62,18 +53,6 @@ from .util import dataclass_to_dict, unsubscribe_listeners
 
 _LOGGER = logging.getLogger(__name__)
 
-SUPPORT_DEEBOT: int = (
-    SUPPORT_PAUSE
-    | SUPPORT_STOP
-    | SUPPORT_RETURN_HOME
-    | SUPPORT_FAN_SPEED
-    | SUPPORT_BATTERY
-    | SUPPORT_SEND_COMMAND
-    | SUPPORT_LOCATE
-    | SUPPORT_MAP
-    | SUPPORT_STATE
-    | SUPPORT_START
-)
 
 # Must be kept in sync with services.yaml
 SERVICE_REFRESH = "refresh"
@@ -112,6 +91,19 @@ async def async_setup_entry(
 class DeebotVacuum(DeebotEntity, StateVacuumEntity):  # type: ignore
     """Deebot Vacuum."""
 
+    _attr_supported_features = (
+        VacuumEntityFeature.PAUSE
+        | VacuumEntityFeature.STOP
+        | VacuumEntityFeature.RETURN_HOME
+        | VacuumEntityFeature.FAN_SPEED
+        | VacuumEntityFeature.BATTERY
+        | VacuumEntityFeature.SEND_COMMAND
+        | VacuumEntityFeature.LOCATE
+        | VacuumEntityFeature.MAP
+        | VacuumEntityFeature.STATE
+        | VacuumEntityFeature.START
+    )
+
     def __init__(self, vacuum_bot: VacuumBot):
         """Initialize the Deebot Vacuum."""
         device_info = vacuum_bot.device_info
@@ -123,11 +115,11 @@ class DeebotVacuum(DeebotEntity, StateVacuumEntity):  # type: ignore
 
         super().__init__(vacuum_bot, StateVacuumEntityDescription(key="", name=name))
 
-        self._battery: Optional[int] = None
-        self._fan_speed: Optional[str] = None
-        self._state: Optional[VacuumState] = None
-        self._rooms: List[Room] = []
-        self._last_error: Optional[ErrorEvent] = None
+        self._battery: int | None = None
+        self._fan_speed: str | None = None
+        self._state: VacuumState | None = None
+        self._rooms: list[Room] = []
+        self._last_error: ErrorEvent | None = None
 
     async def async_added_to_hass(self) -> None:
         """Set up the event listeners now that hass is ready."""
@@ -159,7 +151,7 @@ class DeebotVacuum(DeebotEntity, StateVacuumEntity):  # type: ignore
             self._state = event.state
             self.async_write_ha_state()
 
-        listeners: List[EventListener] = [
+        listeners: list[EventListener] = [
             self._vacuum_bot.events.subscribe(BatteryEvent, on_battery),
             self._vacuum_bot.events.subscribe(CustomCommandEvent, on_custom_command),
             self._vacuum_bot.events.subscribe(ErrorEvent, on_error),
@@ -171,43 +163,38 @@ class DeebotVacuum(DeebotEntity, StateVacuumEntity):  # type: ignore
         self.async_on_remove(lambda: unsubscribe_listeners(listeners))
 
     @property
-    def supported_features(self) -> int:
-        """Flag vacuum cleaner robot features that are supported."""
-        return SUPPORT_DEEBOT
-
-    @property
     def state(self) -> StateType:
         """Return the state of the vacuum cleaner."""
         if self._state is not None and self.available:
             return VACUUMSTATE_TO_STATE[self._state]
 
     @property
-    def battery_level(self) -> Optional[int]:
+    def battery_level(self) -> int | None:
         """Return the battery level of the vacuum cleaner."""
         return self._battery
 
     @property
-    def fan_speed(self) -> Optional[str]:
+    def fan_speed(self) -> str | None:
         """Return the fan speed of the vacuum cleaner."""
         return self._fan_speed
 
     @property
-    def fan_speed_list(self) -> List[str]:
+    def fan_speed_list(self) -> list[str]:
         """Get the list of available fan speed steps of the vacuum cleaner."""
         return [level.display_name for level in FanSpeedLevel]
 
     @property
-    def extra_state_attributes(self) -> Optional[Mapping[str, Any]]:
+    def extra_state_attributes(self) -> Mapping[str, Any] | None:
         """Return entity specific state attributes.
 
         Implemented by platform classes. Convention for attribute names
         is lowercase snake_case.
         """
-        attributes: Dict[str, Any] = {}
-        rooms: Dict[str, Any] = {}
+        attributes: dict[str, Any] = {}
+        rooms: dict[str, Any] = {}
         for room in self._rooms:
             # convert room name to snake_case to meet the convention
-            room_name = slugify(room.subtype)
+            room_name = slugify(room.name)
             room_values = rooms.get(room_name)
             if room_values is None:
                 rooms[room_name] = room.id
@@ -252,12 +239,13 @@ class DeebotVacuum(DeebotEntity, StateVacuumEntity):  # type: ignore
         await self._vacuum_bot.execute_command(PlaySound())
 
     async def async_send_command(
-        self, command: str, params: Optional[Dict[str, Any]] = None, **kwargs: Any
+        self, command: str, params: dict[str, Any] | None = None, **kwargs: Any
     ) -> None:
         """Send a command to a vacuum cleaner."""
         _LOGGER.debug("async_send_command %s with %s", command, params)
 
         if command in ["relocate", SetRelocationState.name]:
+            _LOGGER.warning("DEPRECATED! Please use relocate button entity instead.")
             await self._vacuum_bot.execute_command(SetRelocationState())
         elif command == "auto_clean":
             clean_type = params.get("type", "auto") if params else "auto"
@@ -285,9 +273,7 @@ class DeebotVacuum(DeebotEntity, StateVacuumEntity):  # type: ignore
                     )
                 )
             elif command == "set_water":
-                _LOGGER.warning(
-                    'DEPRECATED! Please use "select.select_option" instead.'
-                )
+                _LOGGER.warning("DEPRECATED! Please use water select entity instead.")
                 await self._vacuum_bot.execute_command(SetWaterInfo(params["amount"]))
         else:
             await self._vacuum_bot.execute_command(CustomCommand(command, params))

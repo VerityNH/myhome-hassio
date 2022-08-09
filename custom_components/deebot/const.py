@@ -1,5 +1,5 @@
 """Const module."""
-from typing import Mapping, Type
+from typing import Mapping
 
 from deebot_client.events import (
     BatteryEvent,
@@ -26,8 +26,8 @@ from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, CONF_VERIFY_SSL
 
 ################################
 # Do not change! Will be set by release workflow
-INTEGRATION_VERSION = "1.0.0"
-MIN_REQUIRED_HA_VERSION = "2021.12.0b0"
+INTEGRATION_VERSION = "1.4.1"
+MIN_REQUIRED_HA_VERSION = "2022.7.0b0"
 ################################
 
 # Values below can be changed
@@ -74,7 +74,7 @@ VACUUMSTATE_TO_STATE = {
 LAST_ERROR = "last_error"
 
 
-REFRESH_STR_TO_EVENT_DTO: Mapping[str, Type[Event]] = {
+REFRESH_STR_TO_EVENT_DTO: Mapping[str, type[Event]] = {
     "Battery": BatteryEvent,
     "Clean logs": CleanLogEvent,
     "Error": ErrorEvent,

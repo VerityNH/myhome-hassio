@@ -3,10 +3,11 @@ import asyncio
 import logging
 import random
 import string
-from typing import Any, List, Mapping
+from typing import Any, Mapping
 
 import aiohttp
 from deebot_client import Configuration, create_instances
+from deebot_client.exceptions import InvalidAuthenticationError
 from deebot_client.mqtt_client import MqttClient
 from deebot_client.util import md5
 from deebot_client.vacuum_bot import VacuumBot
@@ -17,7 +18,7 @@ from homeassistant.const import (
     CONF_VERIFY_SSL,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
 from homeassistant.helpers import aiohttp_client
 
 from .const import CONF_CLIENT_DEVICE_ID, CONF_CONTINENT, CONF_COUNTRY
@@ -31,12 +32,8 @@ class DeebotHub:
     def __init__(self, hass: HomeAssistant, config: Mapping[str, Any]):
         self._hass_config: Mapping[str, Any] = config
         self._hass: HomeAssistant = hass
-        self.vacuum_bots: List[VacuumBot] = []
+        self.vacuum_bots: list[VacuumBot] = []
         verify_ssl = config.get(CONF_VERIFY_SSL, True)
-        self._session: aiohttp.ClientSession = aiohttp_client.async_get_clientsession(
-            self._hass, verify_ssl=verify_ssl
-        )
-
         device_id = config.get(CONF_CLIENT_DEVICE_ID)
 
         if not device_id:
@@ -74,7 +71,7 @@ class DeebotHub:
             # CREATE VACBOT FOR EACH DEVICE
             for device in devices:
                 if device["name"] in self._hass_config.get(CONF_DEVICES, []):
-                    vacbot = VacuumBot(self._session, device, self._api_client)
+                    vacbot = VacuumBot(device, self._api_client)
 
                     await self._mqtt.subscribe(vacbot)
                     _LOGGER.debug("New vacbot found: %s", device["name"])
@@ -83,6 +80,8 @@ class DeebotHub:
             asyncio.create_task(self._check_status_task())
 
             _LOGGER.debug("Hub setup complete")
+        except InvalidAuthenticationError as ex:
+            raise ConfigEntryAuthFailed from ex
         except Exception as ex:
             msg = "Error during setup"
             _LOGGER.error(msg, exc_info=True)

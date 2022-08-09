@@ -6,15 +6,15 @@
     event: sunrise
     offset: 01:00:00
   - platform: time_pattern
-    minutes: /10
+    minutes: /1
   condition:
   - condition: and
     conditions:
     - condition: state
-      entity_id: light.cooking_lamp
+      entity_id: light.cooking_lamp_2
       state: 'off'
     - condition: state
-      entity_id: light.breakfast_lamp
+      entity_id: light.breakfast_lamp_2
       state: 'off'
     - condition: numeric_state
       entity_id: sensor.kitchen_multi_illuminance
@@ -417,12 +417,12 @@
     event: sunrise
     offset: 01:00:00
   - platform: time_pattern
-    minutes: /10
+    minutes: /1
   condition:
   - condition: and
     conditions:
     - condition: state
-      entity_id: light.dining_lamp
+      entity_id: light.dining_lamp_2
       state: 'off'
     - condition: numeric_state
       entity_id: sensor.dining_multi_illuminance
@@ -472,12 +472,12 @@
     event: sunrise
     offset: 01:00:00
   - platform: time_pattern
-    minutes: /10
+    minutes: /1
   condition:
   - condition: and
     conditions:
     - condition: state
-      entity_id: light.livingroom_lamp
+      entity_id: light.livingroom_lamp_2
       state: 'off'
     - condition: numeric_state
       entity_id: sensor.livingroom_multi_illuminance

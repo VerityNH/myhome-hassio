@@ -264,62 +264,34 @@
   name: 'LIVINGROOM: LIGHTS: Night mode'
   entities:
     light.livingroom_lamp_2:
-      min_mireds: 153
-      max_mireds: 370
-      effect_list:
-      - Ocean
-      - Romance
-      - Sunset
-      - Party
-      - Fireplace
-      - Cozy
-      - Forest
-      - Pastel Colors
-      - Wake up
-      - Bedtime
-      - Warm White
-      - Daylight
-      - Cool white
-      - Night light
-      - Focus
-      - Relax
-      - True colors
-      - TV time
-      - Plantgrowth
-      - Spring
-      - Summer
-      - Fall
-      - Deepdive
-      - Jungle
-      - Mojito
-      - Club
-      - Christmas
-      - Halloween
-      - Candlelight
-      - Golden white
-      - Pulse
-      - Steampunk
-      - Rhythm
+      min_mireds: 154
+      max_mireds: 554
       supported_color_modes:
       - color_temp
       - hs
-      color_mode: color_temp
-      brightness: 255
-      color_temp: 238
+      color_mode: hs
+      brightness: 51
       hs_color:
-      - 26.743
-      - 31.347
+      - 29.882
+      - 100
       rgb_color:
       - 255
-      - 210
-      - 175
+      - 126
+      - 0
       xy_color:
-      - 0.409
-      - 0.361
-      effect: Candlelight
-      friendly_name: Livingroom Lamp
-      supported_features: 23
+      - 0.614
+      - 0.373
+      color_temp: 554
+      attribution: Data provided by Wyze
       state: 'on'
+      available: true
+      device model: WLPA19C
+      mac: 7C78B25BBC1C
+      IP: 192.168.1.105
+      RSSI: '-48'
+      SSID: ZdorovenkiBuly
+      friendly_name: Livingroom Lamp
+      supported_features: 19
 - id: '1612458126013'
   name: TV mode
   entities:
@@ -422,62 +394,34 @@
   name: 'LIVINGROOM: LIGHTS: Day mode'
   entities:
     light.livingroom_lamp_2:
-      min_mireds: 153
-      max_mireds: 370
-      effect_list:
-      - Ocean
-      - Romance
-      - Sunset
-      - Party
-      - Fireplace
-      - Cozy
-      - Forest
-      - Pastel Colors
-      - Wake up
-      - Bedtime
-      - Warm White
-      - Daylight
-      - Cool white
-      - Night light
-      - Focus
-      - Relax
-      - True colors
-      - TV time
-      - Plantgrowth
-      - Spring
-      - Summer
-      - Fall
-      - Deepdive
-      - Jungle
-      - Mojito
-      - Club
-      - Christmas
-      - Halloween
-      - Candlelight
-      - Golden white
-      - Pulse
-      - Steampunk
-      - Rhythm
+      min_mireds: 154
+      max_mireds: 554
       supported_color_modes:
       - color_temp
       - hs
-      color_mode: color_temp
+      color_mode: hs
       brightness: 255
-      color_temp: 238
       hs_color:
-      - 26.743
-      - 31.347
+      - 48
+      - 1.961
       rgb_color:
       - 255
-      - 210
-      - 175
+      - 253
+      - 249
       xy_color:
-      - 0.409
-      - 0.361
-      effect: Daylight
-      friendly_name: Livingroom Lamp
-      supported_features: 23
+      - 0.328
+      - 0.333
+      color_temp: 154
+      attribution: Data provided by Wyze
       state: 'on'
+      available: true
+      device model: WLPA19C
+      mac: 7C78B25BBC1C
+      IP: 192.168.1.105
+      RSSI: '-48'
+      SSID: ZdorovenkiBuly
+      friendly_name: Livingroom Lamp
+      supported_features: 19
 - id: '1615131300600'
   name: 'LIVINGROOM: LIGHTS: Off'
   entities:
@@ -633,122 +577,66 @@
   name: 'DINING: LIGHT: Day mode'
   entities:
     light.dining_lamp_2:
-      min_mireds: 153
-      max_mireds: 370
-      effect_list:
-      - Ocean
-      - Romance
-      - Sunset
-      - Party
-      - Fireplace
-      - Cozy
-      - Forest
-      - Pastel Colors
-      - Wake up
-      - Bedtime
-      - Warm White
-      - Daylight
-      - Cool white
-      - Night light
-      - Focus
-      - Relax
-      - True colors
-      - TV time
-      - Plantgrowth
-      - Spring
-      - Summer
-      - Fall
-      - Deepdive
-      - Jungle
-      - Mojito
-      - Club
-      - Christmas
-      - Halloween
-      - Candlelight
-      - Golden white
-      - Pulse
-      - Steampunk
-      - Rhythm
+      min_mireds: 154
+      max_mireds: 554
       supported_color_modes:
       - color_temp
       - hs
-      color_mode: color_temp
+      color_mode: hs
       brightness: 255
-      color_temp: 238
       hs_color:
-      - 26.743
-      - 31.347
+      - 48
+      - 1.961
       rgb_color:
       - 255
-      - 210
-      - 175
+      - 253
+      - 249
       xy_color:
-      - 0.409
-      - 0.361
-      effect: Daylight
-      friendly_name: Dining Lamp
-      supported_features: 23
+      - 0.328
+      - 0.333
+      color_temp: 154
+      attribution: Data provided by Wyze
       state: 'on'
+      available: true
+      device model: WLPA19C
+      mac: 7C78B2598C51
+      IP: 192.168.1.106
+      RSSI: '-46'
+      SSID: ZdorovenkiBuly
+      friendly_name: Dining  Lamp
+      supported_features: 19
 - id: '1615136591213'
   name: 'DINING: LIGHT: Night mode'
   entities:
     light.dining_lamp_2:
-      min_mireds: 153
-      max_mireds: 370
-      effect_list:
-      - Ocean
-      - Romance
-      - Sunset
-      - Party
-      - Fireplace
-      - Cozy
-      - Forest
-      - Pastel Colors
-      - Wake up
-      - Bedtime
-      - Warm White
-      - Daylight
-      - Cool white
-      - Night light
-      - Focus
-      - Relax
-      - True colors
-      - TV time
-      - Plantgrowth
-      - Spring
-      - Summer
-      - Fall
-      - Deepdive
-      - Jungle
-      - Mojito
-      - Club
-      - Christmas
-      - Halloween
-      - Candlelight
-      - Golden white
-      - Pulse
-      - Steampunk
-      - Rhythm
+      min_mireds: 154
+      max_mireds: 554
       supported_color_modes:
       - color_temp
       - hs
-      color_mode: color_temp
-      brightness: 255
-      color_temp: 238
+      color_mode: hs
+      brightness: 51
       hs_color:
-      - 26.743
-      - 31.347
+      - 29.882
+      - 100
       rgb_color:
       - 255
-      - 210
-      - 175
+      - 126
+      - 0
       xy_color:
-      - 0.409
-      - 0.361
-      effect: Night light
-      friendly_name: Dining Lamp
-      supported_features: 23
+      - 0.614
+      - 0.373
+      color_temp: 554
+      attribution: Data provided by Wyze
       state: 'on'
+      available: true
+      device model: WLPA19C
+      mac: 7C78B2598C51
+      IP: 192.168.1.106
+      RSSI: '-46'
+      SSID: ZdorovenkiBuly
+      friendly_name: Dining  Lamp
+      supported_features: 19
 - id: '1615136633455'
   name: 'DINING: LIGHT: Off'
   entities:
@@ -799,40 +687,124 @@
   name: 'COOKING: LIGHT: Day mode'
   entities:
     light.cooking_lamp_2:
+      min_mireds: 154
+      max_mireds: 554
       supported_color_modes:
-      - brightness
-      color_mode: brightness
+      - color_temp
+      - hs
+      color_mode: hs
       brightness: 255
+      hs_color:
+      - 0
+      - 0
+      rgb_color:
+      - 255
+      - 255
+      - 255
+      xy_color:
+      - 0.323
+      - 0.329
+      color_temp: 154
+      attribution: Data provided by Wyze
+      state: 'on'
+      available: true
+      device model: WLPA19C
+      mac: 7C78B23D0200
+      IP: 192.168.1.104
+      RSSI: '-56'
+      SSID: ZdorovenkiBuly
       friendly_name: Cooking Lamp
-      supported_features: 1
-      state: 'on'
+      supported_features: 19
     light.breakfast_lamp_2:
+      min_mireds: 154
+      max_mireds: 554
       supported_color_modes:
-      - brightness
-      color_mode: brightness
+      - color_temp
+      - hs
+      color_mode: hs
       brightness: 255
-      friendly_name: Breakfast Lamp
-      supported_features: 1
+      hs_color:
+      - 48
+      - 1.961
+      rgb_color:
+      - 255
+      - 253
+      - 249
+      xy_color:
+      - 0.328
+      - 0.333
+      color_temp: 154
+      attribution: Data provided by Wyze
       state: 'on'
+      available: true
+      device model: WLPA19C
+      mac: 7C78B23D9D8E
+      IP: 192.168.1.103
+      RSSI: '-65'
+      SSID: ZdorovenkiBuly
+      friendly_name: Breakfast lamp
+      supported_features: 19
 - id: '1615136768771'
   name: 'COOKING: LIGHT: Night mode'
   entities:
     light.breakfast_lamp_2:
+      min_mireds: 154
+      max_mireds: 554
       supported_color_modes:
-      - brightness
-      color_mode: brightness
+      - color_temp
+      - hs
+      color_mode: hs
       brightness: 51
-      friendly_name: Breakfast Lamp
-      supported_features: 1
+      hs_color:
+      - 0
+      - 0
+      rgb_color:
+      - 255
+      - 255
+      - 255
+      xy_color:
+      - 0.323
+      - 0.329
+      color_temp: 554
+      attribution: Data provided by Wyze
       state: 'on'
+      available: true
+      device model: WLPA19C
+      mac: 7C78B23D9D8E
+      IP: 192.168.1.103
+      RSSI: '-65'
+      SSID: ZdorovenkiBuly
+      friendly_name: Breakfast lamp
+      supported_features: 19
     light.cooking_lamp_2:
+      min_mireds: 154
+      max_mireds: 554
       supported_color_modes:
-      - brightness
-      color_mode: brightness
+      - color_temp
+      - hs
+      color_mode: hs
       brightness: 51
-      friendly_name: Cooking Lamp
-      supported_features: 1
+      hs_color:
+      - 0
+      - 0
+      rgb_color:
+      - 255
+      - 255
+      - 255
+      xy_color:
+      - 0.323
+      - 0.329
+      color_temp: 554
+      attribution: Data provided by Wyze
       state: 'on'
+      available: true
+      device model: WLPA19C
+      mac: 7C78B23D0200
+      IP: 192.168.1.104
+      RSSI: '-56'
+      SSID: ZdorovenkiBuly
+      friendly_name: Cooking Lamp
+      supported_features: 19
 - id: '1615136804670'
   name: 'COOKING: LIGHT: Off'
   entities:
