@@ -1,5 +1,5 @@
-- platform: aarlo
-  #ffmpeg_arguments: '-pred 1 -q:v 2'
+#- platform: aarlo
+#  #ffmpeg_arguments: '-pred 1 -q:v 2'
 
 - platform: generic
   name: "Deebot Live Map"

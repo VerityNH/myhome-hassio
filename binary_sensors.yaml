@@ -29,10 +29,10 @@
           or is_state('binary_sensor.entrance_contact', 'on')
           or is_state('binary_sensor.garage_enter_contact', 'on') }}
 
-- platform: aarlo
-  monitored_conditions:
-    - motion
-    - sound
-    - ding
-    - cry
-    - connectivity
+#- platform: aarlo
+#  monitored_conditions:
+#    - motion
+#    - sound
+#    - ding
+#    - cry
+#    - connectivity
