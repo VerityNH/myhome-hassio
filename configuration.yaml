@@ -174,29 +174,29 @@ google_assistant:
         - "Kraken"
 
 
-aarlo:
-  username: !secret arlo_username
-  password: !secret arlo_password
-  refresh_devices_every: 2
-  stream_timeout: 120
-  user_agent: linux
-
-switch:
-  - platform: aarlo
-    siren: True
-    all_sirens: True
-    snapshot: True
-    doorbell_silence: True
-    siren_volume: 1
-    siren_duration: 10
-
-alarm_control_panel:
-  - platform: aarlo
-    away_mode_name: armed
-#    home_mode_name: home
-    night_mode_name: night
-    trigger_time: 30
-    alarm_volume: 1
+#aarlo:
+#  username: !secret arlo_username
+#  password: !secret arlo_password
+#  refresh_devices_every: 2
+#  stream_timeout: 120
+#  user_agent: linux
+#
+#switch:
+#  - platform: aarlo
+#    siren: True
+#    all_sirens: True
+#    snapshot: True
+#    doorbell_silence: True
+#    siren_volume: 1
+#    siren_duration: 10
+#
+#alarm_control_panel:
+#  - platform: aarlo
+#    away_mode_name: armed
+##    home_mode_name: home
+#    night_mode_name: night
+#    trigger_time: 30
+#    alarm_volume: 1
 
 #  devices:
 #    10008fd3ee:
@@ -207,8 +207,8 @@ alarm_control_panel:
 #spotcast: !include spotcast.yaml
 #yandex_smart_home_fix:
 
-media_player:
-  - platform: aarlo
+#media_player:
+#  - platform: aarlo
 
 yandex_smart_home:
   notifier:
