@@ -291,6 +291,11 @@ notify:
     name: telegram
     chat_id: !secret home_telegram_group
 
+google_domains:
+  domain: !secret google_d_domain
+  username: !secret google_d_username
+  password: !secret google_d_password
+
 upnp:
   local_ip: 192.168.1.2
 
