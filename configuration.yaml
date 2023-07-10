@@ -296,9 +296,6 @@ google_domains:
   username: !secret google_d_username
   password: !secret google_d_password
 
-upnp:
-  local_ip: 192.168.1.2
-
 conversation:
   intents:
     media_player.yandex_station_ff98f029bceb4110b4b81659: [.+]
