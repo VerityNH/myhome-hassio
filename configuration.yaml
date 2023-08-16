@@ -54,7 +54,7 @@ stream:
 ffmpeg:
   ffmpeg_bin: /usr/bin/ffmpeg
 
-camera: !include camera.yaml
+#camera: !include camera.yaml
 
 light: !include light.yaml
 
